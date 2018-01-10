@@ -1,0 +1,98 @@
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="data"
+            type="com.webkul.mobikul.mobikulstandalonepos.db.entity.Product" />
+    </data>
+
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/backgroundColor"
+        android:clickable="false"
+        tools:context="com.webkul.mobikul.mobikulstandalonepos.fragment.AddProductFragment">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/spacing_generic"
+            android:background="@android:color/white"
+            android:clickable="false"
+            android:orientation="vertical"
+            android:padding="@dimen/spacing_generic">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/spacing_generic"
+                android:background="@android:color/white"
+                android:clickable="false"
+                android:orientation="vertical"
+                android:padding="@dimen/spacing_generic">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/product_image"
+                    android:textColor="@color/textColor"
+                    android:textSize="@dimen/text_size_large" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/ic_product_placeholder" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/ic_info"
+                    android:text="@string/double_tap_to_remove_image"
+                    android:textColor="@color/secondaryTextColor"
+                    android:textSize="@dimen/text_size_large" />
+
+            </LinearLayout>
+
+            <android.support.v7.widget.CardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/spacing_generic"
+                    android:background="@android:color/white"
+                    android:clickable="false"
+                    android:orientation="vertical"
+                    android:padding="@dimen/spacing_generic">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/product_image"
+                        android:textColor="@color/textColor"
+                        android:textSize="@dimen/text_size_large" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:srcCompat="@drawable/ic_product_placeholder" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableLeft="@drawable/ic_info"
+                        android:text="@string/double_tap_to_remove_image"
+                        android:textColor="@color/secondaryTextColor"
+                        android:textSize="@dimen/text_size_large" />
+
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+        </LinearLayout>
+        <!-- TODO: Update blank fragment layout -->
+
+    </FrameLayout>
+</layout>
