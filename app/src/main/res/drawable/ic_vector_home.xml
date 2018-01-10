@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportHeight="24"
+    android:viewportWidth="24">
+
+    <group
+        android:translateX="3.000000"
+        android:translateY="4.000000">
+        <path
+            android:fillColor="@color/bottomNavBarItemColor"
+            android:pathData="M 7.18269231 15.3389423 L 2.70432692 15.3389423 L 2.70432692 8.11298077 L 0 8.11298077 L 9 0 L 18 8.11298077 L 15.2956731 8.11298077 L 15.2956731 15.3389423 L 10.8173077 15.3389423 L 10.8173077 9.93028846 L 7.18269231 9.93028846 Z"
+            android:strokeWidth="1" />
+    </group>
+</vector>

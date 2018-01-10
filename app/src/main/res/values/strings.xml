@@ -1,0 +1,91 @@
+<resources>
+
+    <!--app name-->
+    <string name="app_name">Mobikul Stand Alone POS</string>
+    <!---->
+    <!---->
+    <!--activities name-->
+    <string name="title_activity_splash_screen">SplashScreenActivity</string>
+    <string name="title_activity_main2">Main2Activity</string>
+    <string name="title_activity_sign_up_sign_in">SignUpSignInActivity</string>
+    <!---->
+    <!---->
+    <!--signupsigninactivity-->
+    <string name="create_an_account">Create an Account</string>
+    <string name="sign_in">Sign In</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="_2014_copyright_brand_or_company_all_rights_reserved">© 2014 Copyright Brand or Company.\n All rights reserved.</string>
+    <!---->
+    <!---->
+    <!-- Actionbar related strings -->
+    <string name="search">Search</string>
+    <string name="scan_barcode">Scan Barcode</string>
+    <!---->
+    <!---->
+    <!-- Drawer related strings (No need to translate)-->
+    <string name="drawer_open" translatable="false">Open navigation drawer</string>
+    <string name="drawer_close" translatable="false">Close navigation drawer</string>
+    <!---->
+    <!---->
+    <!-- Main Activity related strings -->
+    <string name="btm_nav_item_title_home">Home</string>
+    <string name="btm_nav_item_title_orders">Orders</string>
+    <string name="btm_nav_item_title_hold">Hold</string>
+    <string name="btm_nav_item_title_more">More</string>
+    <string name="press_back_to_exit">Press Back again to Exit</string>
+    <!---->
+    <!---->
+    <!-- Home fragment related strings -->
+    <string name="home_fragment_title">Home</string>
+    <!---->
+    <!---->
+    <!-- Orders fragment related strings -->
+    <string name="orders_fragment_title">Orders</string>
+    <!---->
+    <!---->
+    <!-- Hold fragment related strings -->
+    <string name="hold_fragment_title">Hold</string>
+    <!---->
+    <!---->
+    <!-- More fragment related strings -->
+    <string name="more_fragment_title">More</string>
+    <string name="cash_drawer">Cash Drawer</string>
+    <string name="sync_with_store">Sync with Store</string>
+    <string name="sales_and_reporting">Sales and Reporting</string>
+    <string name="my_account_info">My Account Info</string>
+    <string name="customers">Customers</string>
+    <string name="categories">Categories</string>
+    <string name="products">Products</string>
+    <string name="gift_card">Gift Card</string>
+    <string name="discounts_and_cart_rules">Discounts and Cart Rules</string>
+    <string name="taxes">Taxes</string>
+    <string name="payment_methods">Payment Methods</string>
+    <string name="shipping_methods">Shipping Methods</string>
+    <string name="pos_users">POS Users</string>
+    <string name="user_roles">User Roles</string>
+    <string name="quickly_manage">Quickly Manage</string>
+    <string name="log_out">Log out</string>
+    <!---->
+    <!---->
+    <!-- Category fragment related strings -->
+    <string name="title_activity_category">Categories</string>
+    <string name="category_fragment_title">Category</string>
+    <string name="add">Add</string>
+    <string name="add_category_title">Add Category</string>
+    <string name="edit_category_title">Edit Category</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="category_information">Category Information</string>
+    <string name="category_name">Category Name</string>
+    <string name="include_in_drawer_menu">Include in Drawer Menu</string>
+    <string name="enable_category">Enable Category</string>
+    <string name="title_activity_product">ProductActivity</string>
+    <string name="product_image">Product Image</string>
+    <string name="double_tap_to_remove_image">Double tap to remove image</string>
+
+
+</resources>
