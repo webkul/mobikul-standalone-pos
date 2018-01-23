@@ -4,8 +4,13 @@ import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
+import android.arch.persistence.room.TypeConverter;
+import android.arch.persistence.room.TypeConverters;
+import android.arch.persistence.room.Update;
 
+import com.webkul.mobikul.mobikulstandalonepos.db.converters.DataConverter;
 import com.webkul.mobikul.mobikulstandalonepos.db.entity.Product;
+import com.webkul.mobikul.mobikulstandalonepos.model.ProductCategoryModel;
 
 import java.util.List;
 
@@ -23,8 +28,24 @@ public interface ProductDao {
     @Query("SELECT * FROM Product WHERE is_enabled = :isEnabled")
     List<Product> getEnabledProduct(boolean isEnabled);
 
-//    @Query("UPDATE Product SET Product_name = :ProductName, is_active = :isActive, is_include_in_drawer_menu = :isIncludeInDrawerMenu WHERE cId = :cId")
-//    void updateProductById(String ProductName, boolean isActive, boolean isIncludeInDrawerMenu, int cId);
+    @Query("UPDATE Product SET image = :imagePath, is_enabled = :isEnabled, product_name = :ProductName, sku = :sku, price = :price" +
+            ", special_price = :specialPrice, is_taxable_goods_applied = :isTaxableGoodsApplied, track_inventory= :trackInventory" +
+            ", quantity = :qty , stock_availability = :inStock, weight = :weight, productCategories = :productCategories WHERE pId = :pId")
+    @TypeConverters(DataConverter.class)
+    void updateProduct(String imagePath
+            , boolean isEnabled
+            , String ProductName
+            , String sku
+            , String price
+            , String specialPrice
+            , boolean isTaxableGoodsApplied
+            , boolean trackInventory
+            , String qty
+            , boolean inStock
+            , String weight
+            , String productCategories
+            , int pId);
+
 
     @Insert
     void insertAll(Product... Products);

@@ -26,6 +26,7 @@ public class AppSharedPref {
     private static final String KEY_CART_COUNT = "CART_COUNT";
     private static final String IS_SIGNED_UP = "IS_SIGNED_UP";
     private static final String IS_LOGGED_IN = "IS_LOGGED_in";
+    private static final String KEY_CART_DATA = "CART_DATA";
 
     /*SHARED PREF AND EDITOR*/
     @SuppressWarnings("WeakerAccess")
@@ -71,7 +72,6 @@ public class AppSharedPref {
         return getSharedPreference(context, USER_PREF).getInt(KEY_CART_COUNT, defaultValue);
     }
 
-
     public static void setCartCount(Context context, int cartCount) {
         getSharedPreferenceEditor(context, USER_PREF).putInt(KEY_CART_COUNT, cartCount).apply();
     }
@@ -92,5 +92,15 @@ public class AppSharedPref {
         getSharedPreferenceEditor(context, USER_PREF).putBoolean(IS_LOGGED_IN, isLogIn).apply();
     }
 
+    public static String getCartData(Context context) {
+        return getSharedPreference(context, APP_PREF).getString(KEY_CART_DATA + getUserId(context), "");
+    }
 
+    public static void setCartData(Context context, String cartData) {
+        getSharedPreferenceEditor(context, APP_PREF).putString(KEY_CART_DATA + getUserId(context), cartData).apply();
+    }
+
+    public static void deleteCartData(Context context) {
+        getSharedPreferenceEditor(context, APP_PREF).remove(KEY_CART_DATA + getUserId(context)).apply();
+    }
 }

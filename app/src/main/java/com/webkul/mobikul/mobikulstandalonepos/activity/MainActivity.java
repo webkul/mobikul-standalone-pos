@@ -17,9 +17,11 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.webkul.mobikul.mobikulstandalonepos.R;
+import com.webkul.mobikul.mobikulstandalonepos.adapter.DrawerAdapter;
 import com.webkul.mobikul.mobikulstandalonepos.databinding.ActivityMainBinding;
 import com.webkul.mobikul.mobikulstandalonepos.db.DataBaseController;
 import com.webkul.mobikul.mobikulstandalonepos.db.entity.Category;
+import com.webkul.mobikul.mobikulstandalonepos.db.entity.Product;
 import com.webkul.mobikul.mobikulstandalonepos.fragment.HoldFragment;
 import com.webkul.mobikul.mobikulstandalonepos.fragment.HomeFragment;
 import com.webkul.mobikul.mobikulstandalonepos.fragment.MoreFragment;
@@ -36,20 +38,28 @@ import java.util.List;
 
 public class MainActivity extends BaseActivity {
 
-    protected ActivityMainBinding mMainBinding;
+    public ActivityMainBinding mMainBinding;
     private ActionBarDrawerToggle mDrawerToggle;
 
     private List<Category> categories;
-    private CategoryAdapter categoryAdapter;
+    private List<Category> categoriesWithFilteredById;
+    private DrawerAdapter drawerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mMainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+//        mMainBinding.cate.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Toast.makeText(MainActivity.this, "asdad", Toast.LENGTH_SHORT).show();
+//            }
+//        });
         initDrawerToggle();
         initBottomNavView();
         loadDrawerData();
         loadHomeFragment();
+        categoriesWithFilteredById = new ArrayList<>();
     }
 
     public void loadDrawerData() {
@@ -60,16 +70,16 @@ public class MainActivity extends BaseActivity {
     public void setCategories() {
         DataBaseController.getInstanse().getIncludedCategoryForDrawer(this, new DataBaseCallBack() {
             @Override
-            public void onSuccess(Object responseData) {
+            public void onSuccess(Object responseData, String msg) {
                 if (!(categories.toString().equalsIgnoreCase(responseData.toString()))) {
                     if (categories.size() > 0)
                         categories.clear();
                     categories.addAll((List<Category>) responseData);
-                    if (categoryAdapter == null) {
-                        categoryAdapter = new CategoryAdapter(MainActivity.this, categories);
-                        mMainBinding.categoryRvDrawer.setAdapter(categoryAdapter);
+                    if (drawerAdapter == null) {
+                        drawerAdapter = new DrawerAdapter(MainActivity.this, categories);
+                        mMainBinding.categoryRvDrawer.setAdapter(drawerAdapter);
                     } else {
-                        categoryAdapter.notifyDataSetChanged();
+                        drawerAdapter.notifyDataSetChanged();
                     }
                 }
             }

@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Mobikul_StandAlone_POS.iml" filepath="$PROJECT_DIR$/Mobikul_StandAlone_POS.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Mobikul-Stand-Alone-POS.iml" filepath="$PROJECT_DIR$/Mobikul-Stand-Alone-POS.iml" />
       <module fileurl="file://$PROJECT_DIR$/activation/activation.iml" filepath="$PROJECT_DIR$/activation/activation.iml" />
       <module fileurl="file://$PROJECT_DIR$/additionnal/additionnal.iml" filepath="$PROJECT_DIR$/additionnal/additionnal.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />

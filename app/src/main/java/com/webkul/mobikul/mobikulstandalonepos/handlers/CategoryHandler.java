@@ -12,7 +12,6 @@ import android.view.View;
 import com.webkul.mobikul.mobikulstandalonepos.R;
 import com.webkul.mobikul.mobikulstandalonepos.activity.BaseActivity;
 import com.webkul.mobikul.mobikulstandalonepos.activity.CategoryActivity;
-import com.webkul.mobikul.mobikulstandalonepos.databinding.ItemsCategoryBinding;
 import com.webkul.mobikul.mobikulstandalonepos.db.entity.Category;
 import com.webkul.mobikul.mobikulstandalonepos.fragment.AddCategoryFragment;
 
@@ -30,7 +29,7 @@ public class CategoryHandler {
         this.category = category;
     }
 
-    public CategoryHandler(Context context, ItemsCategoryBinding binding) {
+    public CategoryHandler(Context context) {
         this.context = context;
     }
 

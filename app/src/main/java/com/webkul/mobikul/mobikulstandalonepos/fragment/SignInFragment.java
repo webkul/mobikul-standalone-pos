@@ -55,6 +55,8 @@ public class SignInFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         Administrator administrator = new Administrator();
+        administrator.setEmail("admin");
+        administrator.setPassword("admin");
         binding.setData(administrator);
         binding.setHandler(new SignUpSignInHandler(getActivity(), administrator));
     }

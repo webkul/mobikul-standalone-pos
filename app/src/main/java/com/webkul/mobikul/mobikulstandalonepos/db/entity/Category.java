@@ -47,6 +47,9 @@ public class Category extends BaseObservable implements Serializable {
     @Ignore
     private boolean displayError;
 
+    @Ignore
+    private boolean isSelected;
+
     public int getCId() {
         return cId;
     }
@@ -73,7 +76,6 @@ public class Category extends BaseObservable implements Serializable {
 
     @Bindable
     public String getCategoryName() {
-        Log.d(TAG, "getCategoryName: " + categoryName);
         if (categoryName == null)
             return "";
         return categoryName;
@@ -138,5 +140,13 @@ public class Category extends BaseObservable implements Serializable {
 
     public void setPath(String path) {
         this.path = path;
+    }
+
+    public boolean isSelected() {
+        return isSelected;
+    }
+
+    public void setSelected(boolean selected) {
+        isSelected = selected;
     }
 }

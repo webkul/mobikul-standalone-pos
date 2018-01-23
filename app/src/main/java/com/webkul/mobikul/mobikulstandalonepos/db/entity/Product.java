@@ -2,12 +2,20 @@ package com.webkul.mobikul.mobikulstandalonepos.db.entity;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 import android.arch.persistence.room.TypeConverters;
+import android.content.Context;
+import android.databinding.BaseObservable;
+import android.databinding.Bindable;
 
-import com.webkul.mobikul.mobikulstandalonepos.db.converters.DataConvertor;
+import com.webkul.mobikul.mobikulstandalonepos.BR;
+import com.webkul.mobikul.mobikulstandalonepos.R;
+import com.webkul.mobikul.mobikulstandalonepos.db.converters.DataConverter;
+import com.webkul.mobikul.mobikulstandalonepos.model.ProductCategoryModel;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -15,7 +23,16 @@ import java.util.List;
  */
 
 @Entity(tableName = "Product")
-public class Product implements Serializable {
+public class Product extends BaseObservable implements Serializable {
+    @Ignore
+    private Context context;
+
+    public Product() {
+    }
+
+    public Product(Context context) {
+        this.context = context;
+    }
 
     @PrimaryKey(autoGenerate = true)
     private int pId;
@@ -33,10 +50,16 @@ public class Product implements Serializable {
     private boolean isEnabled;
 
     @ColumnInfo(name = "price")
-    private double price;
+    private String price;
+
+    @ColumnInfo(name = "formatted_price")
+    private String formattedPrice;
 
     @ColumnInfo(name = "special_price")
-    private double specialPrice;
+    private String specialPrice;
+
+    @ColumnInfo(name = "formatted_special_price")
+    private String formattedSpecialPrice;
 
     @ColumnInfo(name = "is_taxable_goods_applied")
     private boolean isTaxableGoodsApplied;
@@ -45,7 +68,7 @@ public class Product implements Serializable {
     private boolean trackInventory;
 
     @ColumnInfo(name = "quantity")
-    private int quantity;
+    private String quantity;
 
     @ColumnInfo(name = "stock_availability")
     private boolean stock;
@@ -54,26 +77,45 @@ public class Product implements Serializable {
     private String image;
 
     @ColumnInfo(name = "weight")
-    private int weight;
+    private String weight;
 
-    @TypeConverters(DataConvertor.class)
-    @ColumnInfo(name = "categoryIds")
-    private List<Integer> categoryIds;
+    @TypeConverters(DataConverter.class)
+    @ColumnInfo(name = "productCategories")
+    private List<ProductCategoryModel> productCategories;
+    @Ignore
+    private String cartQty;
+    @Ignore
+    private boolean displayError;
 
-    public int getpId() {
+    public int getPId() {
         return pId;
     }
 
-    public void setpId(int pId) {
+    public void setPId(int pId) {
         this.pId = pId;
     }
 
+    @Bindable
     public String getProductName() {
+        if (productName == null)
+            return "";
         return productName;
+    }
+
+    @Bindable({"displayError", "productName"})
+    public String getProductNameError() {
+        if (!isDisplayError()) {
+            return "";
+        }
+        if (getProductName().isEmpty()) {
+            return "PRODUCT NAME IS EMPTY!";
+        }
+        return "";
     }
 
     public void setProductName(String productName) {
         this.productName = productName;
+        notifyPropertyChanged(BR.productName);
     }
 
     public String getProductShortDes() {
@@ -84,12 +126,27 @@ public class Product implements Serializable {
         this.productShortDes = productShortDes;
     }
 
+    @Bindable
     public String getSku() {
+        if (sku == null)
+            return "";
         return sku;
+    }
+
+    @Bindable({"displayError", "sku"})
+    public String getSkuError() {
+        if (!isDisplayError()) {
+            return "";
+        }
+        if (getSku().isEmpty()) {
+            return "SKU IS EMPTY!";
+        }
+        return "";
     }
 
     public void setSku(String sku) {
         this.sku = sku;
+        notifyPropertyChanged(BR.sku);
     }
 
     public boolean isEnabled() {
@@ -100,20 +157,45 @@ public class Product implements Serializable {
         isEnabled = enabled;
     }
 
-    public double getPrice() {
+    @Bindable
+    public String getPrice() {
+        if (price == null)
+            return "";
         return price;
     }
 
-    public void setPrice(double price) {
-        this.price = price;
+    @Bindable({"displayError", "price"})
+    public String getPriceError() {
+        if (!isDisplayError()) {
+            return "";
+        }
+        String price = getPrice() + "";
+        if (price.isEmpty()) {
+            return "PRICE IS EMPTY!";
+        }
+        return "";
     }
 
-    public double getSpecialPrice() {
+
+    public void setPrice(String price) {
+        this.price = price;
+        if (context != null)
+            setFormattedPrice(context.getString(R.string.currency_symbol) + price);
+        notifyPropertyChanged(BR.price);
+    }
+
+    @Bindable
+    public String getSpecialPrice() {
+        if (specialPrice == null)
+            return "";
         return specialPrice;
     }
 
-    public void setSpecialPrice(double specialPrice) {
+    public void setSpecialPrice(String specialPrice) {
+        if (context != null)
+            setFormattedSpecialPrice(context.getString(R.string.currency_symbol) + specialPrice);
         this.specialPrice = specialPrice;
+        notifyPropertyChanged(BR.specialPrice);
     }
 
     public boolean isTaxableGoodsApplied() {
@@ -132,12 +214,27 @@ public class Product implements Serializable {
         this.trackInventory = trackInventory;
     }
 
-    public int getQuantity() {
+    @Bindable
+    public String getQuantity() {
+        if (quantity == null)
+            return "";
         return quantity;
     }
 
-    public void setQuantity(int quantity) {
+    @Bindable({"displayError", "quantity"})
+    public String getQuantityError() {
+        if (!isDisplayError()) {
+            return "";
+        }
+        if (getQuantity().isEmpty()) {
+            return "QUANTITY IS EMPTY!";
+        }
+        return "";
+    }
+
+    public void setQuantity(String quantity) {
         this.quantity = quantity;
+        notifyPropertyChanged(BR.quantity);
     }
 
     public boolean isStock() {
@@ -148,28 +245,89 @@ public class Product implements Serializable {
         this.stock = stock;
     }
 
+    @Bindable
+
     public String getImage() {
         return image;
     }
 
     public void setImage(String image) {
         this.image = image;
+        notifyPropertyChanged(BR.image);
     }
 
-    public int getWeight() {
+    @Bindable
+    public String getWeight() {
+        if (weight == null)
+            return "";
         return weight;
     }
 
-    public void setWeight(int weight) {
+    @Bindable({"displayError", "weight"})
+    public String getWeightError() {
+        if (!isDisplayError()) {
+            return "";
+        }
+        if (getWeight().isEmpty()) {
+            return "WEIGHT IS EMPTY!";
+        }
+        return "";
+    }
+
+    public void setWeight(String weight) {
         this.weight = weight;
+        notifyPropertyChanged(BR.weight);
     }
 
-
-    public List<Integer> getCategoryIds() {
-        return categoryIds;
+    @Bindable
+    public boolean isDisplayError() {
+        return displayError;
     }
 
-    public void setCategoryIds(List<Integer> categoryIds) {
-        this.categoryIds = categoryIds;
+    public void setDisplayError(boolean displayError) {
+        this.displayError = displayError;
+        notifyPropertyChanged(BR.displayError);
+    }
+
+    public List<ProductCategoryModel> getProductCategories() {
+        if (productCategories == null)
+            return productCategories = new ArrayList<>();
+        return productCategories;
+    }
+
+    public void setProductCategories(List<ProductCategoryModel> productCategories) {
+        this.productCategories = productCategories;
+    }
+
+    @Bindable
+    public String getCartQty() {
+        if (cartQty == null)
+            return "1";
+        return cartQty;
+    }
+
+    public void setCartQty(String cartQty) {
+        this.cartQty = cartQty;
+        notifyPropertyChanged(BR.cartQty);
+    }
+
+    public String getFormattedPrice() {
+        if (formattedPrice == null)
+            return "";
+        return formattedPrice;
+    }
+
+    public void setFormattedPrice(String formattedPrice) {
+        this.formattedPrice = formattedPrice;
+    }
+
+    public String getFormattedSpecialPrice() {
+        if (formattedSpecialPrice == null)
+            return "";
+        return formattedSpecialPrice;
+    }
+
+    public void setFormattedSpecialPrice(String formattedSpecialPrice) {
+        this.formattedSpecialPrice = formattedSpecialPrice;
     }
 }

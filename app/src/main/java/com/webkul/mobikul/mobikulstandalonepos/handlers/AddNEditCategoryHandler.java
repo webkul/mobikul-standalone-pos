@@ -35,10 +35,10 @@ public class AddNEditCategoryHandler {
                 data.setPath("0_" + data.getCId());
                 DataBaseController.getInstanse().addCategoryDetails(context, data, new DataBaseCallBack() {
                     @Override
-                    public void onSuccess(Object responseData) {
+                    public void onSuccess(Object responseData, String successMsg) {
                         FragmentManager fragmentManager = ((AppCompatActivity) context).getSupportFragmentManager();
                         fragmentManager.popBackStackImmediate();
-                        Toast.makeText(context, "Category has been created successfully.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, successMsg, Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
@@ -49,10 +49,10 @@ public class AddNEditCategoryHandler {
             } else {
                 DataBaseController.getInstanse().updateCategory(context, data, new DataBaseCallBack() {
                     @Override
-                    public void onSuccess(Object responseData) {
+                    public void onSuccess(Object responseData, String successMsg) {
                         FragmentManager fragmentManager = ((AppCompatActivity) context).getSupportFragmentManager();
                         fragmentManager.popBackStackImmediate();
-                        ToastHelper.showToast(context, "Category Updated.", Toast.LENGTH_LONG);
+                        ToastHelper.showToast(context, successMsg, Toast.LENGTH_LONG);
                     }
 
                     @Override
@@ -69,10 +69,10 @@ public class AddNEditCategoryHandler {
         if (data != null) {
             DataBaseController.getInstanse().deleteCategory(context, data, new DataBaseCallBack() {
                 @Override
-                public void onSuccess(Object responseData) {
+                public void onSuccess(Object responseData, String successMsg) {
                     FragmentManager fragmentManager = ((AppCompatActivity) context).getSupportFragmentManager();
                     fragmentManager.popBackStackImmediate();
-                    ToastHelper.showToast(context, "This Category has been deleted!", Toast.LENGTH_LONG);
+                    ToastHelper.showToast(context, successMsg, Toast.LENGTH_LONG);
                 }
 
                 @Override

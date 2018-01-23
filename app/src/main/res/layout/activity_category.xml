@@ -58,6 +58,7 @@
                         android:layout_height="wrap_content"
                         android:background="?attr/selectableItemBackgroundBorderless"
                         android:onClick="@{(v)-> handler.addCategory(v)}"
+                        android:padding="@dimen/spacing_generic"
                         app:srcCompat="@drawable/ic_icon_add_fill" />
 
                     <ImageView
@@ -106,7 +107,6 @@
                     android:layout_height="match_parent"
                     android:background="@android:color/white"
                     app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
-
             </LinearLayout>
         </FrameLayout>
     </RelativeLayout>

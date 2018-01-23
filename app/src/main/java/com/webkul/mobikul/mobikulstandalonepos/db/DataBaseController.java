@@ -5,6 +5,7 @@ import android.content.Context;
 import com.webkul.mobikul.mobikulstandalonepos.activity.BaseActivity;
 import com.webkul.mobikul.mobikulstandalonepos.db.entity.Administrator;
 import com.webkul.mobikul.mobikulstandalonepos.db.entity.Category;
+import com.webkul.mobikul.mobikulstandalonepos.db.entity.Product;
 import com.webkul.mobikul.mobikulstandalonepos.interfaces.DataBaseCallBack;
 
 /**
@@ -46,5 +47,21 @@ public class DataBaseController {
 
     public void deleteCategory(Context context, Category data, DataBaseCallBack dataBaseCallBack) {
         DataBaseAsyncUtils.getInstanse().new DeleteCategoryById(((BaseActivity) context).getDb(), dataBaseCallBack).execute(data);
+    }
+
+    public void addProduct(Context context, Product data, DataBaseCallBack dataBaseCallBack) {
+        DataBaseAsyncUtils.getInstanse().new AddProductAsyncTask(((BaseActivity) context).getDb(), dataBaseCallBack).execute(data);
+    }
+
+    public void getProducts(Context context, DataBaseCallBack dataBaseCallBack) {
+        DataBaseAsyncUtils.getInstanse().new GetAllProducts(((BaseActivity) context).getDb(), dataBaseCallBack).execute();
+    }
+
+    public void updateProduct(Context context, Product data, DataBaseCallBack dataBaseCallBack) {
+        DataBaseAsyncUtils.getInstanse().new UpdateProduct(((BaseActivity) context).getDb(), dataBaseCallBack).execute(data);
+    }
+
+    public void deleteProduct(Context context, Product data, DataBaseCallBack dataBaseCallBack) {
+        DataBaseAsyncUtils.getInstanse().new DeleteProduct(((BaseActivity) context).getDb(), dataBaseCallBack).execute(data);
     }
 }
