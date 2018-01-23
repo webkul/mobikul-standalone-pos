@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <variable
+            name="data"
+            type="com.webkul.mobikul.mobikulstandalonepos.model.CartModel" />
+
+        <variable
+            name="handler"
+            type="com.webkul.mobikul.mobikulstandalonepos.handlers.CartHandler" />
+    </data>
+
+    <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/backgroundColor"
+        tools:context="com.webkul.mobikul.mobikulstandalonepos.activity.CartActivity">
+
+        <android.support.design.widget.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/AppTheme.AppBarOverlay">
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="?attr/colorPrimary"
+                app:popupTheme="@style/AppTheme.PopupOverlay">
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginEnd="@dimen/spacing_generic"
+                    android:layout_marginLeft="@dimen/spacing_generic"
+                    android:layout_marginRight="@dimen/spacing_generic"
+                    android:layout_marginStart="@dimen/spacing_generic">
+
+                    <ImageView
+                        android:id="@+id/hold"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toEndOf="@+id/delete"
+                        android:layout_toRightOf="@+id/delete"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:onClick="@{(v)-> handler.holdOrder(data)}"
+                        android:padding="@dimen/spacing_generic"
+                        app:srcCompat="@drawable/ic_vector_hold" />
+
+                    <ImageView
+                        android:id="@+id/delete"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:onClick="@{(v)-> handler.deleteAll()}"
+                        android:padding="@dimen/spacing_generic"
+                        app:srcCompat="@drawable/ic_icon_order_delete" />
+
+                </RelativeLayout>
+            </android.support.v7.widget.Toolbar>
+
+        </android.support.design.widget.AppBarLayout>
+
+        <android.support.v4.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="65dp"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:id="@+id/cart_details_ll"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/spacing_generic"
+                    android:orientation="vertical">
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/cart_product_rv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/white"
+                        app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
+
+                    <TextView
+                        android:id="@+id/customer"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginTop="@dimen/spacing_generic"
+                        android:background="@color/white"
+                        android:drawableEnd="@drawable/ic_arrow_right"
+                        android:drawableRight="@drawable/ic_arrow_right"
+                        android:gravity="center_vertical"
+                        android:padding="@dimen/spacing_normal"
+                        android:text="@string/customer"
+                        tools:text="@string/customer" />
+
+                    <TextView
+                        android:id="@+id/discount"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginTop="@dimen/spacing_generic"
+                        android:background="@color/white"
+                        android:drawableEnd="@drawable/ic_arrow_right"
+                        android:drawableRight="@drawable/ic_arrow_right"
+                        android:gravity="center_vertical"
+                        android:padding="@dimen/spacing_normal"
+                        android:text="@string/apply_discount_code"
+                        tools:text="@string/apply_discount_code" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/spacing_generic"
+                        android:background="@color/white"
+                        android:orientation="vertical"
+                        android:padding="@dimen/spacing_normal">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/sub_total"
+                                android:textSize="@dimen/text_size_small" />
+
+
+                            <!--<org.fabiomsr.moneytextview.MoneyTextView-->
+                            <!--android:layout_width="wrap_content"-->
+                            <!--android:layout_height="wrap_content"-->
+                            <!--android:layout_alignParentEnd="true"-->
+                            <!--android:layout_alignParentRight="true"-->
+                            <!--app:amount="@{data.totals.subTotal}"-->
+                            <!--app:baseTextSize="@dimen/text_size_small"-->
+                            <!--app:gravity="center"-->
+                            <!--app:symbol="@string/currency_symbol"-->
+                            <!--app:symbolGravity="start"-->
+                            <!--app:symbolTextSize="@dimen/text_size_small"-->
+                            <!--tools:text="$759" />-->
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                android:layout_alignParentRight="true"
+                                android:text="@{data.totals.formatedSubTotal}"
+                                android:textSize="@dimen/text_size_small"
+                                tools:text="$759" />
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/spacing_tiny">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/tax"
+                                android:textSize="@dimen/text_size_small"
+                                tools:text="Tax (10%):" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                android:layout_alignParentRight="true"
+                                android:text="@{data.totals.formatedTax}"
+                                android:textSize="@dimen/text_size_small"
+                                tools:text="$75.90" />
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/spacing_tiny">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/discount"
+                                android:textSize="@dimen/text_size_small" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                android:layout_alignParentRight="true"
+                                android:text="@{data.totals.formatedDiscount}"
+                                android:textSize="@dimen/text_size_small"
+                                tools:text="- $84.00" />
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/spacing_tiny">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/grand_total"
+                                android:textSize="@dimen/text_size_small"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                android:layout_alignParentRight="true"
+                                android:text="@{data.totals.formatedGrandTotal}"
+                                android:textSize="@dimen/text_size_small"
+                                android:textStyle="bold"
+                                tools:text="$750.90" />
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/spacing_tiny">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/round_total"
+                                android:textColor="@color/colorAccent"
+                                android:textSize="@dimen/text_size_small"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                android:layout_alignParentRight="true"
+                                android:text="@{data.totals.formatedRoundTotal}"
+                                android:textColor="@color/colorAccent"
+                                android:textSize="@dimen/text_size_small"
+                                android:textStyle="bold"
+                                tools:text="$751.00" />
+                        </RelativeLayout>
+
+                    </LinearLayout>
+                </LinearLayout>
+            </FrameLayout>
+        </android.support.v4.widget.NestedScrollView>
+
+        <Button
+            android:id="@+id/proceed"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="bottom"
+            android:layout_margin="@dimen/spacing_generic"
+            android:drawableRight="@drawable/ic_proceed_light"
+            android:onClick="@{()->handler.proceedToCheckout()}"
+            android:text="@string/confirm_and_accept_payment"
+            android:textSize="@dimen/text_size_medium"
+            android:textStyle="bold" />
+    </android.support.design.widget.CoordinatorLayout>
+</layout>

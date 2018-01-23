@@ -42,12 +42,12 @@ public class SignUpSignInActivity extends BaseActivity {
         fragmentTransaction.addToBackStack(SignUpFragment.class.getSimpleName());
         fragmentTransaction.commit();
 
-        Thread thread = new Thread(new Runnable() {
-            public void run() {
-                Log.d(TAG, "onCreate: " + db.administratorDao().getAll().get(0).getEmail());
-            }
-        });
-        thread.start();
+//        Thread thread = new Thread(new Runnable() {
+//            public void run() {
+//                Log.d(TAG, "onCreate: " + db.administratorDao().getAll().get(0));
+//            }
+//        });
+//        thread.start();
 //        thread.stop();
 //        mBinding.button.setOnClickListener(new View.OnClickListener() {
 //            @Override

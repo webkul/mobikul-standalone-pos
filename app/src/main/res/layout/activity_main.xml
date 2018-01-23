@@ -10,36 +10,32 @@
         android:background="@color/backgroundColor"
         android:fitsSystemWindows="true">
 
-        <android.support.design.widget.NavigationView
-            android:id="@+id/nav_drawer_start"
-            android:layout_width="@dimen/nav_drawer_start_width"
-            android:layout_height="match_parent"
-            android:layout_gravity="start"
-            android:background="@android:color/white"
-            android:fitsSystemWindows="false">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/spacing_small"
-                    android:layout_marginStart="@dimen/spacing_small"
-                    android:layout_marginTop="@dimen/spacing_normal"
-                    android:text="@string/categories"
-                    android:textSize="@dimen/text_size_small" />
+        <!--<android.support.design.widget.NavigationView-->
+            <!--android:layout_width="@dimen/nav_drawer_start_width"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_gravity="end"-->
+            <!--android:background="@android:color/white"-->
+            <!--android:clickable="true"-->
+            <!--android:fitsSystemWindows="false">-->
 
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/category_rv_drawer"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@android:color/white"
-                    app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
-            </LinearLayout>
-        </android.support.design.widget.NavigationView>
+            <!--<FrameLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:orientation="vertical">-->
+
+                <!--<TextView-->
+                    <!--android:id="@+id/cate"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginLeft="@dimen/spacing_small"-->
+                    <!--android:layout_marginStart="@dimen/spacing_small"-->
+                    <!--android:layout_marginTop="116dp"-->
+                    <!--android:text="@string/categories"-->
+                    <!--android:textSize="@dimen/text_size_small" />-->
+            <!--</FrameLayout>-->
+        <!--</android.support.design.widget.NavigationView>-->
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -86,6 +82,39 @@
                 tools:visibility="visible" />
 
         </RelativeLayout>
+
+        <android.support.design.widget.NavigationView
+            android:id="@+id/nav_drawer_start"
+            android:layout_width="@dimen/nav_drawer_start_width"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:background="@android:color/white"
+            android:clickable="true"
+            android:fitsSystemWindows="false">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/spacing_small"
+                    android:layout_marginStart="@dimen/spacing_small"
+                    android:layout_marginTop="@dimen/spacing_normal"
+                    android:text="@string/categories"
+                    android:textSize="@dimen/text_size_small" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/category_rv_drawer"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/white"
+                    android:clickable="true"
+                    app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
+            </FrameLayout>
+        </android.support.design.widget.NavigationView>
 
     </android.support.v4.widget.DrawerLayout>
 </layout>

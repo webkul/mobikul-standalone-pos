@@ -36,7 +36,7 @@ class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.binding.setData(categories.get(position));
-        holder.binding.setHandler(new CategoryHandler(context, holder.binding));
+        holder.binding.setHandler(new CategoryHandler(context));
     }
 
     @Override
@@ -50,7 +50,6 @@ class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHolder> {
         public ViewHolder(View itemView) {
             super(itemView);
             binding = ItemsCategoryBinding.bind(itemView);
-
         }
     }
 }

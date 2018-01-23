@@ -40,7 +40,7 @@ public class SignUpSignInHandler {
 
             DataBaseController.getInstanse().insertAdministorDetails(context, data, new DataBaseCallBack() {
                 @Override
-                public void onSuccess(Object responseData) {
+                public void onSuccess(Object responseData, String successMsg) {
                     FragmentManager fragmentManager = ((AppCompatActivity) context).getSupportFragmentManager();
                     Fragment fragment = fragmentManager.findFragmentByTag(SignUpFragment.class.getSimpleName());
                     if (fragment != null)
@@ -51,6 +51,7 @@ public class SignUpSignInHandler {
                     fragmentTransaction.replace(R.id.fragment_container, signInFragment, SignInFragment.class.getSimpleName());
                     fragmentTransaction.addToBackStack(SignInFragment.class.getSimpleName());
                     fragmentTransaction.commit();
+                    ToastHelper.showToast(context, successMsg, Toast.LENGTH_LONG);
                     Intent i = new Intent(context, MainActivity.class);
                     context.startActivity(i);
                     AppSharedPref.setSignedUp(context, true);
@@ -72,7 +73,7 @@ public class SignUpSignInHandler {
         if (isSignInFormValidated()) {
             DataBaseController.getInstanse().getAdminData(context, data, new DataBaseCallBack() {
                 @Override
-                public void onSuccess(Object responseData) {
+                public void onSuccess(Object responseData, String successMsg) {
                     Administrator administrator = (Administrator) responseData;
                     Intent i = new Intent(context, MainActivity.class);
                     context.startActivity(i);

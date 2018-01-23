@@ -26,8 +26,24 @@ public interface ApplicationConstants {
     int LOG_OUT = 15;
 
     //    error messages
-    String ERROR_MSG = "Somethind went wrong";
+    String ERROR_MSG = "Something went wrong";
     String ERROR_MSG_2 = "Wrong Credentials";
+
+    //success message
+    String SUCCESS_MSG_1_SIGN_UP = "Welcome to Mobikul POS";
+    String SUCCESS_MSG_2_SIGN_IN = "You have Successfully loggedIn!!";
+    //category msgs
+    String SUCCESS_MSG_3_ADD_CATEGORY = "Category has been created successfully.";
+    String SUCCESS_MSG_4_UPDATE_CATEGORY = "Category Updated.";
+    String SUCCESS_MSG_5_DELETE_CATEGORY = "This Category has been deleted!";
+    //product msgs
+    String SUCCESS_MSG_6_ADD_PRODUCT = "Product has been added successfully!";
+    String SUCCESS_MSG_7_DELETE_PRODUCT = "This Product has been deleted successfully!";
+    String SUCCESS_MSG_8_UPDATE_PRODUCT = "Product Updated.";
+
+
+    String SUCCESS_MSG_7 = "Wrong Credentials";
+    String SUCCESS_MSG = "Success";
 
     //    error codes
     int ERROR_CODE = 1;

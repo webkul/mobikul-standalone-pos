@@ -5,7 +5,7 @@ package com.webkul.mobikul.mobikulstandalonepos.interfaces;
  */
 
 public interface DataBaseCallBack {
-    void onSuccess(Object responseData);
+    void onSuccess(Object responseData, String successMsg);
 
     void onFailure(int errorCode, String errorMsg);
 }

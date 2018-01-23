@@ -4,8 +4,9 @@
     <color name="colorPrimaryDark">#ff5f33</color>
     <color name="colorAccent">#FF7852</color>
     <color name="gray">#626262</color>
+    <color name="white">#FFFFFF</color>
     <!-- Home Page related colors-->
-    <color name="backgroundColor">#d1d1d1</color>
+    <color name="backgroundColor">#e6e6e6</color>
     <color name="actionBarItemColor">@color/colorAccent</color>
     <color name="bottomNavBarItemColor">@color/colorAccent</color>
 
@@ -17,5 +18,8 @@
     <color name="textColor">#DB000000</color>
     <color name="secondaryTextColor">#80000000</color>
     <color name="textColorLight">#80626262</color>
+    <!--stock colors-->
+    <color name="inStockColor">#70000000</color>
+    <color name="outOfStockColor">#FF6E6E</color>
 
 </resources>

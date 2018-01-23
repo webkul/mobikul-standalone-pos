@@ -7,7 +7,6 @@
             type="com.webkul.mobikul.mobikulstandalonepos.db.entity.Category" />
     </data>
 
-
     <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
@@ -21,8 +20,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="@dimen/spacing_generic"
-            android:clickable="false"
             android:background="@android:color/white"
+            android:clickable="false"
             android:orientation="vertical"
             android:padding="@dimen/spacing_generic">
 

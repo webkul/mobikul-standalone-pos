@@ -76,16 +76,49 @@
     <string name="add">Add</string>
     <string name="add_category_title">Add Category</string>
     <string name="edit_category_title">Edit Category</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="category_information">Category Information</string>
     <string name="category_name">Category Name</string>
     <string name="include_in_drawer_menu">Include in Drawer Menu</string>
     <string name="enable_category">Enable Category</string>
-    <string name="title_activity_product">ProductActivity</string>
+    <!---->
+    <!---->
+    <!--product related strings-->
+    <string name="title_activity_product">Products</string>
     <string name="product_image">Product Image</string>
     <string name="double_tap_to_remove_image">Double tap to remove image</string>
+    <string name="general_information">General Information</string>
+    <string name="sku">SKU</string>
+    <string name="product_name">Product Name</string>
+    <string name="add_product_title">Add Product</string>
+    <string name="edit_product_title">Edit Product</string>
+    <string name="price">Price</string>
+    <string name="yes_taxable_goods">Yes, Taxable Goods</string>
+    <string name="inventory">Inventory</string>
+    <string name="track_inventory">Track Inventory</string>
+    <string name="quantity">Quantity</string>
+    <string name="in_stock">In Stock</string>
+    <string name="weight">Weight</string>
+    <string name="choose_categories">Choose Categories</string>
+    <string name="special_price">Special Price</string>
+    <string name="out_of_stock">Out of Stock</string>
+    <string name="in_stock_with_qty">%s - In Stock</string>
 
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="order_total">Order Subtotal - %s</string>
+    <string name="title_activity_cart">CartActivity</string>
+    <string name="customer">Customer</string>
+    <string name="apply_discount_code">Apply Discount Code</string>
+    <string name="round_total">Round Total:</string>
+    <string name="discount">Discount:</string>
+    <string name="qty">QTY - %s</string>
+    <string name="currency_symbol">$</string>
+    <string name="sub_total">Sub-Total:</string>
+    <string name="tax">Tax:</string>
+    <string name="grand_total">Grand Total:</string>
+    <string name="confirm_and_accept_payment">Confirm and Accept Payment</string>
+    <string name="title_activity_checkout">Checkout</string>
+    <string name="total_to_be_paid">Total To Be Paid</string>
+    <string name="title_activity_customer">CustomerActivity</string>
 
 </resources>

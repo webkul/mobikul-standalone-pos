@@ -44,7 +44,7 @@ public class CategoryActivity extends BaseActivity {
     public void setCategory() {
         DataBaseController.getInstanse().getCategory(this, new DataBaseCallBack() {
             @Override
-            public void onSuccess(Object responseData) {
+            public void onSuccess(Object responseData, String msg) {
                 if (!(categories.toString().equalsIgnoreCase(responseData.toString()))) {
                     if (categories.size() > 0)
                         categories.clear();

@@ -48,6 +48,7 @@ public class AddCategoryFragment extends Fragment {
         if (isEdit) {
             ((CategoryActivity) getContext())
                     .setTitle(getContext().getString(R.string.edit_category_title));
+            ((CategoryActivity) getActivity()).binding.delete.setVisibility(View.VISIBLE);
         } else {
             ((CategoryActivity) getContext())
                     .setTitle(getContext().getString(R.string.add_category_title));
@@ -55,7 +56,6 @@ public class AddCategoryFragment extends Fragment {
         ((CategoryActivity) getActivity()).binding.setData(category);
         ((CategoryActivity) getActivity()).binding.setIsEdit(isEdit);
         ((CategoryActivity) getActivity()).binding.addCategory.setVisibility(View.GONE);
-        ((CategoryActivity) getActivity()).binding.delete.setVisibility(View.VISIBLE);
         ((CategoryActivity) getActivity()).binding.save.setVisibility(View.VISIBLE);
     }
 
@@ -71,7 +71,7 @@ public class AddCategoryFragment extends Fragment {
         ((CategoryActivity) getActivity()).binding.addCategory.setVisibility(View.VISIBLE);
         ((CategoryActivity) getActivity()).binding.save.setVisibility(View.GONE);
         ((CategoryActivity) getActivity()).binding.delete.setVisibility(View.GONE);
-        ((CategoryActivity) getActivity()).setCategory();
+        getActivity().recreate();
         ((CategoryActivity) getContext())
                 .setTitle(getContext().getString(R.string.title_activity_category));
     }

@@ -1,10 +1,10 @@
 <resources>
 
     <!--text sizes-->
-    <dimen name="text_size_large">18dp</dimen>
-    <dimen name="text_size_medium">16dp</dimen>
-    <dimen name="text_size_small">14dp</dimen>
-    <dimen name="text_size_tiny">12dp</dimen>
+    <dimen name="text_size_large">18sp</dimen>
+    <dimen name="text_size_medium">16sp</dimen>
+    <dimen name="text_size_small">14sp</dimen>
+    <dimen name="text_size_tiny">12sp</dimen>
 
     <!--normal app padding and margins-->
     <dimen name="spacing_infinity">100dp</dimen>
@@ -20,5 +20,7 @@
     <!-- Home Activity related dimens -->
     <dimen name="nav_drawer_start_width">250dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
+
+    <dimen name="product_image_dimens">120dp</dimen>
 
 </resources>

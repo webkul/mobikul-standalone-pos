@@ -3,12 +3,24 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+
+        <variable
+            name="cartData"
+            type="com.webkul.mobikul.mobikulstandalonepos.model.CartModel" />
+
+        <variable
+            name="handler"
+            type="com.webkul.mobikul.mobikulstandalonepos.handlers.HomeFragmentHandler" />
+    </data>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
         <android.support.v7.widget.RecyclerView
+            android:id="@+id/product_rv"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
@@ -19,7 +31,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:background="@android:color/white">
+            android:background="@android:color/white"
+            android:onClick="@{()->handler.goToCart(cartData)}">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -31,12 +44,14 @@
                 android:orientation="horizontal">
 
                 <TextView
+
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/spacing_small"
                     android:background="@drawable/selector_rect_rounded_corner_white_bg_white_stroke"
                     android:paddingEnd="@dimen/spacing_generic"
                     android:paddingStart="@dimen/spacing_generic"
+                    android:text="@{cartData.totals.qty}"
                     android:textColor="@color/colorAccent"
                     android:textSize="@dimen/text_size_medium"
                     tools:text="03" />
@@ -51,18 +66,18 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/spacing_small"
                     android:layout_weight="1"
+                    android:text="@{String.format(@string/order_total, cartData.totals.formatedSubTotal)}"
                     android:textAllCaps="true"
                     android:textColor="@android:color/white"
                     android:textSize="@dimen/text_size_medium"
                     android:textStyle="bold"
-                    tools:text="Order Subtotal - $35.00" />
+                    tools:text="@string/order_total" />
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/spacing_small"
                     app:srcCompat="@drawable/ic_vector_proceed" />
-
             </LinearLayout>
 
         </RelativeLayout>
