@@ -6,11 +6,13 @@ import android.databinding.Bindable;
 
 import com.webkul.mobikul.mobikulstandalonepos.BR;
 
+import java.io.Serializable;
+
 /**
  * Created by aman.gupta on 17/1/18. @Webkul Software Private limited
  */
 
-public class TotalModel extends BaseObservable {
+public class TotalModel extends BaseObservable implements Serializable{
     private String subTotal;
     private String formatedSubTotal;
     private String qty;

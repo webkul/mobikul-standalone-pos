@@ -6,16 +6,19 @@ import android.arch.persistence.room.RoomDatabase;
 import android.arch.persistence.room.TypeConverters;
 import android.arch.persistence.room.migration.Migration;
 
-import com.google.gson.annotations.Since;
 import com.webkul.mobikul.mobikulstandalonepos.db.converters.DataConverter;
 import com.webkul.mobikul.mobikulstandalonepos.db.dao.AdministratorDao;
 import com.webkul.mobikul.mobikulstandalonepos.db.dao.CategoryDao;
+import com.webkul.mobikul.mobikulstandalonepos.db.dao.CustomerDao;
+import com.webkul.mobikul.mobikulstandalonepos.db.dao.OrderDao;
 import com.webkul.mobikul.mobikulstandalonepos.db.dao.ProductDao;
 import com.webkul.mobikul.mobikulstandalonepos.db.entity.Administrator;
 import com.webkul.mobikul.mobikulstandalonepos.db.entity.Category;
+import com.webkul.mobikul.mobikulstandalonepos.db.entity.Customer;
+import com.webkul.mobikul.mobikulstandalonepos.db.entity.OrderEntity;
 import com.webkul.mobikul.mobikulstandalonepos.db.entity.Product;
 
-@Database(entities = {Administrator.class, Category.class, Product.class}, version = 4)
+@Database(entities = {Administrator.class, Category.class, Product.class, Customer.class, OrderEntity.class}, version = 7, exportSchema = false)
 @TypeConverters(DataConverter.class)
 public abstract class AppDatabase extends RoomDatabase {
     public abstract AdministratorDao administratorDao();
@@ -24,7 +27,11 @@ public abstract class AppDatabase extends RoomDatabase {
 
     public abstract ProductDao productDao();
 
-    public static final Migration MIGRATION_1_2 = new Migration(3, 4) {
+    public abstract CustomerDao customerDao();
+
+    public abstract OrderDao orderDao();
+
+    public static final Migration MIGRATION_1_2 = new Migration(6, 7) {
         @Override
         public void migrate(SupportSQLiteDatabase database) {
 
@@ -54,17 +61,28 @@ public abstract class AppDatabase extends RoomDatabase {
             // Create the new table
             database.execSQL(
                     "CREATE TABLE Product_new (pId INTEGER NOT NULL, product_name TEXT, product_s_deccription TEXT, sku TEXT, is_enabled INTEGER NOT NULL, price TEXT, special_price TEXT, is_taxable_goods_applied INTEGER NOT NULL" +
-                            ",track_inventory INTEGER NOT NULL, quantity INTEGER, stock_availability INTEGER NOT NULL, image TEXT, weight INTEGER, productCategories TEXT, PRIMARY KEY(pId))");
+                            ",track_inventory INTEGER NOT NULL, quantity TEXT, stock_availability INTEGER NOT NULL, image TEXT, weight TEXT, productCategories TEXT,formatted_price TEXT, formatted_special_price TEXT, PRIMARY KEY(pId))");
 // Copy the data
             database.execSQL(
-                    "INSERT INTO Product_new (pId, product_name, product_s_deccription, sku, is_enabled, price, special_price, is_taxable_goods_applied, track_inventory, quantity, stock_availability, image, weight, productCategories)" +
-                            " SELECT pId, product_name, product_s_deccription, sku, is_enabled, price, special_price, is_taxable_goods_applied, track_inventory, quantity, stock_availability, image, weight,productCategories" +
+                    "INSERT INTO Product_new (pId, product_name, product_s_deccription, sku, is_enabled, price, special_price, is_taxable_goods_applied, track_inventory, quantity, stock_availability, image, weight, productCategories, formatted_price, formatted_special_price )" +
+                            " SELECT pId, product_name, product_s_deccription, sku, is_enabled, price, special_price, is_taxable_goods_applied, track_inventory, quantity, stock_availability, image, weight,productCategories, formatted_price, formatted_special_price " +
                             " FROM Product");
             // Remove the old table
             database.execSQL("DROP TABLE Product");
 // Change the table name to the correct one
             database.execSQL("ALTER TABLE Product_new RENAME TO Product");
-//             Since we dCidn't alter the table, there's nothing else to do here.
+
+//create customer table
+            database.execSQL("DROP TABLE Customer");
+
+            database.execSQL(
+                    "CREATE TABLE Customer (customerId INTEGER NOT NULL, customer_first_name TEXT, customer_last_name TEXT, email TEXT, contact_number TEXT, PRIMARY KEY(customerId))");
+
+//            database.execSQL("DROP TABLE OrderEntity");
+
+            database.execSQL(
+                    "CREATE TABLE OrderEntity (orderId INTEGER NOT NULL, cash_data TEXT, cart_data TEXT, time TEXT, date TEXT, qty TEXT, is_synced TEXT, PRIMARY KEY(orderId))");
+
 
 //            database.execSQL("ALTER TABLE Product ADD COLUMN formatted_price TEXT");
         }

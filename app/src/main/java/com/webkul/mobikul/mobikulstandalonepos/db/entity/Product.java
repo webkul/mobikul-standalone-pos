@@ -8,6 +8,8 @@ import android.arch.persistence.room.TypeConverters;
 import android.content.Context;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import com.webkul.mobikul.mobikulstandalonepos.BR;
 import com.webkul.mobikul.mobikulstandalonepos.R;
@@ -23,7 +25,7 @@ import java.util.List;
  */
 
 @Entity(tableName = "Product")
-public class Product extends BaseObservable implements Serializable {
+public class Product extends BaseObservable implements Serializable, Parcelable {
     @Ignore
     private Context context;
 
@@ -86,6 +88,38 @@ public class Product extends BaseObservable implements Serializable {
     private String cartQty;
     @Ignore
     private boolean displayError;
+
+    protected Product(Parcel in) {
+        pId = in.readInt();
+        productName = in.readString();
+        productShortDes = in.readString();
+        sku = in.readString();
+        isEnabled = in.readByte() != 0;
+        price = in.readString();
+        formattedPrice = in.readString();
+        specialPrice = in.readString();
+        formattedSpecialPrice = in.readString();
+        isTaxableGoodsApplied = in.readByte() != 0;
+        trackInventory = in.readByte() != 0;
+        quantity = in.readString();
+        stock = in.readByte() != 0;
+        image = in.readString();
+        weight = in.readString();
+        cartQty = in.readString();
+        displayError = in.readByte() != 0;
+    }
+
+    public static final Creator<Product> CREATOR = new Creator<Product>() {
+        @Override
+        public Product createFromParcel(Parcel in) {
+            return new Product(in);
+        }
+
+        @Override
+        public Product[] newArray(int size) {
+            return new Product[size];
+        }
+    };
 
     public int getPId() {
         return pId;
@@ -329,5 +363,31 @@ public class Product extends BaseObservable implements Serializable {
 
     public void setFormattedSpecialPrice(String formattedSpecialPrice) {
         this.formattedSpecialPrice = formattedSpecialPrice;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(pId);
+        dest.writeString(productName);
+        dest.writeString(productShortDes);
+        dest.writeString(sku);
+        dest.writeByte((byte) (isEnabled ? 1 : 0));
+        dest.writeString(price);
+        dest.writeString(formattedPrice);
+        dest.writeString(specialPrice);
+        dest.writeString(formattedSpecialPrice);
+        dest.writeByte((byte) (isTaxableGoodsApplied ? 1 : 0));
+        dest.writeByte((byte) (trackInventory ? 1 : 0));
+        dest.writeString(quantity);
+        dest.writeByte((byte) (stock ? 1 : 0));
+        dest.writeString(image);
+        dest.writeString(weight);
+        dest.writeString(cartQty);
+        dest.writeByte((byte) (displayError ? 1 : 0));
     }
 }

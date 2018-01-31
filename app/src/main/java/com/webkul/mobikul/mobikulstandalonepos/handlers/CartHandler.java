@@ -3,7 +3,7 @@ package com.webkul.mobikul.mobikulstandalonepos.handlers;
 import android.content.Context;
 import android.content.Intent;
 
-import com.webkul.mobikul.mobikulstandalonepos.Checkout;
+import com.webkul.mobikul.mobikulstandalonepos.activity.Checkout;
 import com.webkul.mobikul.mobikulstandalonepos.activity.CartActivity;
 import com.webkul.mobikul.mobikulstandalonepos.activity.CustomerActivity;
 import com.webkul.mobikul.mobikulstandalonepos.helper.AppSharedPref;
@@ -30,13 +30,15 @@ public class CartHandler {
         ((CartActivity) context).finish();
     }
 
-    public void proceedToCheckout() {
+    public void proceedToCheckout(CartModel cartData) {
         Intent i = new Intent(context, Checkout.class);
+        i.putExtra("cartData", cartData);
         context.startActivity(i);
     }
 
     public void selectCustomer() {
         Intent i = new Intent(context, CustomerActivity.class);
-        context.startActivity(i);
+        i.putExtra("choose_customer", "");
+        ((CartActivity) context).startActivityForResult(i, 2);
     }
 }

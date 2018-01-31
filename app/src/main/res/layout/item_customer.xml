@@ -1,6 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<layout>
 
-</LinearLayout>
+    <data>
+
+        <variable
+            name="data"
+            type="com.webkul.mobikul.mobikulstandalonepos.db.entity.Customer" />
+
+        <variable
+            name="handler"
+            type="com.webkul.mobikul.mobikulstandalonepos.handlers.CustomerHandler" />
+
+        <variable
+            name="chooseCustomer"
+            type="Boolean" />
+    </data>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:onClick="@{()-> handler.selectCustomer(data,chooseCustomer)}"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                android:layout_margin="@dimen/spacing_generic"
+                app:srcCompat="@drawable/ic_icon_avatar" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{data.firstName + ' ' + data.lastName}"
+                    android:textSize="@dimen/text_size_small"
+                    tools:text="Name" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{data.contactNumber}"
+                    android:textColor="@color/secondaryTextColor"
+                    android:textSize="@dimen/text_size_small"
+                    tools:text="8090609788" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/divider_color" />
+    </LinearLayout>
+</layout>

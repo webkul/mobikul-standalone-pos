@@ -45,17 +45,17 @@ public class CategoryActivity extends BaseActivity {
         DataBaseController.getInstanse().getCategory(this, new DataBaseCallBack() {
             @Override
             public void onSuccess(Object responseData, String msg) {
-                if (!(categories.toString().equalsIgnoreCase(responseData.toString()))) {
-                    if (categories.size() > 0)
-                        categories.clear();
-                    categories.addAll((List<Category>) responseData);
-                    if (categoryAdapter == null) {
-                        categoryAdapter = new CategoryAdapter(CategoryActivity.this, categories);
-                        binding.categoryRv.setAdapter(categoryAdapter);
-                    } else {
-                        categoryAdapter.notifyDataSetChanged();
+                    if (!(categories.toString().equalsIgnoreCase(responseData.toString()))) {
+                        if (categories.size() > 0)
+                            categories.clear();
+                        categories.addAll((List<Category>) responseData);
+                        if (categoryAdapter == null) {
+                            categoryAdapter = new CategoryAdapter(CategoryActivity.this, categories);
+                            binding.categoryRv.setAdapter(categoryAdapter);
+                        } else {
+                            categoryAdapter.notifyDataSetChanged();
+                        }
                     }
-                }
             }
 
             @Override

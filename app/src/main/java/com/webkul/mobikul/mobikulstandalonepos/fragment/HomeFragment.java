@@ -4,13 +4,20 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.webkul.mobikul.mobikulstandalonepos.R;
 import com.webkul.mobikul.mobikulstandalonepos.activity.BaseActivity;
+import com.webkul.mobikul.mobikulstandalonepos.activity.MainActivity;
 import com.webkul.mobikul.mobikulstandalonepos.adapter.HomePageProductAdapter;
 import com.webkul.mobikul.mobikulstandalonepos.databinding.FragmentHomeBinding;
 import com.webkul.mobikul.mobikulstandalonepos.db.DataBaseController;
@@ -25,12 +32,18 @@ import com.webkul.mobikul.mobikulstandalonepos.model.ProductCategoryModel;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.bumptech.glide.gifdecoder.GifHeaderParser.TAG;
+
 public class HomeFragment extends Fragment {
-    private List<Product> products;
+    public List<Product> products;
+    public List<Product> searchProduct;
     private List<Product> selectedProductsByCategory;
-    private HomePageProductAdapter productAdapter;
+    public HomePageProductAdapter productAdapter;
     private HomePageProductAdapter productAdapterForSelectedCategory;
     public FragmentHomeBinding binding;
+    private SearchView searchView;
+    private String ARG_PARAM1 = "category_id";
+    private String cId;
 
     public static HomeFragment newInstance(/*String param1, String param2*/) {
         HomeFragment fragment = new HomeFragment();
@@ -44,15 +57,16 @@ public class HomeFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        if (getArguments() != null) {
-//            mParam1 = getArguments().getString(ARG_PARAM1);
-//            mParam2 = getArguments().getString(ARG_PARAM2);
-//        }
+        setHasOptionsMenu(true);
+        if (getArguments() != null && getArguments().containsKey("category_id")) {
+            cId = getArguments().getString(ARG_PARAM1);
+        }
     }
 
-    private void loadHomeProduct() {
+    public void loadHomeProduct() {
         products = new ArrayList<>();
         setProduct();
+
     }
 
     @Override
@@ -61,8 +75,8 @@ public class HomeFragment extends Fragment {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false);
         loadHomeProduct();
         loadCartData();
+
         binding.setHandler(new HomeFragmentHandler(getContext()));
-        selectedProductsByCategory = new ArrayList<>();
         return binding.getRoot();
     }
 
@@ -100,6 +114,8 @@ public class HomeFragment extends Fragment {
     }
 
     public void showCategorySelectedProducts(String cId) {
+        if (selectedProductsByCategory == null)
+            selectedProductsByCategory = new ArrayList<>();
         if (selectedProductsByCategory.size() > 0)
             selectedProductsByCategory.clear();
         for (Product product : products) {
@@ -127,5 +143,63 @@ public class HomeFragment extends Fragment {
         }
         setProduct();
         loadCartData();
+        if (cId != null)
+            showCategorySelectedProducts(cId);
     }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        final MenuItem searchItem = menu.findItem(R.id.menu_item_search);
+        searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        searchItem.setVisible(true);
+        searchItem.expandActionView();
+        searchView.setMaxWidth(Integer.MAX_VALUE);
+        searchProduct = new ArrayList<>();
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                if (newText.length() > 0) {
+                    newText = "%" + newText + "%";
+                    DataBaseController.getInstanse().getSearchData(getActivity(), newText, new DataBaseCallBack() {
+                        @Override
+                        public void onSuccess(Object responseData, String successMsg) {
+                            Log.d(TAG, "onSuccess: " + " size-" + ((List<Product>) responseData).size());
+                            if (!(searchProduct.toString().equalsIgnoreCase(responseData.toString()))) {
+                                if (searchProduct.size() > 0) {
+                                    searchProduct.clear();
+                                    productAdapter = null;
+                                }
+                                searchProduct.addAll((List<Product>) responseData);
+                                if (productAdapter == null) {
+                                    productAdapter = new HomePageProductAdapter(getActivity(), searchProduct);
+                                    binding.productRv.setAdapter(productAdapter);
+                                } else {
+                                    productAdapter.notifyDataSetChanged();
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(int errorCode, String errorMsg) {
+
+                        }
+                    });
+                    return true;
+                } else {
+                    productAdapter = new HomePageProductAdapter(getActivity(), products);
+                    binding.productRv.setAdapter(productAdapter);
+                }
+                return false;
+            }
+        });
+
+    }
+
 }

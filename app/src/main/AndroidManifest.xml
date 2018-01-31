@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.webkul.mobikul.mobikulstandalonepos">
 
+    <uses-permission android:name="android.permission.VIBRATE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -11,14 +13,19 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:icon">
+
+        <meta-data
+            android:name="android.app.default_searchable"
+            android:value=".MainActivity" />
+
         <activity
             android:name=".activity.SplashScreenActivity"
-            android:label="@string/title_activity_splash_screen"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -35,23 +42,34 @@
             android:name=".activity.CategoryActivity"
             android:label="@string/title_activity_category"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".activity.ProductActivity"
             android:label="@string/title_activity_product"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".activity.CartActivity"
             android:label="@string/title_activity_cart"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".Checkout"
+            android:name=".activity.Checkout"
             android:label="@string/title_activity_checkout"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.CustomerActivity"
             android:label="@string/title_activity_customer"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.PlaceOrderActivity"
+            android:label="@string/title_activity_place_order"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.ViewOrderDetails"
+            android:label="@string/title_activity_view_order_details"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

@@ -3,6 +3,7 @@ package com.webkul.mobikul.mobikulstandalonepos.handlers;
 import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
@@ -10,6 +11,7 @@ import com.webkul.mobikul.mobikulstandalonepos.activity.BaseActivity;
 import com.webkul.mobikul.mobikulstandalonepos.db.DataBaseController;
 import com.webkul.mobikul.mobikulstandalonepos.db.entity.Category;
 import com.webkul.mobikul.mobikulstandalonepos.fragment.AddCategoryFragment;
+import com.webkul.mobikul.mobikulstandalonepos.fragment.AddProductFragment;
 import com.webkul.mobikul.mobikulstandalonepos.helper.ToastHelper;
 import com.webkul.mobikul.mobikulstandalonepos.interfaces.DataBaseCallBack;
 
@@ -36,9 +38,14 @@ public class AddNEditCategoryHandler {
                 DataBaseController.getInstanse().addCategoryDetails(context, data, new DataBaseCallBack() {
                     @Override
                     public void onSuccess(Object responseData, String successMsg) {
-                        FragmentManager fragmentManager = ((AppCompatActivity) context).getSupportFragmentManager();
-                        fragmentManager.popBackStackImmediate();
+                        Fragment fragment = ((BaseActivity) context).mSupportFragmentManager.findFragmentByTag(AddCategoryFragment.class.getSimpleName());
+                        FragmentTransaction ft = ((BaseActivity) context).mSupportFragmentManager.beginTransaction();
+                        ft.detach(fragment);
+                        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE);
+                        ft.commit();
+                        ((BaseActivity) context).mSupportFragmentManager.popBackStackImmediate();
                         Toast.makeText(context, successMsg, Toast.LENGTH_SHORT).show();
+
                     }
 
                     @Override
@@ -50,8 +57,12 @@ public class AddNEditCategoryHandler {
                 DataBaseController.getInstanse().updateCategory(context, data, new DataBaseCallBack() {
                     @Override
                     public void onSuccess(Object responseData, String successMsg) {
-                        FragmentManager fragmentManager = ((AppCompatActivity) context).getSupportFragmentManager();
-                        fragmentManager.popBackStackImmediate();
+                        Fragment fragment = ((BaseActivity) context).mSupportFragmentManager.findFragmentByTag(AddCategoryFragment.class.getSimpleName());
+                        FragmentTransaction ft = ((BaseActivity) context).mSupportFragmentManager.beginTransaction();
+                        ft.detach(fragment);
+                        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE);
+                        ft.commit();
+                        ((BaseActivity) context).mSupportFragmentManager.popBackStackImmediate();
                         ToastHelper.showToast(context, successMsg, Toast.LENGTH_LONG);
                     }
 

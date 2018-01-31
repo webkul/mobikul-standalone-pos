@@ -40,7 +40,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         db = Room.databaseBuilder(getApplicationContext(),
                 AppDatabase.class, "db_pos")
                 .addMigrations(MIGRATION_1_2)
-                .fallbackToDestructiveMigration()
                 .build();
         return db;
     }

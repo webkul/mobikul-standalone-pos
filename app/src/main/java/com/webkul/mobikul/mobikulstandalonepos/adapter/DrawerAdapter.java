@@ -41,7 +41,7 @@ public class DrawerAdapter extends RecyclerView.Adapter<DrawerAdapter.ViewHolder
     @Override
     public void onBindViewHolder(DrawerAdapter.ViewHolder holder, int position) {
         holder.binding.setData(categories.get(position));
-//        holder.binding.label.setOnClickListener(new View.OnClickListener() {
+//        holder.binding.label.se`tOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
 //                Toast.makeText(context, "aasss", Toast.LENGTH_SHORT).show();

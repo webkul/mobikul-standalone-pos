@@ -46,16 +46,21 @@ public class ProductActivity extends BaseActivity {
         DataBaseController.getInstanse().getProducts(this, new DataBaseCallBack() {
             @Override
             public void onSuccess(Object responseData, String msg) {
-                if (!(products.toString().equalsIgnoreCase(responseData.toString()))) {
-                    if (products.size() > 0)
-                        products.clear();
-                    products.addAll((List<Product>) responseData);
-                    if (productAdapter == null) {
-                        productAdapter = new ProductAdapter(ProductActivity.this, products);
-                        binding.productRv.setAdapter(productAdapter);
-                    } else {
-                        productAdapter.notifyDataSetChanged();
+                if (!responseData.toString().equalsIgnoreCase("[]")) {
+                    if (!(products.toString().equalsIgnoreCase(responseData.toString()))) {
+                        if (products.size() > 0)
+                            products.clear();
+                        products.addAll((List<Product>) responseData);
+                        if (productAdapter == null) {
+                            productAdapter = new ProductAdapter(ProductActivity.this, products);
+                            binding.productRv.setAdapter(productAdapter);
+                        } else {
+                            productAdapter.notifyDataSetChanged();
+                        }
                     }
+                    binding.setVisibility(true);
+                } else {
+                    binding.setVisibility(false);
                 }
             }
 

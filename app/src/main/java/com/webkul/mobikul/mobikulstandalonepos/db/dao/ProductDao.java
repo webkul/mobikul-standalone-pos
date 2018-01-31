@@ -23,7 +23,10 @@ public interface ProductDao {
     List<Product> getAll();
 
     @Query("SELECT * FROM Product WHERE pId IN (:ProductIds)")
-    List<Product> loadProductsByIds(int[] ProductIds);
+    List<Product> loadProductsByIds(int ProductIds);
+
+    @Query("SELECT * FROM Product WHERE product_name LIKE (:searchText)")
+    List<Product> getSearchData(String searchText);
 
     @Query("SELECT * FROM Product WHERE is_enabled = :isEnabled")
     List<Product> getEnabledProduct(boolean isEnabled);
@@ -31,6 +34,7 @@ public interface ProductDao {
     @Query("UPDATE Product SET image = :imagePath, is_enabled = :isEnabled, product_name = :ProductName, sku = :sku, price = :price" +
             ", special_price = :specialPrice, is_taxable_goods_applied = :isTaxableGoodsApplied, track_inventory= :trackInventory" +
             ", quantity = :qty , stock_availability = :inStock, weight = :weight, productCategories = :productCategories WHERE pId = :pId")
+
     @TypeConverters(DataConverter.class)
     void updateProduct(String imagePath
             , boolean isEnabled

@@ -5,6 +5,8 @@ import android.content.Context;
 import com.webkul.mobikul.mobikulstandalonepos.activity.BaseActivity;
 import com.webkul.mobikul.mobikulstandalonepos.db.entity.Administrator;
 import com.webkul.mobikul.mobikulstandalonepos.db.entity.Category;
+import com.webkul.mobikul.mobikulstandalonepos.db.entity.Customer;
+import com.webkul.mobikul.mobikulstandalonepos.db.entity.OrderEntity;
 import com.webkul.mobikul.mobikulstandalonepos.db.entity.Product;
 import com.webkul.mobikul.mobikulstandalonepos.interfaces.DataBaseCallBack;
 
@@ -64,4 +66,29 @@ public class DataBaseController {
     public void deleteProduct(Context context, Product data, DataBaseCallBack dataBaseCallBack) {
         DataBaseAsyncUtils.getInstanse().new DeleteProduct(((BaseActivity) context).getDb(), dataBaseCallBack).execute(data);
     }
+
+    public void getCustomer(Context context, DataBaseCallBack dataBaseCallBack) {
+        DataBaseAsyncUtils.getInstanse().new GetAllCustomers(((BaseActivity) context).getDb(), dataBaseCallBack).execute();
+    }
+
+    public void addCustomer(Context context, Customer data, DataBaseCallBack dataBaseCallBack) {
+        DataBaseAsyncUtils.getInstanse().new AddCustomerAsyncTask(((BaseActivity) context).getDb(), dataBaseCallBack).execute(data);
+    }
+
+    public void generateOrder(Context context, OrderEntity data, DataBaseCallBack dataBaseCallBack) {
+        DataBaseAsyncUtils.getInstanse().new GenerateOrderAsyncTask(((BaseActivity) context).getDb(), dataBaseCallBack).execute(data);
+    }
+
+    public void getOrders(Context context, DataBaseCallBack dataBaseCallBack) {
+        DataBaseAsyncUtils.getInstanse().new GetOrders(((BaseActivity) context).getDb(), dataBaseCallBack).execute();
+    }
+
+    public void getSearchData(Context context, String searchText, DataBaseCallBack dataBaseCallBack) {
+        DataBaseAsyncUtils.getInstanse().new GetSearchData(((BaseActivity) context).getDb(), dataBaseCallBack).execute(searchText);
+    }
+
+    public void getSearchOrders(Context context, String searchText, DataBaseCallBack dataBaseCallBack) {
+        DataBaseAsyncUtils.getInstanse().new GetSearchOrders(((BaseActivity) context).getDb(), dataBaseCallBack).execute(searchText);
+    }
+
 }

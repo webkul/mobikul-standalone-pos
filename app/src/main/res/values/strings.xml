@@ -5,7 +5,7 @@
     <!---->
     <!---->
     <!--activities name-->
-    <string name="title_activity_splash_screen">SplashScreenActivity</string>
+    <string name="title_activity_splash_screen">Splash Screen Activity</string>
     <string name="title_activity_main2">Main2Activity</string>
     <string name="title_activity_sign_up_sign_in">SignUpSignInActivity</string>
     <!---->
@@ -23,6 +23,8 @@
     <!-- Actionbar related strings -->
     <string name="search">Search</string>
     <string name="scan_barcode">Scan Barcode</string>
+    <string name="search_hint">Search Products</string>
+
     <!---->
     <!---->
     <!-- Drawer related strings (No need to translate)-->
@@ -42,7 +44,7 @@
     <string name="home_fragment_title">Home</string>
     <!---->
     <!---->
-    <!-- Orders fragment related strings -->
+    <!--<entityOrdersders fragment related strings &ndash;&gt;-->
     <string name="orders_fragment_title">Orders</string>
     <!---->
     <!---->
@@ -106,6 +108,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="order_total">Order Subtotal - %s</string>
+    <string name="order_total_">Order Subtotal</string>
     <string name="title_activity_cart">CartActivity</string>
     <string name="customer">Customer</string>
     <string name="apply_discount_code">Apply Discount Code</string>
@@ -119,6 +122,38 @@
     <string name="confirm_and_accept_payment">Confirm and Accept Payment</string>
     <string name="title_activity_checkout">Checkout</string>
     <string name="total_to_be_paid">Total To Be Paid</string>
-    <string name="title_activity_customer">CustomerActivity</string>
+
+    <!--empty layout string-->
+    <string name="no_customer">No Customer Found</string>
+    <string name="no_customer_secondary">There has been no customers yet.</string>
+    <string name="your_bag_is_empty">Your bag is Empty!</string>
+    <string name="add_products_to_your_cart_first">Add some products to your cart first.</string>
+    <string name="no_products">No Products</string>
+    <string name="no_products_available_yet">There are no products available yet.</string>
+
+    <!--customer info-->
+    <string name="title_activity_customer">Customers</string>
+    <string name="customer_information">Customer Information</string>
+    <string name="customer_name">Customer Name</string>
+    <string name="contact">Contact</string>
+    <string name="new_customer">New Customer</string>
+    <string name="title_activity_choose_customer">ChooseCustomer</string>
+    <string name="round_off">(Round Off)</string>
+    <string name="cash_collected">Cash Collected (%s)</string>
+    <string name="cash_collected_">Cash Collected</string>
+    <string name="add_custom_order_notes">Add Custom OrderEntity Notes</string>
+    <string name="cash_fragment_title">Collect Cash</string>
+    <string name="done">Done</string>
+    <string name="change_due_">Change Due: %s</string>
+    <string name="title_activity_place_order">PlaceOrderActivity</string>
+    <string name="change_due">Change Due</string>
+    <string name="print_invoice">Print Invoice</string>
+    <string name="email_invoice">Email Invoice</string>
+    <string name="back_to_home">Back to Home</string>
+    <string name="order_id">Order #%s</string>
+    <string name="title_activity_view_order_details">ViewOrderDetails</string>
+    <string name="payment_information">Payment Information</string>
+    <string name="sign_out">Sign Out</string>
+
 
 </resources>

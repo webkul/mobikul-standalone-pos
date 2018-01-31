@@ -2,15 +2,19 @@ package com.webkul.mobikul.mobikulstandalonepos.db;
 
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.webkul.mobikul.mobikulstandalonepos.db.converters.DataConverter;
 import com.webkul.mobikul.mobikulstandalonepos.db.entity.Administrator;
 import com.webkul.mobikul.mobikulstandalonepos.db.entity.Category;
+import com.webkul.mobikul.mobikulstandalonepos.db.entity.Customer;
+import com.webkul.mobikul.mobikulstandalonepos.db.entity.OrderEntity;
 import com.webkul.mobikul.mobikulstandalonepos.db.entity.Product;
 import com.webkul.mobikul.mobikulstandalonepos.interfaces.DataBaseCallBack;
 
 import java.util.List;
 
+import static com.webkul.mobikul.mobikulstandalonepos.activity.BaseActivity.TAG;
 import static com.webkul.mobikul.mobikulstandalonepos.constants.ApplicationConstants.*;
 
 /**
@@ -383,4 +387,178 @@ public class DataBaseAsyncUtils {
         }
     }
 
+    public class GetAllCustomers extends AsyncTask<Void, Void,
+            List<Customer>> {
+
+        private AppDatabase db;
+        private final DataBaseCallBack dataBaseCallBack;
+
+        public GetAllCustomers(AppDatabase userDatabase, DataBaseCallBack dataBaseCallBack) {
+            db = userDatabase;
+            this.dataBaseCallBack = dataBaseCallBack;
+        }
+
+        @Override
+        protected List<Customer> doInBackground(Void... voids) {
+            List<Customer> customers = db.customerDao().getAll();
+            return customers;
+        }
+
+        @Override
+        protected void onPostExecute(List<Customer> customers) {
+            super.onPostExecute(customers);
+            if (customers != null) {
+                dataBaseCallBack.onSuccess(customers, SUCCESS_MSG);
+            } else {
+                dataBaseCallBack.onFailure(ERROR_CODE, ERROR_MSG);
+            }
+        }
+    }
+
+
+    public class AddCustomerAsyncTask extends AsyncTask<Customer, Void,
+            Boolean> {
+
+        private AppDatabase db;
+        private final DataBaseCallBack dataBaseCallBack;
+
+        public AddCustomerAsyncTask(AppDatabase userDatabase, DataBaseCallBack dataBaseCallBack) {
+            db = userDatabase;
+            this.dataBaseCallBack = dataBaseCallBack;
+        }
+
+        @Override
+        protected Boolean doInBackground(Customer... customers) {
+            try {
+                db.customerDao().insertAll(customers[0]);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
+            return true;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            super.onPostExecute(aBoolean);
+            if (aBoolean) {
+                dataBaseCallBack.onSuccess(true, SUCCESS_MSG_6_ADD_CUSTOMER);
+            } else
+                dataBaseCallBack.onFailure(ERROR_CODE, ERROR_MSG);
+        }
+    }
+
+    public class GenerateOrderAsyncTask extends AsyncTask<OrderEntity, Void,
+            Long> {
+
+        private AppDatabase db;
+        private final DataBaseCallBack dataBaseCallBack;
+
+        public GenerateOrderAsyncTask(AppDatabase userDatabase, DataBaseCallBack dataBaseCallBack) {
+            db = userDatabase;
+            this.dataBaseCallBack = dataBaseCallBack;
+        }
+
+        @Override
+        protected Long doInBackground(OrderEntity... orders) {
+            long[] id;
+            try {
+                id = db.orderDao().insertAll(orders[0]);
+                Log.d(TAG, "doInBackground: " + id[0]);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return Long.valueOf(0);
+            }
+            return id[0];
+        }
+
+        @Override
+        protected void onPostExecute(Long orderId) {
+            super.onPostExecute(orderId);
+            if (orderId != 0) {
+                dataBaseCallBack.onSuccess(orderId, SUCCESS_MSG_9_ORDER_PLACED);
+            } else
+                dataBaseCallBack.onFailure(ERROR_CODE, ERROR_MSG);
+        }
+    }
+
+    public class GetOrders extends AsyncTask<Void, Void,
+            List<OrderEntity>> {
+
+        private AppDatabase db;
+        private final DataBaseCallBack dataBaseCallBack;
+
+        public GetOrders(AppDatabase userDatabase, DataBaseCallBack dataBaseCallBack) {
+            db = userDatabase;
+            this.dataBaseCallBack = dataBaseCallBack;
+        }
+
+        @Override
+        protected List<OrderEntity> doInBackground(Void... voids) {
+            List<OrderEntity> orders = db.orderDao().getAll();
+            return orders;
+        }
+
+        @Override
+        protected void onPostExecute(List<OrderEntity> orders) {
+            super.onPostExecute(orders);
+            if (orders != null) {
+                dataBaseCallBack.onSuccess(orders, SUCCESS_MSG);
+            } else
+                dataBaseCallBack.onFailure(ERROR_CODE, ERROR_MSG);
+        }
+    }
+
+    public class GetSearchData extends AsyncTask<String, Void,
+            List<Product>> {
+
+        private AppDatabase db;
+        private final DataBaseCallBack dataBaseCallBack;
+
+        public GetSearchData(AppDatabase userDatabase, DataBaseCallBack dataBaseCallBack) {
+            db = userDatabase;
+            this.dataBaseCallBack = dataBaseCallBack;
+        }
+
+        @Override
+        protected List<Product> doInBackground(String... texts) {
+            Log.d("text", texts[0] + "");
+            return db.productDao().getSearchData(texts[0]);
+        }
+
+        @Override
+        protected void onPostExecute(List<Product> searchData) {
+            super.onPostExecute(searchData);
+            if (searchData != null) {
+                dataBaseCallBack.onSuccess(searchData, SUCCESS_MSG);
+            } else
+                dataBaseCallBack.onFailure(ERROR_CODE, ERROR_MSG);
+        }
+    }
+
+    public class GetSearchOrders extends AsyncTask<String, Void,
+            List<OrderEntity>> {
+
+        private AppDatabase db;
+        private final DataBaseCallBack dataBaseCallBack;
+
+        public GetSearchOrders(AppDatabase userDatabase, DataBaseCallBack dataBaseCallBack) {
+            db = userDatabase;
+            this.dataBaseCallBack = dataBaseCallBack;
+        }
+
+        @Override
+        protected List<OrderEntity> doInBackground(String... texts) {
+            return db.orderDao().getSearchOrders(texts[0]);
+        }
+
+        @Override
+        protected void onPostExecute(List<OrderEntity> searchData) {
+            super.onPostExecute(searchData);
+            if (searchData != null) {
+                dataBaseCallBack.onSuccess(searchData, SUCCESS_MSG);
+            } else
+                dataBaseCallBack.onFailure(ERROR_CODE, ERROR_MSG);
+        }
+    }
 }
