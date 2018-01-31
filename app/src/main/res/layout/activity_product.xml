@@ -3,6 +3,14 @@
 
     <data>
 
+        <import type="com.webkul.mobikul.mobikulstandalonepos.constants.BundleConstants" />
+
+        <import type="android.view.View" />
+
+        <variable
+            name="visibility"
+            type="boolean" />
+
         <variable
             name="handler"
             type="com.webkul.mobikul.mobikulstandalonepos.handlers.ProductHandler" />
@@ -114,11 +122,18 @@
                 android:layout_marginTop="@dimen/spacing_generic"
                 android:orientation="vertical">
 
+                <include
+                    android:id="@+id/empty_view"
+                    layout="@layout/empty_layout"
+                    app:page="@{BundleConstants.EmptyLayoutType.PRODUCT}"
+                    app:visibility="@{visibility}" />
+
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/product_rv"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@android:color/white"
+                    android:visibility="@{visibility ? View.VISIBLE : View.GONE}"
                     app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
 
             </LinearLayout>

@@ -15,11 +15,12 @@
     <color name="toastTextColor">@color/colorAccent</color>
 
     <!--text colors-->
-    <color name="textColor">#DB000000</color>
+        <color name="textColor">#DB000000</color>
     <color name="secondaryTextColor">#80000000</color>
     <color name="textColorLight">#80626262</color>
     <!--stock colors-->
     <color name="inStockColor">#70000000</color>
     <color name="outOfStockColor">#FF6E6E</color>
+    <color name="divider_color">#3F000000</color>
 
 </resources>

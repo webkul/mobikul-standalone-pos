@@ -9,11 +9,13 @@ public class MoreData {
     private String label;
     private int icon;
     private int id;
+    private boolean enabled;
 
-    public MoreData(String label, int icon, int id) {
+    public MoreData(String label, int icon, int id, boolean enabled) {
         this.label = label;
         this.icon = icon;
         this.id = id;
+        this.enabled = enabled;
     }
 
     public String getLabel() {
@@ -38,5 +40,13 @@ public class MoreData {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 }

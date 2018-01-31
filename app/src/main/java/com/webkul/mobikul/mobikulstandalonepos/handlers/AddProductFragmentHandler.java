@@ -63,8 +63,12 @@ public class AddProductFragmentHandler {
                 DataBaseController.getInstanse().updateProduct(context, product, new DataBaseCallBack() {
                     @Override
                     public void onSuccess(Object responseData, String successMsg) {
-                        FragmentManager fragmentManager = ((AppCompatActivity) context).getSupportFragmentManager();
-                        fragmentManager.popBackStackImmediate();
+                        Fragment fragment = ((BaseActivity) context).mSupportFragmentManager.findFragmentByTag(AddProductFragment.class.getSimpleName());
+                        FragmentTransaction ft = ((BaseActivity) context).mSupportFragmentManager.beginTransaction();
+                        ft.detach(fragment);
+                        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE);
+                        ft.commit();
+                        ((BaseActivity) context).mSupportFragmentManager.popBackStackImmediate();
                         ToastHelper.showToast(context, successMsg, Toast.LENGTH_LONG);
                     }
 

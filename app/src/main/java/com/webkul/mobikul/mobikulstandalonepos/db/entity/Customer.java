@@ -2,6 +2,7 @@ package com.webkul.mobikul.mobikulstandalonepos.db.entity;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 import android.databinding.BaseObservable;
 
@@ -12,18 +13,21 @@ import java.io.Serializable;
  */
 
 @Entity
-public class Customer extends BaseObservable implements Serializable{
+public class Customer extends BaseObservable implements Serializable {
 
     @PrimaryKey(autoGenerate = true)
     private int customerId;
 
-    @ColumnInfo(name = "customer_name")
-    private String customerName;
+    @ColumnInfo(name = "customer_first_name")
+    private String firstName;
+
+    @ColumnInfo(name = "customer_last_name")
+    private String lastName;
 
     @ColumnInfo(name = "email")
     private String email;
 
-    @ColumnInfo(name = "contact")
+    @ColumnInfo(name = "contact_number")
     private String contactNumber;
 
     public int getCustomerId() {
@@ -34,14 +38,14 @@ public class Customer extends BaseObservable implements Serializable{
         this.customerId = customerId;
     }
 
-    public String getCustomerName() {
-        if (customerName == null)
+    public String getFirstName() {
+        if (firstName == null)
             return "";
-        return customerName;
+        return firstName;
     }
 
-    public void setCustomerName(String customerName) {
-        this.customerName = customerName;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
     public String getEmail() {
@@ -62,5 +66,13 @@ public class Customer extends BaseObservable implements Serializable{
 
     public void setContactNumber(String contactNumber) {
         this.contactNumber = contactNumber;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 }

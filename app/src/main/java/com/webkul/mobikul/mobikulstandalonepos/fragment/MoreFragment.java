@@ -4,7 +4,13 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -12,11 +18,17 @@ import com.webkul.mobikul.mobikulstandalonepos.R;
 import com.webkul.mobikul.mobikulstandalonepos.activity.BaseActivity;
 import com.webkul.mobikul.mobikulstandalonepos.adapter.MoreAdapter;
 import com.webkul.mobikul.mobikulstandalonepos.databinding.FragmentMoreBinding;
+import com.webkul.mobikul.mobikulstandalonepos.db.DataBaseController;
+import com.webkul.mobikul.mobikulstandalonepos.db.entity.OrderEntity;
+import com.webkul.mobikul.mobikulstandalonepos.db.entity.Product;
+import com.webkul.mobikul.mobikulstandalonepos.handlers.MoreFragmentHandler;
+import com.webkul.mobikul.mobikulstandalonepos.interfaces.DataBaseCallBack;
 import com.webkul.mobikul.mobikulstandalonepos.model.MoreData;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.bumptech.glide.gifdecoder.GifHeaderParser.TAG;
 import static com.webkul.mobikul.mobikulstandalonepos.constants.ApplicationConstants.LOG_OUT;
 import static com.webkul.mobikul.mobikulstandalonepos.constants.ApplicationConstants.MORE_MENU_CASH_DRAWER;
 import static com.webkul.mobikul.mobikulstandalonepos.constants.ApplicationConstants.MORE_MENU_CATEGORIES;
@@ -50,6 +62,7 @@ public class MoreFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -62,6 +75,7 @@ public class MoreFragment extends Fragment {
         binding.moreQuicklyManageRv.setAdapter(moreAdpater);
         binding.moreRv.setNestedScrollingEnabled(false);
         binding.moreQuicklyManageRv.setNestedScrollingEnabled(false);
+        binding.setHandler(new MoreFragmentHandler(getActivity()));
         return binding.getRoot();
     }
 
@@ -72,19 +86,22 @@ public class MoreFragment extends Fragment {
                 MORE_MENU_SYNC_WITH_STORE,
                 MORE_MENU_SALES_AND_REPORTING,
                 MORE_MENU_MY_ACCOUNT_INFO};
+        boolean enabled[] = {false, false, false, true};
+
         List<MoreData> moreData = new ArrayList<>();
         for (int i = 0; i < label.length; i++) {
-            moreData.add(new MoreData(label[i], icons[i], menus[i]));
+            moreData.add(new MoreData(label[i], icons[i], menus[i], enabled[i]));
         }
         return moreData;
     }
 
+
     List<MoreData> createDataForQuickManage() {
         label = new String[]{getString(R.string.customers), getString(R.string.categories), getString(R.string.products), getString(R.string.gift_card)
                 , getString(R.string.discounts_and_cart_rules), getString(R.string.taxes), getString(R.string.payment_methods)
-                , getString(R.string.shipping_methods), getString(R.string.pos_users), getString(R.string.user_roles), getString(R.string.log_out)};
+                , getString(R.string.shipping_methods), getString(R.string.pos_users), getString(R.string.user_roles)};
         icons = new int[]{R.drawable.icon_customers, R.drawable.icon_category, R.drawable.icon_box, R.drawable.icon_gift, R.drawable.icon_discount
-                , R.drawable.icon_tax, R.drawable.icon_card, R.drawable.icon_shipping, R.drawable.icon_users, R.drawable.icon_roles, R.drawable.logo_svg};
+                , R.drawable.icon_tax, R.drawable.icon_card, R.drawable.icon_shipping, R.drawable.icon_users, R.drawable.icon_roles};
         menus = new int[]{MORE_MENU_CUSTOMERS,
                 MORE_MENU_CATEGORIES,
                 MORE_MENU_PRODUCTS,
@@ -94,11 +111,13 @@ public class MoreFragment extends Fragment {
                 MORE_MENU_PAYMENT_METHODS,
                 MORE_MENU_SHIPPING_METHODS,
                 MORE_MENU_POS_USERS,
-                MORE_MENU_USER_ROLES,
-                LOG_OUT};
+                MORE_MENU_USER_ROLES};
+
+        boolean enabled[] = {true, true, true, false, false, false, false, false, false, false};
+
         List<MoreData> moreData = new ArrayList<>();
         for (int i = 0; i < label.length; i++) {
-            moreData.add(new MoreData(label[i], icons[i], menus[i]));
+            moreData.add(new MoreData(label[i], icons[i], menus[i], enabled[i]));
         }
         return moreData;
     }
@@ -110,5 +129,12 @@ public class MoreFragment extends Fragment {
             ((BaseActivity) getContext())
                     .setActionbarTitle(getContext().getString(R.string.more_fragment_title));
         }
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        final MenuItem searchItem = menu.findItem(R.id.menu_item_search);
+        searchItem.setVisible(false);
     }
 }

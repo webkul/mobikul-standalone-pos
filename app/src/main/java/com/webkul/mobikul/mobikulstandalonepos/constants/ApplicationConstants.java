@@ -40,8 +40,12 @@ public interface ApplicationConstants {
     String SUCCESS_MSG_6_ADD_PRODUCT = "Product has been added successfully!";
     String SUCCESS_MSG_7_DELETE_PRODUCT = "This Product has been deleted successfully!";
     String SUCCESS_MSG_8_UPDATE_PRODUCT = "Product Updated.";
+    //customer msg
+    String SUCCESS_MSG_6_ADD_CUSTOMER = "Customer has been registered successfully!";
+    String SUCCESS_MSG_7_DELETE_CUSTOMER = "This Customer has been deleted successfully!";
+    String SUCCESS_MSG_8_UPDATE_CUSTOMER = "Customer details Updated.";
 
-
+    String SUCCESS_MSG_9_ORDER_PLACED = "Order placed successfully.";
     String SUCCESS_MSG_7 = "Wrong Credentials";
     String SUCCESS_MSG = "Success";
 

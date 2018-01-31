@@ -14,9 +14,11 @@
 
     <RelativeLayout xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/rl"
         android:layout_width="wrap_content"
-        android:onClick="@{()-> handler.performAction(data)}"
-        android:layout_height="55dp">
+        android:layout_height="55dp"
+        android:clickable="@{data.enabled ? true : false}"
+        android:onClick="@{()-> handler.performAction(data)}">
 
         <LinearLayout
             android:id="@+id/icons"
@@ -39,8 +41,9 @@
             android:layout_centerInParent="true"
             android:layout_marginLeft="@dimen/spacing_generic"
             android:layout_toRightOf="@id/icons"
+            android:enabled="@{data.enabled ? true : false}"
             android:text="@{data.label}"
-            android:textColor="@color/text_color"
+            android:textColor="@{data.enabled ? @color/text_color : @color/textColorLight}"
             tools:text="More Options" />
 
         <View
