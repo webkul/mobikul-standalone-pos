@@ -65,7 +65,8 @@
                     android:layout_height="wrap_content"
                     android:paddingBottom="@dimen/spacing_normal"
                     app:error="@{data.passwordError}"
-                    app:errorEnabled="@{data.displayError}">
+                    app:errorEnabled="@{data.displayError}"
+                    app:passwordToggleEnabled="true">
 
                     <EditText
                         android:id="@+id/password"

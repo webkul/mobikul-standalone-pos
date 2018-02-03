@@ -77,26 +77,23 @@
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@color/backgroundColor"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <include
                 android:id="@+id/empty_view"
                 layout="@layout/empty_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/spacing_generic"
                 app:page="@{BundleConstants.EmptyLayoutType.CART}"
                 app:visibility="@{visibility}" />
-        </FrameLayout>
-
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="@{visibility ? View.VISIBLE : View.GONE}"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
 
             <android.support.v4.widget.NestedScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="60dp">
+                android:layout_marginBottom="60dp"
+                android:visibility="@{visibility ? View.VISIBLE : View.GONE}">
 
                 <FrameLayout
                     android:layout_width="match_parent"
@@ -116,169 +113,191 @@
                             android:background="@android:color/white"
                             app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
 
-                        <TextView
-                            android:id="@+id/customer"
+                        <android.support.v7.widget.CardView
+                            android:id="@+id/customer_view"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:layout_gravity="center_vertical"
-                            android:layout_marginTop="@dimen/spacing_generic"
+                            android:layout_marginTop="@dimen/spacing_tiny"
                             android:background="@color/white"
-                            android:drawableEnd="@drawable/ic_arrow_right"
-                            android:drawableRight="@drawable/ic_arrow_right"
                             android:gravity="center_vertical"
-                            android:onClick="@{()->handler.selectCustomer()}"
-                            android:padding="@dimen/spacing_normal"
-                            android:text="@{!data.customer.firstName.isEmpty()? data.customer.firstName +' '+data.customer.lastName : @string/customer}"
-                            android:textColor="@{!data.customer.firstName.isEmpty() ? @color/colorAccent : @color/textColor}"
-                            tools:text="@string/customer" />
+                            app:cardUseCompatPadding="true">
 
-                        <TextView
-                            android:id="@+id/discount"
+                            <TextView
+                                android:id="@+id/customer"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:drawableEnd="@drawable/ic_arrow_right"
+                                android:drawableRight="@drawable/ic_arrow_right"
+                                android:onClick="@{()->handler.selectCustomer()}"
+                                android:padding="@dimen/spacing_normal"
+                                android:text="@{!data.customer.firstName.isEmpty()? data.customer.firstName +' '+data.customer.lastName : @string/customer}"
+                                android:textColor="@{!data.customer.firstName.isEmpty() ? @color/colorAccent : @color/textColor}"
+                                tools:text="@string/customer" />
+                        </android.support.v7.widget.CardView>
+
+                        <android.support.v7.widget.CardView
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:layout_gravity="center_vertical"
-                            android:layout_marginTop="@dimen/spacing_generic"
+                            android:layout_marginTop="@dimen/spacing_tiny"
                             android:background="@color/white"
-                            android:drawableEnd="@drawable/ic_arrow_right"
-                            android:drawableRight="@drawable/ic_arrow_right"
                             android:gravity="center_vertical"
-                            android:padding="@dimen/spacing_normal"
-                            android:text="@string/apply_discount_code"
-                            tools:text="@string/apply_discount_code" />
+                            app:cardUseCompatPadding="true">
 
-                        <LinearLayout
+                            <TextView
+                                android:id="@+id/discount"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:drawableEnd="@drawable/ic_arrow_right"
+                                android:drawableRight="@drawable/ic_arrow_right"
+                                android:gravity="center_vertical"
+                                android:padding="@dimen/spacing_normal"
+                                android:text="@string/apply_discount_code"
+                                tools:text="@string/apply_discount_code" />
+                        </android.support.v7.widget.CardView>
+
+                        <android.support.v7.widget.CardView
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/spacing_generic"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginTop="@dimen/spacing_tiny"
                             android:background="@color/white"
-                            android:orientation="vertical"
-                            android:padding="@dimen/spacing_normal">
+                            android:gravity="center_vertical"
+                            app:cardUseCompatPadding="true">
 
-                            <RelativeLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content">
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="@string/sub_total"
-                                    android:textSize="@dimen/text_size_small" />
-
-
-                                <!--<org.fabiomsr.moneytextview.MoneyTextView-->
-                                <!--android:layout_width="wrap_content"-->
-                                <!--android:layout_height="wrap_content"-->
-                                <!--android:layout_alignParentEnd="true"-->
-                                <!--android:layout_alignParentRight="true"-->
-                                <!--app:amount="@{data.totals.subTotal}"-->
-                                <!--app:baseTextSize="@dimen/text_size_small"-->
-                                <!--app:gravity="center"-->
-                                <!--app:symbol="@string/currency_symbol"-->
-                                <!--app:symbolGravity="start"-->
-                                <!--app:symbolTextSize="@dimen/text_size_small"-->
-                                <!--tools:text="$759" />-->
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_alignParentEnd="true"
-                                    android:layout_alignParentRight="true"
-                                    android:text="@{data.totals.formatedSubTotal}"
-                                    android:textSize="@dimen/text_size_small"
-                                    tools:text="$759" />
-                            </RelativeLayout>
-
-                            <RelativeLayout
+                            <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="@dimen/spacing_tiny">
+                                android:orientation="vertical"
+                                android:padding="@dimen/spacing_normal">
 
-                                <TextView
-                                    android:layout_width="wrap_content"
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content">
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="@string/sub_total"
+                                        android:textSize="@dimen/text_size_small" />
+
+
+                                    <!--<org.fabiomsr.moneytextview.MoneyTextView-->
+                                    <!--android:layout_width="wrap_content"-->
+                                    <!--android:layout_height="wrap_content"-->
+                                    <!--android:layout_alignParentEnd="true"-->
+                                    <!--android:layout_alignParentRight="true"-->
+                                    <!--app:amount="@{data.totals.subTotal}"-->
+                                    <!--app:baseTextSize="@dimen/text_size_small"-->
+                                    <!--app:gravity="center"-->
+                                    <!--app:symbol="@string/currency_symbol"-->
+                                    <!--app:symbolGravity="start"-->
+                                    <!--app:symbolTextSize="@dimen/text_size_small"-->
+                                    <!--tools:text="$759" />-->
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentEnd="true"
+                                        android:layout_alignParentRight="true"
+                                        android:text="@{data.totals.formatedSubTotal}"
+                                        android:textSize="@dimen/text_size_small"
+                                        tools:text="$759" />
+                                </RelativeLayout>
+
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:text="@string/tax"
-                                    android:textSize="@dimen/text_size_small"
-                                    tools:text="Tax (10%):" />
+                                    android:layout_marginTop="@dimen/spacing_tiny">
 
-                                <TextView
-                                    android:layout_width="wrap_content"
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="@string/tax"
+                                        android:textSize="@dimen/text_size_small"
+                                        tools:text="Tax (10%):" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentEnd="true"
+                                        android:layout_alignParentRight="true"
+                                        android:text="@{data.totals.formatedTax}"
+                                        android:textSize="@dimen/text_size_small"
+                                        tools:text="$75.90" />
+                                </RelativeLayout>
+
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:layout_alignParentEnd="true"
-                                    android:layout_alignParentRight="true"
-                                    android:text="@{data.totals.formatedTax}"
-                                    android:textSize="@dimen/text_size_small"
-                                    tools:text="$75.90" />
-                            </RelativeLayout>
+                                    android:layout_marginTop="@dimen/spacing_tiny">
 
-                            <RelativeLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="@dimen/spacing_tiny">
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="@string/discount"
+                                        android:textSize="@dimen/text_size_small" />
 
-                                <TextView
-                                    android:layout_width="wrap_content"
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentEnd="true"
+                                        android:layout_alignParentRight="true"
+                                        android:text="@{data.totals.formatedDiscount}"
+                                        android:textSize="@dimen/text_size_small"
+                                        tools:text="- $84.00" />
+                                </RelativeLayout>
+
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:text="@string/discount"
-                                    android:textSize="@dimen/text_size_small" />
+                                    android:layout_marginTop="@dimen/spacing_tiny">
 
-                                <TextView
-                                    android:layout_width="wrap_content"
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="@string/grand_total"
+                                        android:textSize="@dimen/text_size_small"
+                                        android:textStyle="bold" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentEnd="true"
+                                        android:layout_alignParentRight="true"
+                                        android:text="@{data.totals.formatedGrandTotal}"
+                                        android:textSize="@dimen/text_size_small"
+                                        android:textStyle="bold"
+                                        tools:text="$750.90" />
+                                </RelativeLayout>
+
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:layout_alignParentEnd="true"
-                                    android:layout_alignParentRight="true"
-                                    android:text="@{data.totals.formatedDiscount}"
-                                    android:textSize="@dimen/text_size_small"
-                                    tools:text="- $84.00" />
-                            </RelativeLayout>
+                                    android:layout_marginTop="@dimen/spacing_tiny">
 
-                            <RelativeLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="@dimen/spacing_tiny">
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="@string/round_total"
+                                        android:textColor="@color/colorAccent"
+                                        android:textSize="@dimen/text_size_small"
+                                        android:textStyle="bold" />
 
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="@string/grand_total"
-                                    android:textSize="@dimen/text_size_small"
-                                    android:textStyle="bold" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_alignParentEnd="true"
-                                    android:layout_alignParentRight="true"
-                                    android:text="@{data.totals.formatedGrandTotal}"
-                                    android:textSize="@dimen/text_size_small"
-                                    android:textStyle="bold"
-                                    tools:text="$750.90" />
-                            </RelativeLayout>
-
-                            <RelativeLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="@dimen/spacing_tiny">
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="@string/round_total"
-                                    android:textColor="@color/colorAccent"
-                                    android:textSize="@dimen/text_size_small"
-                                    android:textStyle="bold" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_alignParentEnd="true"
-                                    android:layout_alignParentRight="true"
-                                    android:text="@{data.totals.formatedRoundTotal}"
-                                    android:textColor="@color/colorAccent"
-                                    android:textSize="@dimen/text_size_small"
-                                    android:textStyle="bold"
-                                    tools:text="$751.00" />
-                            </RelativeLayout>
-                        </LinearLayout>
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentEnd="true"
+                                        android:layout_alignParentRight="true"
+                                        android:text="@{data.totals.formatedRoundTotal}"
+                                        android:textColor="@color/colorAccent"
+                                        android:textSize="@dimen/text_size_small"
+                                        android:textStyle="bold"
+                                        tools:text="$751.00" />
+                                </RelativeLayout>
+                            </LinearLayout>
+                        </android.support.v7.widget.CardView>
                     </LinearLayout>
                 </FrameLayout>
             </android.support.v4.widget.NestedScrollView>
@@ -289,10 +308,11 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
                 android:layout_margin="@dimen/spacing_generic"
-                android:drawableRight="@drawable/ic_proceed_light"
                 android:drawableEnd="@drawable/ic_proceed_light"
+                android:drawableRight="@drawable/ic_proceed_light"
                 android:onClick="@{()->handler.proceedToCheckout(data)}"
                 android:text="@string/confirm_and_accept_payment"
+                android:visibility="@{visibility ? View.VISIBLE : View.GONE}"
                 android:textSize="@dimen/text_size_medium"
                 android:textStyle="bold" />
         </FrameLayout>

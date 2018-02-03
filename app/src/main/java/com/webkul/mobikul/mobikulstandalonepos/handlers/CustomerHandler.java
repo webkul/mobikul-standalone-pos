@@ -19,7 +19,6 @@ import com.webkul.mobikul.mobikulstandalonepos.db.DataBaseController;
 import com.webkul.mobikul.mobikulstandalonepos.db.entity.Customer;
 import com.webkul.mobikul.mobikulstandalonepos.fragment.AddCategoryFragment;
 import com.webkul.mobikul.mobikulstandalonepos.fragment.AddCustomerFragment;
-import com.webkul.mobikul.mobikulstandalonepos.helper.ToastHelper;
 import com.webkul.mobikul.mobikulstandalonepos.interfaces.DataBaseCallBack;
 
 /**

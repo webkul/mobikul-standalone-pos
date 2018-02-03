@@ -8,10 +8,12 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/MobikulAutoScrollableView-release" />
             <option value="$PROJECT_DIR$/activation" />
             <option value="$PROJECT_DIR$/additionnal" />
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/mail" />
+            <option value="$PROJECT_DIR$/mobikuldialoglibrary-release" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

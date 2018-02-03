@@ -1,1 +1,1 @@
-include ':app', ':activation', ':additionnal', ':mail'
+include ':app', ':activation', ':additionnal', ':mail', ':mobikuldialoglibrary-release', ':MobikulAutoScrollableView-release'

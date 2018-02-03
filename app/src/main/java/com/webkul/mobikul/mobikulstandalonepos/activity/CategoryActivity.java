@@ -45,6 +45,7 @@ public class CategoryActivity extends BaseActivity {
         DataBaseController.getInstanse().getCategory(this, new DataBaseCallBack() {
             @Override
             public void onSuccess(Object responseData, String msg) {
+                if (!responseData.toString().equalsIgnoreCase("[]")) {
                     if (!(categories.toString().equalsIgnoreCase(responseData.toString()))) {
                         if (categories.size() > 0)
                             categories.clear();
@@ -56,6 +57,10 @@ public class CategoryActivity extends BaseActivity {
                             categoryAdapter.notifyDataSetChanged();
                         }
                     }
+                    binding.setVisibility(true);
+                } else {
+                    binding.setVisibility(false);
+                }
             }
 
             @Override

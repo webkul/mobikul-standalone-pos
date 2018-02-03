@@ -4,11 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.widget.Toast;
 
-import com.webkul.mobikul.mobikulstandalonepos.activity.CategoryActivity;
-import com.webkul.mobikul.mobikulstandalonepos.activity.CustomerActivity;
-import com.webkul.mobikul.mobikulstandalonepos.activity.MainActivity;
-import com.webkul.mobikul.mobikulstandalonepos.activity.ProductActivity;
-import com.webkul.mobikul.mobikulstandalonepos.activity.SignUpSignInActivity;
+import com.webkul.mobikul.mobikulstandalonepos.activity.*;
 import com.webkul.mobikul.mobikulstandalonepos.helper.AppSharedPref;
 import com.webkul.mobikul.mobikulstandalonepos.helper.ToastHelper;
 import com.webkul.mobikul.mobikulstandalonepos.model.MoreData;
@@ -41,6 +37,10 @@ public class MoreFragmentHandler {
                 break;
             case MORE_MENU_PRODUCTS:
                 i = new Intent(context, ProductActivity.class);
+                context.startActivity(i);
+                break;
+            case MORE_MENU_MY_ACCOUNT_INFO:
+                i = new Intent(context, MyAccountInfo.class);
                 context.startActivity(i);
                 break;
             default:

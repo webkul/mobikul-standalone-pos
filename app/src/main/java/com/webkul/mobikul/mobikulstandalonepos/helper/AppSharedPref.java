@@ -26,6 +26,7 @@ public class AppSharedPref {
     private static final String KEY_CART_COUNT = "CART_COUNT";
     private static final String IS_SIGNED_UP = "IS_SIGNED_UP";
     private static final String IS_LOGGED_IN = "IS_LOGGED_in";
+    private static final String IS_SHOW_WALKTHROUGH = "IS_SHOW_WALKTHROUGH";
     private static final String KEY_CART_DATA = "CART_DATA";
 
     /*SHARED PREF AND EDITOR*/
@@ -92,6 +93,14 @@ public class AppSharedPref {
         getSharedPreferenceEditor(context, USER_PREF).putBoolean(IS_LOGGED_IN, isLogIn).apply();
     }
 
+    public static boolean isShowWalkThrough(Context context, boolean defaultValue) {
+        return getSharedPreference(context, APP_PREF).getBoolean(IS_SHOW_WALKTHROUGH, defaultValue);
+    }
+
+    public static void setShowWalkThrough(Context context, boolean isShowWalkThrough) {
+        getSharedPreferenceEditor(context, APP_PREF).putBoolean(IS_SHOW_WALKTHROUGH, isShowWalkThrough).apply();
+    }
+
     public static String getCartData(Context context) {
         return getSharedPreference(context, APP_PREF).getString(KEY_CART_DATA + getUserId(context), "");
     }
@@ -102,5 +111,14 @@ public class AppSharedPref {
 
     public static void deleteCartData(Context context) {
         getSharedPreferenceEditor(context, APP_PREF).remove(KEY_CART_DATA + getUserId(context)).apply();
+    }
+
+
+    public static void setTime(Context context, long time) {
+        getSharedPreferenceEditor(context, APP_PREF).putLong("TIME", time).apply();
+    }
+
+    public static long getTime(Context context, long time) {
+        return getSharedPreference(context, APP_PREF).getLong("TIME", time);
     }
 }

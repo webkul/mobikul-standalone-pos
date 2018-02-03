@@ -12,7 +12,7 @@ import java.util.List;
 @Dao
 public interface AdministratorDao {
     @Query("SELECT * FROM Administrator")
-    List<Administrator> getAll();
+    Administrator getAll();
 
     @Query("SELECT * FROM Administrator WHERE uid IN (:AdministratorIds)")
     List<Administrator> loadAllByIds(int[] AdministratorIds);
@@ -20,6 +20,9 @@ public interface AdministratorDao {
     @Query("SELECT * FROM Administrator WHERE email LIKE :email " +
             "AND password LIKE :password")
     Administrator findByEmail(String email, String password);
+
+    @Query("UPDATE Administrator SET first_name = :firstName, last_name = :lastName, username = :username WHERE uid = :uId")
+    void updateAdminById(String firstName, String lastName, String username, int uId);
 
     @Insert
     void insertAll(Administrator... Administrators);

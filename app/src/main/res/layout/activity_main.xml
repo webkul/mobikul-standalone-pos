@@ -11,30 +11,29 @@
         android:fitsSystemWindows="true">
 
 
-
         <!--<android.support.design.widget.NavigationView-->
-            <!--android:layout_width="@dimen/nav_drawer_start_width"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:layout_gravity="end"-->
-            <!--android:background="@android:color/white"-->
-            <!--android:clickable="true"-->
-            <!--android:fitsSystemWindows="false">-->
+        <!--android:layout_width="@dimen/nav_drawer_start_width"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_gravity="end"-->
+        <!--android:background="@android:color/white"-->
+        <!--android:clickable="true"-->
+        <!--android:fitsSystemWindows="false">-->
 
-            <!--<FrameLayout-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:orientation="vertical">-->
+        <!--<FrameLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:orientation="vertical">-->
 
-                <!--<TextView-->
-                    <!--android:id="@+id/cate"-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_marginLeft="@dimen/spacing_small"-->
-                    <!--android:layout_marginStart="@dimen/spacing_small"-->
-                    <!--android:layout_marginTop="116dp"-->
-                    <!--android:text="@string/categories"-->
-                    <!--android:textSize="@dimen/text_size_small" />-->
-            <!--</FrameLayout>-->
+        <!--<TextView-->
+        <!--android:id="@+id/cate"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginLeft="@dimen/spacing_small"-->
+        <!--android:layout_marginStart="@dimen/spacing_small"-->
+        <!--android:layout_marginTop="116dp"-->
+        <!--android:text="@string/categories"-->
+        <!--android:textSize="@dimen/text_size_small" />-->
+        <!--</FrameLayout>-->
         <!--</android.support.design.widget.NavigationView>-->
 
         <RelativeLayout

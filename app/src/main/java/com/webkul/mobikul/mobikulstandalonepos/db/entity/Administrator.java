@@ -7,22 +7,26 @@ import android.arch.persistence.room.PrimaryKey;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 import android.util.Log;
+import android.util.Patterns;
 
 import com.webkul.mobikul.mobikulstandalonepos.BR;
 
-@Entity (tableName = "Administrator")
+@Entity(tableName = "Administrator")
 public class Administrator extends BaseObservable {
     @PrimaryKey(autoGenerate = true)
     private int uid;
-
     @ColumnInfo(name = "first_name")
     private String firstName;
     @ColumnInfo(name = "last_name")
     private String lastName;
     @ColumnInfo(name = "email")
     private String email;
+    @ColumnInfo(name = "username")
+    private String username;
     @ColumnInfo(name = "password")
     private String password;
+    @Ignore
+    private String newPassword;
     @Ignore
     private boolean displayError;
 
@@ -102,6 +106,9 @@ public class Administrator extends BaseObservable {
         if (getEmail().isEmpty()) {
             return "EMAIL IS EMPTY";
         }
+//        if (!Patterns.EMAIL_ADDRESS.matcher(getEmail()).matches()) {
+//            return "PLEASE ENTER A VALID EMAIL!";
+//        }
         return "";
     }
 
@@ -139,5 +146,27 @@ public class Administrator extends BaseObservable {
         notifyPropertyChanged(BR.displayError);
     }
 
+    @Bindable
+    public String getUsername() {
+        if (username == null)
+            return "";
+        return username;
+    }
 
+    public void setUsername(String username) {
+        this.username = username;
+        notifyPropertyChanged(BR.username);
+    }
+
+    @Bindable
+    public String getNewPassword() {
+        if (newPassword == null)
+            return "";
+        return newPassword;
+    }
+
+    public void setNewPassword(String newPassword) {
+        this.newPassword = newPassword;
+        notifyPropertyChanged(BR.newPassword);
+    }
 }

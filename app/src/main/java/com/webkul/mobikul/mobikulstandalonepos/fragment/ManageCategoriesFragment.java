@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.webkul.mobikul.mobikuldialoglibrary.CustomDialog;
 import com.webkul.mobikul.mobikulstandalonepos.R;
 import com.webkul.mobikul.mobikulstandalonepos.activity.ProductActivity;
 import com.webkul.mobikul.mobikulstandalonepos.adapter.ManageCategoryAdapter;
@@ -54,9 +55,25 @@ public class ManageCategoriesFragment extends Fragment {
         DataBaseController.getInstanse().getCategory(getActivity(), new DataBaseCallBack() {
             @Override
             public void onSuccess(Object responseData, String msg) {
-                categories.addAll((List<Category>) responseData);
-                manageCategoryAdapter = new ManageCategoryAdapter(getActivity(), categories, product);
-                binding.manageCategoryRv.setAdapter(manageCategoryAdapter);
+                if (!responseData.toString().equalsIgnoreCase("[]")) {
+                    categories.addAll((List<Category>) responseData);
+                    manageCategoryAdapter = new ManageCategoryAdapter(getActivity(), categories, product);
+                    binding.manageCategoryRv.setAdapter(manageCategoryAdapter);
+                } else {
+                    CustomDialog customDialog = CustomDialog.getInstantDialog(getActivity(), CustomDialog.Type.WARNING_TYPE_DIALOG)
+                            .setButtonEnabled(true)
+                            .setTitleHeading("No categories")
+                            .setSubTitle("First create category to use this option.");
+                    customDialog.setPositiveButtonClickListener(new CustomDialog.CustomDialogButtonClickListener() {
+                        @Override
+                        public void onClick(CustomDialog customDialog) {
+                            customDialog.dismiss();
+                            getActivity().onBackPressed();
+                        }
+                    });
+                    customDialog.setCanceledOnTouchOutside(false);
+                    customDialog.show();
+                }
             }
 
             @Override

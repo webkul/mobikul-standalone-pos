@@ -37,34 +37,9 @@ public class SignUpSignInActivity extends BaseActivity {
         } else {
             fragment = new SignInFragment();
         }
-        Log.d("name", fragment.getClass().getSimpleName() + "");
         fragmentTransaction.add(mBinding.fragmentContainer.getId(), fragment, fragment.getClass().getSimpleName());
         fragmentTransaction.addToBackStack(SignUpFragment.class.getSimpleName());
         fragmentTransaction.commit();
-
-//        Thread thread = new Thread(new Runnable() {
-//            public void run() {
-//                Log.d(TAG, "onCreate: " + db.administratorDao().getAll().get(0));
-//            }
-//        });
-//        thread.start();
-//        thread.stop();
-//        mBinding.button.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Administrator administrator = new Administrator();
-//                administrator.setFirstName(mBinding.firstName.getText().toString());
-//                administrator.setLastName(mBinding.lastname.getText().toString());
-//                administrator.setEmail(mBinding.email.getText().toString());
-//                administrator.setPassword(mBinding.password.getText().toString());
-//                db.administratorDao().insertAll(administrator);
-//
-//                Log.d("data", db.administratorDao() .getAll().get(0).getEmail() + "");
-//                Log.d("data", db.administratorDao().getAll().get(0).getFirstName() + "");
-//                Log.d("data", db.administratorDao().getAll().get(0).getLastName() + "");
-//                Log.d("data", db.administratorDao().getAll().get(0).getPassword() + "");
-//            }
-//        });
     }
 
     @Override
@@ -75,7 +50,7 @@ public class SignUpSignInActivity extends BaseActivity {
             ToastHelper.showToast(this, getString(R.string.press_back_to_exit)
                     , Toast.LENGTH_SHORT);
         } else {
-            super.onBackPressed();
+            finish();
         }
     }
 }

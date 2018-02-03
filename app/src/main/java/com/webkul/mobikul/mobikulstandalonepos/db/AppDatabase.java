@@ -18,7 +18,7 @@ import com.webkul.mobikul.mobikulstandalonepos.db.entity.Customer;
 import com.webkul.mobikul.mobikulstandalonepos.db.entity.OrderEntity;
 import com.webkul.mobikul.mobikulstandalonepos.db.entity.Product;
 
-@Database(entities = {Administrator.class, Category.class, Product.class, Customer.class, OrderEntity.class}, version = 7, exportSchema = false)
+@Database(entities = {Administrator.class, Category.class, Product.class, Customer.class, OrderEntity.class}, version = 8, exportSchema = false)
 @TypeConverters(DataConverter.class)
 public abstract class AppDatabase extends RoomDatabase {
     public abstract AdministratorDao administratorDao();
@@ -31,13 +31,13 @@ public abstract class AppDatabase extends RoomDatabase {
 
     public abstract OrderDao orderDao();
 
-    public static final Migration MIGRATION_1_2 = new Migration(6, 7) {
+    public static final Migration MIGRATION_1_2 = new Migration(7, 8) {
         @Override
         public void migrate(SupportSQLiteDatabase database) {
 
             // Create the new table
             database.execSQL(
-                    "CREATE TABLE admin_new (uid INTEGER NOT NULL, first_name TEXT, last_name TEXT, email TEXT, password TEXT, PRIMARY KEY(uid))");
+                    "CREATE TABLE admin_new (uid INTEGER NOT NULL, first_name TEXT, last_name TEXT, email TEXT,username TEXT, password TEXT, PRIMARY KEY(uid))");
 // Copy the data
             database.execSQL(
                     "INSERT INTO admin_new (uid, first_name, last_name, email, password) SELECT uid, first_name, last_name, email, password FROM Administrator");
@@ -80,8 +80,8 @@ public abstract class AppDatabase extends RoomDatabase {
 
 //            database.execSQL("DROP TABLE OrderEntity");
 
-            database.execSQL(
-                    "CREATE TABLE OrderEntity (orderId INTEGER NOT NULL, cash_data TEXT, cart_data TEXT, time TEXT, date TEXT, qty TEXT, is_synced TEXT, PRIMARY KEY(orderId))");
+//            database.execSQL(
+//                    "CREATE TABLE OrderEntity (orderId INTEGER NOT NULL, cash_data TEXT, cart_data TEXT, time TEXT, date TEXT, qty TEXT, is_synced TEXT, PRIMARY KEY(orderId))");
 
 
 //            database.execSQL("ALTER TABLE Product ADD COLUMN formatted_price TEXT");

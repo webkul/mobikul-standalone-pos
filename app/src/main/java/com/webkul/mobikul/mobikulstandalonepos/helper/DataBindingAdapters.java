@@ -57,15 +57,15 @@ public class DataBindingAdapters {
             case PRODUCT:
                 textview.setText(textview.getContext().getString(R.string.no_products_available_yet));
                 break;
-//            case ORDER:
-//                textview.setText(textview.getContext().getString(R.string.shop_first_to_see_your_orders_here));
-//                break;
+            case ORDER:
+                textview.setText(textview.getContext().getString(R.string.shop_first_to_see_your_orders_here));
+                break;
             case CART:
                 textview.setText(textview.getContext().getString(R.string.add_products_to_your_cart_first));
                 break;
-//            case WISHLIST:
-//                textview.setText(textview.getContext().getString(R.string.you_do_not_have_any_wishlist_yet));
-//                break;
+            case CATEGORY:
+                textview.setText(textview.getContext().getString(R.string.you_do_not_have_any_category_yet));
+                break;
 //            case NOTIFICATION:
 //                textview.setText(textview.getContext().getString(R.string.no_recent_notifications));
 //                break;
@@ -85,15 +85,15 @@ public class DataBindingAdapters {
             case PRODUCT:
                 textview.setText(textview.getContext().getString(R.string.no_products));
                 break;
-//            case ORDER:
-//                textview.setText(textview.getContext().getString(R.string.no_order_placed));
-//                break;
+            case ORDER:
+                textview.setText(textview.getContext().getString(R.string.no_order));
+                break;
             case CART:
                 textview.setText(textview.getContext().getString(R.string.your_bag_is_empty));
                 break;
-//            case WISHLIST:
-//                textview.setText(textview.getContext().getString(R.string.empty_wishlist));
-//                break;
+            case CATEGORY:
+                textview.setText(textview.getContext().getString(R.string.no_category));
+                break;
 //            case NOTIFICATION:
 //                textview.setText(textview.getContext().getString(R.string.no_notification));
 //                break;
@@ -112,15 +112,15 @@ public class DataBindingAdapters {
             case PRODUCT:
                 imageview.setImageResource(R.drawable.ic_empty_product);
                 break;
-//            case ORDER:
-//                imageview.setImageResource(R.drawable.ic_vector_empty_order);
-//                break;
-            case CART:
-                imageview.setImageResource(R.drawable.ic_cart_empty);
+            case ORDER:
+                imageview.setImageResource(R.drawable.ic_empty_orders);
                 break;
-//            case WISHLIST:
-//                imageview.setImageResource(R.drawable.ic_vector_empty_wishlist);
-//                break;
+            case CART:
+                imageview.setImageResource(R.drawable.ic_empty_cart);
+                break;
+            case CATEGORY:
+                imageview.setImageResource(R.drawable.ic_empty_category);
+                break;
 //            case NOTIFICATION:
 //                imageview.setImageResource(R.drawable.ic_vector_empty_notification);
 //                break;

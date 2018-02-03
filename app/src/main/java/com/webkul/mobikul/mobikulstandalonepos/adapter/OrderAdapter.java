@@ -1,15 +1,13 @@
-package com.webkul.mobikul.mobikulstandalonepos.fragment;
+package com.webkul.mobikul.mobikulstandalonepos.adapter;
 
 import android.content.Context;
 import android.databinding.DataBindingUtil;
-import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.webkul.mobikul.mobikulstandalonepos.R;
-import com.webkul.mobikul.mobikulstandalonepos.adapter.MoreAdapter;
 import com.webkul.mobikul.mobikulstandalonepos.databinding.ItemOrderBinding;
 import com.webkul.mobikul.mobikulstandalonepos.db.entity.OrderEntity;
 import com.webkul.mobikul.mobikulstandalonepos.handlers.OrderFragmentHandler;
@@ -20,7 +18,7 @@ import java.util.List;
  * Created by aman.gupta on 30/1/18. @Webkul Software Private limited
  */
 
-class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> {
+public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> {
     private Context context;
     private List<OrderEntity> orders;
 

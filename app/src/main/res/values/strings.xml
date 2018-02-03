@@ -1,7 +1,12 @@
 <resources>
 
     <!--app name-->
-    <string name="app_name">Mobikul Stand Alone POS</string>
+    <string name="app_name">Mobikul POS</string>
+    <string name="new_version_available">There is a newer version of Mobikul POS application
+        inStock, please Update now ?</string>
+    <string name="update">Update</string>
+    <string name="later">Later</string>
+
     <!---->
     <!---->
     <!--activities name-->
@@ -37,7 +42,7 @@
     <string name="btm_nav_item_title_orders">Orders</string>
     <string name="btm_nav_item_title_hold">Hold</string>
     <string name="btm_nav_item_title_more">More</string>
-    <string name="press_back_to_exit">Press Back again to Exit</string>
+    <string name="press_back_to_exit">Press Back again to Exit.</string>
     <!---->
     <!---->
     <!-- Home fragment related strings -->
@@ -87,7 +92,7 @@
     <!--product related strings-->
     <string name="title_activity_product">Products</string>
     <string name="product_image">Product Image</string>
-    <string name="double_tap_to_remove_image">Double tap to remove image</string>
+    <string name="single_tap_to_remove_image">Single tap to open camera</string>
     <string name="general_information">General Information</string>
     <string name="sku">SKU</string>
     <string name="product_name">Product Name</string>
@@ -109,7 +114,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="order_total">Order Subtotal - %s</string>
     <string name="order_total_">Order Subtotal</string>
-    <string name="title_activity_cart">CartActivity</string>
+    <string name="title_activity_cart">Cart</string>
     <string name="customer">Customer</string>
     <string name="apply_discount_code">Apply Discount Code</string>
     <string name="round_total">Round Total:</string>
@@ -130,6 +135,10 @@
     <string name="add_products_to_your_cart_first">Add some products to your cart first.</string>
     <string name="no_products">No Products</string>
     <string name="no_products_available_yet">There are no products available yet.</string>
+    <string name="no_category">No Categories</string>
+    <string name="you_do_not_have_any_category_yet">You do not have any category yet.</string>
+    <string name="no_order">No Orders</string>
+    <string name="shop_first_to_see_your_orders_here">Shop first to see your orders here.</string>
 
     <!--customer info-->
     <string name="title_activity_customer">Customers</string>
@@ -154,6 +163,24 @@
     <string name="title_activity_view_order_details">ViewOrderDetails</string>
     <string name="payment_information">Payment Information</string>
     <string name="sign_out">Sign Out</string>
+    <string name="title_activity_my_account_info">MyAccountInfo</string>
+
+    <!--walkthrough pages string-->
+    <string name="title_activity_walkthrough">WalkthroughActivity</string>
+    <string name="welcome_to_webkul_stand_alone_pos">Welcome to Webkul Stand Alone POS</string>
+    <string name="user_can_add_product_to_cart_by_simply_tab_and_by_search">User can add product to cart by simply tab and by search.</string>
+    <string name="easily_manage_the_cart">Easily Manage the Cart</string>
+    <string name="subheading_cart_wk_msg">You can easily Manage the Cart section.</string>
+    <string name="many_options">Many Options</string>
+    <string name="manage_customer_product_categoies_taxes_and_a_lot_more">Manage customer, product categoies, taxes and a lot more.</string>
+    <string name="manage_products">Manage Products</string>
+    <string name="simply_manage_the_all_types_of_products">Simply manage the all types of Products.</string>
+    <string name="category_management">Category Management</string>
+    <string name="you_can_simply_add_and_manage_the_categoies">You can simply add and manage the categoies.</string>
+    <string name="personal_information">Personal Information</string>
+    <string name="username">Username</string>
+    <string name="old_password">Old Password</string>
+    <string name="new_password">New Password</string>
 
 
 </resources>

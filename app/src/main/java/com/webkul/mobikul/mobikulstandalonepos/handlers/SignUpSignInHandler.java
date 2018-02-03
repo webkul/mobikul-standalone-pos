@@ -2,14 +2,18 @@ package com.webkul.mobikul.mobikulstandalonepos.handlers;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Vibrator;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
+import android.view.animation.AnimationUtils;
 import android.widget.Toast;
 
 import com.webkul.mobikul.mobikulstandalonepos.R;
+import com.webkul.mobikul.mobikulstandalonepos.activity.WalkthroughActivity;
 import com.webkul.mobikul.mobikulstandalonepos.activity.BaseActivity;
 import com.webkul.mobikul.mobikulstandalonepos.activity.MainActivity;
 import com.webkul.mobikul.mobikulstandalonepos.db.DataBaseController;
@@ -28,6 +32,7 @@ public class SignUpSignInHandler {
 
     private Context context;
     private Administrator administrator;
+    private Vibrator vibrateObject;
 
     public SignUpSignInHandler(Context context, Administrator administrator) {
         this.context = context;
@@ -41,6 +46,10 @@ public class SignUpSignInHandler {
             DataBaseController.getInstanse().insertAdministorDetails(context, data, new DataBaseCallBack() {
                 @Override
                 public void onSuccess(Object responseData, String successMsg) {
+                    Intent i = new Intent(context, WalkthroughActivity.class);
+                    context.startActivity(i);
+                    AppSharedPref.setSignedUp(context, true);
+                    AppSharedPref.setShowWalkThrough(context, true);
                     FragmentManager fragmentManager = ((AppCompatActivity) context).getSupportFragmentManager();
                     Fragment fragment = fragmentManager.findFragmentByTag(SignUpFragment.class.getSimpleName());
                     if (fragment != null)
@@ -52,9 +61,6 @@ public class SignUpSignInHandler {
                     fragmentTransaction.addToBackStack(SignInFragment.class.getSimpleName());
                     fragmentTransaction.commit();
                     ToastHelper.showToast(context, successMsg, Toast.LENGTH_LONG);
-                    Intent i = new Intent(context, MainActivity.class);
-                    context.startActivity(i);
-                    AppSharedPref.setSignedUp(context, true);
                 }
 
                 @Override
@@ -68,10 +74,9 @@ public class SignUpSignInHandler {
             Toast.makeText(context, "Please check the form carefully!!", Toast.LENGTH_SHORT).show();
     }
 
-
     public void signIn(Administrator data) {
         if (isSignInFormValidated()) {
-            DataBaseController.getInstanse().getAdminData(context, data, new DataBaseCallBack() {
+            DataBaseController.getInstanse().getAdminDataByEmail(context, data, new DataBaseCallBack() {
                 @Override
                 public void onSuccess(Object responseData, String successMsg) {
                     Administrator administrator = (Administrator) responseData;
@@ -89,7 +94,8 @@ public class SignUpSignInHandler {
                 }
             });
         } else
-            Toast.makeText(context, "error", Toast.LENGTH_SHORT).show();
+            ToastHelper.showToast(context, "Check form carefully!", Toast.LENGTH_LONG);
+
     }
 
     public boolean isFormValidated() {
@@ -100,24 +106,35 @@ public class SignUpSignInHandler {
             SignUpFragment signUpFragment = (SignUpFragment) fragment;
             if (!administrator.getEmailError().isEmpty()) {
                 signUpFragment.binding.email.requestFocus();
+                shake(signUpFragment.binding.emailTil);
                 return false;
             }
             if (!administrator.getFirstNameError().isEmpty()) {
                 signUpFragment.binding.firstName.requestFocus();
+                shake(signUpFragment.binding.firstNameTil);
                 return false;
             }
             if (!administrator.getLastNameError().isEmpty()) {
                 signUpFragment.binding.lastname.requestFocus();
+                shake(signUpFragment.binding.lastnameTil);
                 return false;
             }
             if (!administrator.getPasswordError().isEmpty()) {
                 signUpFragment.binding.password.requestFocus();
+                shake(signUpFragment.binding.passwordTil);
                 return false;
             }
             administrator.setDisplayError(false);
             return true;
         }
         return false;
+    }
+
+    private void shake(View view) {
+        vibrateObject = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+        // Vibrate for 200 milliseconds
+        vibrateObject.vibrate(300);
+        view.startAnimation(AnimationUtils.loadAnimation(context, R.anim.shake_error));
     }
 
     public boolean isSignInFormValidated() {
@@ -128,11 +145,13 @@ public class SignUpSignInHandler {
             SignInFragment signInFragment = ((SignInFragment) fragment);
             if (!administrator.getEmailError().isEmpty()) {
                 signInFragment.binding.email.requestFocus();
+                shake(signInFragment.binding.emailTil);
                 return false;
             }
 
             if (!administrator.getPasswordError().isEmpty()) {
                 signInFragment.binding.password.requestFocus();
+                shake(signInFragment.binding.passwordTil);
                 return false;
             }
             administrator.setDisplayError(false);

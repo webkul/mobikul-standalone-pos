@@ -4,6 +4,7 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
@@ -13,6 +14,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.webkul.mobikul.mobikulstandalonepos.R;
@@ -93,16 +95,21 @@ public class HomeFragment extends Fragment {
         DataBaseController.getInstanse().getProducts(getActivity(), new DataBaseCallBack() {
             @Override
             public void onSuccess(Object responseData, String msg) {
-                if (!(products.toString().equalsIgnoreCase(responseData.toString()))) {
-                    if (products.size() > 0)
-                        products.clear();
-                    products.addAll((List<Product>) responseData);
-                    if (productAdapter == null) {
-                        productAdapter = new HomePageProductAdapter(getActivity(), products);
-                        binding.productRv.setAdapter(productAdapter);
-                    } else {
-                        productAdapter.notifyDataSetChanged();
+                if (!responseData.toString().equalsIgnoreCase("[]")) {
+                    if (!(products.toString().equalsIgnoreCase(responseData.toString()))) {
+                        if (products.size() > 0)
+                            products.clear();
+                        products.addAll((List<Product>) responseData);
+                        if (productAdapter == null) {
+                            productAdapter = new HomePageProductAdapter(getActivity(), products);
+                            binding.productRv.setAdapter(productAdapter);
+                        } else {
+                            productAdapter.notifyDataSetChanged();
+                        }
                     }
+                    binding.setVisibility(true);
+                } else {
+                    binding.setVisibility(false);
                 }
             }
 
@@ -154,8 +161,20 @@ public class HomeFragment extends Fragment {
         searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
         searchItem.setVisible(true);
         searchItem.expandActionView();
+        searchView.setQueryHint("Search your product...");
+        ((EditText) searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text)).setHintTextColor(getResources().getColor(R.color.colorAccent));
         searchView.setMaxWidth(Integer.MAX_VALUE);
         searchProduct = new ArrayList<>();
+
+        searchView.setOnSearchClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //perform your click operation hereif (mMainBinding.drawerLayout != null &&
+                if (((MainActivity) getActivity()).mMainBinding.drawerLayout.isDrawerOpen(GravityCompat.START))
+                    ((MainActivity) getActivity()).mMainBinding.drawerLayout.closeDrawer(GravityCompat.START);
+
+            }
+        });
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -198,6 +217,7 @@ public class HomeFragment extends Fragment {
                 }
                 return false;
             }
+
         });
 
     }
