@@ -32,4 +32,8 @@ public interface CategoryDao {
     @Delete
     void delete(Category Category);
 
+    @Query("DELETE FROM Category")
+    void delete();
+
+
 }

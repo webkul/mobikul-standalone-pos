@@ -65,7 +65,7 @@
                             android:drawableLeft="@drawable/ic_info"
                             android:drawablePadding="@dimen/spacing_generic"
                             android:gravity="center"
-                            android:text="@string/double_tap_to_remove_image"
+                            android:text="@string/single_tap_to_remove_image"
                             android:textColor="@color/secondaryTextColor"
                             android:textSize="@dimen/text_size_small" />
 
@@ -166,7 +166,7 @@
                                 android:layout_centerHorizontal="true"
                                 android:layout_marginTop="30dp"
                                 android:hint="@string/price"
-                                android:inputType="text"
+                                android:inputType="numberDecimal"
                                 android:singleLine="true"
                                 android:text="@={data.price}"
                                 android:textColorHint="@color/gray" />
@@ -184,7 +184,7 @@
                                 android:layout_centerHorizontal="true"
                                 android:layout_marginTop="30dp"
                                 android:hint="@string/special_price"
-                                android:inputType="text"
+                                android:inputType="numberDecimal"
                                 android:singleLine="true"
                                 android:text="@={data.specialPrice}"
                                 android:textColorHint="@color/gray" />

@@ -7,6 +7,7 @@
     <item
         android:id="@+id/menu_item_search"
         android:icon="@drawable/ic_vector_menu_search"
+        android:textColorHint="@color/colorAccent"
         android:title="@string/search"
         app:actionViewClass="android.support.v7.widget.SearchView"
         app:showAsAction="always" />

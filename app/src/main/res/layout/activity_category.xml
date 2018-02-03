@@ -19,6 +19,11 @@
             name="data"
             type="com.webkul.mobikul.mobikulstandalonepos.db.entity.Category" />
 
+        <import type="com.webkul.mobikul.mobikulstandalonepos.constants.BundleConstants" />
+
+        <variable
+            name="visibility"
+            type="boolean" />
     </data>
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -100,6 +105,12 @@
                 android:layout_height="match_parent"
                 android:layout_marginTop="@dimen/spacing_generic"
                 android:orientation="vertical">
+
+                <include
+                    android:id="@+id/empty_view"
+                    layout="@layout/empty_layout"
+                    app:page="@{BundleConstants.EmptyLayoutType.CATEGORY}"
+                    app:visibility="@{visibility}" />
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/category_rv"

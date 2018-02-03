@@ -7,7 +7,10 @@ import android.widget.Toast;
 
 import com.webkul.mobikul.mobikulstandalonepos.activity.BaseActivity;
 import com.webkul.mobikul.mobikulstandalonepos.db.DataBaseController;
+import com.webkul.mobikul.mobikulstandalonepos.db.entity.Category;
 import com.webkul.mobikul.mobikulstandalonepos.db.entity.Customer;
+import com.webkul.mobikul.mobikulstandalonepos.fragment.AddCategoryFragment;
+import com.webkul.mobikul.mobikulstandalonepos.fragment.AddCustomerFragment;
 import com.webkul.mobikul.mobikulstandalonepos.helper.ToastHelper;
 import com.webkul.mobikul.mobikulstandalonepos.interfaces.DataBaseCallBack;
 
@@ -24,24 +27,53 @@ public class AddCustomerFragmentHandler {
     }
 
     public void saveCustomer(Customer customer) {
-        Toast.makeText(context, customer + "adad", Toast.LENGTH_SHORT).show();
-        DataBaseController.getInstanse().addCustomer(context, customer, new DataBaseCallBack() {
-            @Override
-            public void onSuccess(Object responseData, String successMsg) {
-                Fragment fragment = ((BaseActivity) context).mSupportFragmentManager.findFragmentByTag(com.webkul.mobikul.mobikulstandalonepos.fragment.AddCustomerFragment.class.getSimpleName());
-                FragmentTransaction ft = ((BaseActivity) context).mSupportFragmentManager.beginTransaction();
-                ft.detach(fragment);
-                ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE);
-                ft.commit();
-                ((BaseActivity) context).mSupportFragmentManager.popBackStackImmediate();
-                ToastHelper.showToast(context, successMsg, Toast.LENGTH_LONG);
-            }
+        if (isValidated(customer)) {
 
-            @Override
-            public void onFailure(int errorCode, String errorMsg) {
-                ToastHelper.showToast(context, errorMsg, Toast.LENGTH_LONG);
+            DataBaseController.getInstanse().addCustomer(context, customer, new DataBaseCallBack() {
+                @Override
+                public void onSuccess(Object responseData, String successMsg) {
+                    Fragment fragment = ((BaseActivity) context).mSupportFragmentManager.findFragmentByTag(com.webkul.mobikul.mobikulstandalonepos.fragment.AddCustomerFragment.class.getSimpleName());
+                    FragmentTransaction ft = ((BaseActivity) context).mSupportFragmentManager.beginTransaction();
+                    ft.detach(fragment);
+                    ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE);
+                    ft.commit();
+                    ((BaseActivity) context).mSupportFragmentManager.popBackStackImmediate();
+                    ToastHelper.showToast(context, successMsg, Toast.LENGTH_LONG);
+                }
+
+                @Override
+                public void onFailure(int errorCode, String errorMsg) {
+                    ToastHelper.showToast(context, errorMsg, Toast.LENGTH_LONG);
+                }
+            });
+        }
+    }
+
+    public boolean isValidated(Customer customer) {
+        customer.setDisplayError(true);
+        Fragment fragment = ((BaseActivity) context).mSupportFragmentManager.findFragmentByTag(AddCustomerFragment.class.getSimpleName());
+        if (fragment != null && fragment.isAdded()) {
+            AddCustomerFragment categoryFragment = ((AddCustomerFragment) fragment);
+            if (!customer.getFirstNameError().isEmpty()) {
+                categoryFragment.binding.firstName.requestFocus();
+                return false;
             }
-        });
+            if (!customer.getLastNameError().isEmpty()) {
+                categoryFragment.binding.lastName.requestFocus();
+                return false;
+            }
+            if (!customer.getEmailError().isEmpty()) {
+                categoryFragment.binding.customerEmail.requestFocus();
+                return false;
+            }
+            if (!customer.getContactNumberError().isEmpty()) {
+                categoryFragment.binding.customerContactNo.requestFocus();
+                return false;
+            }
+            customer.setDisplayError(false);
+            return true;
+        }
+        return false;
     }
 
     public void deleteCustomer(Customer customer) {

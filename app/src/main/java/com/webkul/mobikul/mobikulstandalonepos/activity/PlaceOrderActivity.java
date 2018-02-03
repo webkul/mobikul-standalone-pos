@@ -11,6 +11,7 @@ import com.webkul.mobikul.mobikulstandalonepos.R;
 import com.webkul.mobikul.mobikulstandalonepos.databinding.ActivityPlaceOrderBinding;
 import com.webkul.mobikul.mobikulstandalonepos.db.DataBaseController;
 import com.webkul.mobikul.mobikulstandalonepos.db.entity.OrderEntity;
+import com.webkul.mobikul.mobikulstandalonepos.db.entity.Product;
 import com.webkul.mobikul.mobikulstandalonepos.handlers.OrderPlacedHandler;
 import com.webkul.mobikul.mobikulstandalonepos.helper.AppSharedPref;
 import com.webkul.mobikul.mobikulstandalonepos.helper.Helper;
@@ -41,6 +42,9 @@ public class PlaceOrderActivity extends BaseActivity {
         }
         cartData = Helper.fromStringToCartModel(AppSharedPref.getCartData(this));
 
+        for (Product product : cartData.getProducts()) {
+            DataBaseController.getInstanse().updateProductQty(PlaceOrderActivity.this, product);
+        }
         final OrderEntity order = new OrderEntity();
         order.setCartData(Helper.fromStringToCartModel(AppSharedPref.getCartData(this)));
         order.setCashData(cashData);

@@ -14,10 +14,12 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.webkul.mobikul.mobikulstandalonepos.R;
 import com.webkul.mobikul.mobikulstandalonepos.activity.BaseActivity;
+import com.webkul.mobikul.mobikulstandalonepos.adapter.OrderAdapter;
 import com.webkul.mobikul.mobikulstandalonepos.databinding.FragmentOrdersBinding;
 import com.webkul.mobikul.mobikulstandalonepos.db.DataBaseController;
 import com.webkul.mobikul.mobikulstandalonepos.db.entity.OrderEntity;
@@ -59,6 +61,7 @@ public class OrdersFragment extends Fragment {
                              Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_orders, container, false);
         orders = new ArrayList<>();
+        binding.setVisibility(true);
         return binding.getRoot();
     }
 
@@ -68,11 +71,16 @@ public class OrdersFragment extends Fragment {
         DataBaseController.getInstanse().getOrders(getActivity(), new DataBaseCallBack() {
             @Override
             public void onSuccess(Object responseData, String successMsg) {
-                if (orders.size() > 0)
-                    orders.clear();
-                orders.addAll((List<OrderEntity>) responseData);
-                orderAdapter = new OrderAdapter(getActivity(), orders);
-                binding.orderRv.setAdapter(orderAdapter);
+                if (!responseData.toString().equalsIgnoreCase("[]")) {
+                    if (orders.size() > 0)
+                        orders.clear();
+                    orders.addAll((List<OrderEntity>) responseData);
+                    orderAdapter = new OrderAdapter(getActivity(), orders);
+                    binding.orderRv.setAdapter(orderAdapter);
+                    binding.setVisibility(true);
+                } else {
+                    binding.setVisibility(false);
+                }
             }
 
             @Override
@@ -98,6 +106,8 @@ public class OrdersFragment extends Fragment {
         searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
         searchItem.setVisible(true);
         searchItem.expandActionView();
+        searchView.setQueryHint("Search your order...");
+        ((EditText) searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text)).setHintTextColor(getResources().getColor(R.color.colorAccent));
         searchView.setMaxWidth(Integer.MAX_VALUE);
         searchOrders = new ArrayList<>();
 

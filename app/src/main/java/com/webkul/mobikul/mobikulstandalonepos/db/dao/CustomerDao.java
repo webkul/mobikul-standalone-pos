@@ -27,7 +27,9 @@ public interface CustomerDao {
     @Insert
     void insertAll(Customer... Customers);
 
-    @Delete
-    void delete(Customer Customer);
+    //    @Delete
+//    void delete(Customer Customer);
+    @Query("DELETE FROM Customer")
+    void delete();
 
 }

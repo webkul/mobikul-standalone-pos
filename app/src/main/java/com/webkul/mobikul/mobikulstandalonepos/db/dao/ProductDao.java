@@ -31,6 +31,9 @@ public interface ProductDao {
     @Query("SELECT * FROM Product WHERE is_enabled = :isEnabled")
     List<Product> getEnabledProduct(boolean isEnabled);
 
+    @Query("UPDATE Product SET quantity = :qty WHERE pId = :pId")
+    void updateProductQty(String qty, int pId);
+
     @Query("UPDATE Product SET image = :imagePath, is_enabled = :isEnabled, product_name = :ProductName, sku = :sku, price = :price" +
             ", special_price = :specialPrice, is_taxable_goods_applied = :isTaxableGoodsApplied, track_inventory= :trackInventory" +
             ", quantity = :qty , stock_availability = :inStock, weight = :weight, productCategories = :productCategories WHERE pId = :pId")
@@ -56,6 +59,10 @@ public interface ProductDao {
 
     @Delete
     void delete(Product Product);
+
+    @Query("DELETE FROM Product")
+    void delete();
+
 
 }
 

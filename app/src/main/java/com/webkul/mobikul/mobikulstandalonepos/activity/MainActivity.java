@@ -1,17 +1,24 @@
 package com.webkul.mobikul.mobikulstandalonepos.activity;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.SearchManager;
+import android.arch.persistence.room.Database;
+import android.arch.persistence.room.Room;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.databinding.DataBindingUtil;
+import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.internal.BottomNavigationItemView;
 import android.support.design.internal.BottomNavigationMenuView;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MenuItemCompat;
@@ -29,6 +36,7 @@ import com.webkul.mobikul.mobikulstandalonepos.R;
 import com.webkul.mobikul.mobikulstandalonepos.adapter.DrawerAdapter;
 import com.webkul.mobikul.mobikulstandalonepos.adapter.HomePageProductAdapter;
 import com.webkul.mobikul.mobikulstandalonepos.databinding.ActivityMainBinding;
+import com.webkul.mobikul.mobikulstandalonepos.db.AppDatabase;
 import com.webkul.mobikul.mobikulstandalonepos.db.DataBaseController;
 import com.webkul.mobikul.mobikulstandalonepos.db.entity.Category;
 import com.webkul.mobikul.mobikulstandalonepos.db.entity.Product;
@@ -36,6 +44,7 @@ import com.webkul.mobikul.mobikulstandalonepos.fragment.HoldFragment;
 import com.webkul.mobikul.mobikulstandalonepos.fragment.HomeFragment;
 import com.webkul.mobikul.mobikulstandalonepos.fragment.MoreFragment;
 import com.webkul.mobikul.mobikulstandalonepos.fragment.OrdersFragment;
+import com.webkul.mobikul.mobikulstandalonepos.helper.AppSharedPref;
 import com.webkul.mobikul.mobikulstandalonepos.helper.ToastHelper;
 import com.webkul.mobikul.mobikulstandalonepos.interfaces.DataBaseCallBack;
 
@@ -60,22 +69,62 @@ public class MainActivity extends BaseActivity {
     private List<Category> categoriesWithFilteredById;
     private DrawerAdapter drawerAdapter;
     private SearchView searchView;
+    private long backPressedTime = 0;
+    long networkTS = 0;
+    private long storedTime;
+    private LocationManager locMan;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mMainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
-//        mMainBinding.cate.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Toast.makeText(MainActivity.this, "asdad", Toast.LENGTH_SHORT).show();
-//            }
-//        });
         initDrawerToggle();
         initBottomNavView();
         loadDrawerData();
         loadHomeFragment();
+        getCurrentTime();
+        storedTime = AppSharedPref.getTime(this, 0);
+        Log.d(TAG, "onCreate: " + networkTS + "----" + storedTime + "---" + (networkTS - storedTime));
+        if (storedTime == 0) {
+            AppSharedPref.setTime(this, networkTS);
+        } else {
+            if ((networkTS - storedTime) >= (60 * 60 * 1000)) {
+                destoryDbForDemoUser();
+            }
+        }
         categoriesWithFilteredById = new ArrayList<>();
+    }
+
+    private void getCurrentTime() {
+        locMan = (LocationManager) getSystemService(LOCATION_SERVICE);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, 0);
+            }
+            return;
+        }
+        networkTS = locMan.getLastKnownLocation(LocationManager.NETWORK_PROVIDER).getTime();
+    }
+
+    @SuppressLint("MissingPermission")
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == 0) {
+            networkTS = locMan.getLastKnownLocation(LocationManager.NETWORK_PROVIDER).getTime();
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+    }
+
+    private void destoryDbForDemoUser() {
+        DataBaseController.getInstanse().deleteAllTables(MainActivity.this);
+        AppSharedPref.setTime(this, 0);
     }
 
     public void loadDrawerData() {
@@ -201,59 +250,6 @@ public class MainActivity extends BaseActivity {
         return super.onOptionsItemSelected(item);
     }
 
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        super.onCreateOptionsMenu(menu);
-//        final MenuItem searchItem = menu.findItem(R.id.menu_item_search);
-//        searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
-//        searchItem.expandActionView();
-//        searchView.setMaxWidth(Integer.MAX_VALUE);
-//        final HomeFragment fragment = (HomeFragment) mSupportFragmentManager.findFragmentByTag(HomeFragment.class.getSimpleName());
-//        products = new ArrayList<>();
-//        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-//            @Override
-//            public boolean onQueryTextSubmit(String query) {
-//                return false;
-//            }
-//
-//            @Override
-//            public boolean onQueryTextChange(String newText) {
-//                if (newText.length() > 0) {
-//                    newText = "%" + newText + "%";
-//                    DataBaseController.getInstanse().getSearchData(MainActivity.this, newText, new DataBaseCallBack() {
-//                        @Override
-//                        public void onSuccess(Object responseData, String successMsg) {
-//                            if (!(products.toString().equalsIgnoreCase(responseData.toString()))) {
-//                                if (products.size() > 0) {
-//                                    products.clear();
-//                                    fragment.productAdapter = null;
-//                                }
-//                                products.addAll((List<Product>) responseData);
-//                                if (fragment.productAdapter == null) {
-//                                    fragment.productAdapter = new HomePageProductAdapter(MainActivity.this, products);
-//                                    fragment.binding.productRv.setAdapter(fragment.productAdapter);
-//                                } else {
-//                                    fragment.productAdapter.notifyDataSetChanged();
-//                                }
-//                            }
-//                        }
-//
-//                        @Override
-//                        public void onFailure(int errorCode, String errorMsg) {
-//
-//                        }
-//                    });
-//                    return true;
-//                } else {
-//                    fragment.productAdapter = new HomePageProductAdapter(MainActivity.this, fragment.products);
-//                    fragment.binding.productRv.setAdapter(fragment.productAdapter);
-//                }
-//                return false;
-//            }
-//        });
-//        return true;
-//    }
-
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
@@ -274,7 +270,14 @@ public class MainActivity extends BaseActivity {
         } else if (!(getSupportFragmentManager().findFragmentById(R.id.main_frame) instanceof HomeFragment)) {
             mMainBinding.bottomNavView.setSelectedItemId(R.id.bottom_nav_item_home);
         } else {
-            super.onBackPressed();
+            long t = System.currentTimeMillis();
+            if (t - backPressedTime > 2000) { //2 secs
+                backPressedTime = t;
+                ToastHelper.showToast(this, getResources().getString(R.string.press_back_to_exit), Toast.LENGTH_SHORT);
+            } else {
+//                destoryDbForDemoUser();
+                finish();
+            }
         }
     }
 

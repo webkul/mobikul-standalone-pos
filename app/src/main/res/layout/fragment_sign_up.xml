@@ -114,7 +114,8 @@
                     android:layout_height="wrap_content"
                     android:paddingBottom="@dimen/spacing_normal"
                     app:error="@{data.passwordError}"
-                    app:errorEnabled="@{data.displayError}">
+                    app:errorEnabled="@{data.displayError}"
+                    app:passwordToggleEnabled="true">
 
                     <EditText
                         android:id="@+id/password"
@@ -138,8 +139,7 @@
                     android:drawableRight="@drawable/ic_done_light"
                     android:onClick="@{()-> handler.signUp(data)}"
                     android:text="@string/create_an_account"
-                    android:textColor="@android:color/white"
-                     />
+                    android:textColor="@android:color/white" />
             </LinearLayout>
         </android.support.v7.widget.CardView>
     </FrameLayout>

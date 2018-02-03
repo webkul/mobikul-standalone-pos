@@ -3,6 +3,7 @@ package com.webkul.mobikul.mobikulstandalonepos.db;
 import android.content.Context;
 
 import com.webkul.mobikul.mobikulstandalonepos.activity.BaseActivity;
+import com.webkul.mobikul.mobikulstandalonepos.activity.MainActivity;
 import com.webkul.mobikul.mobikulstandalonepos.db.entity.Administrator;
 import com.webkul.mobikul.mobikulstandalonepos.db.entity.Category;
 import com.webkul.mobikul.mobikulstandalonepos.db.entity.Customer;
@@ -23,8 +24,16 @@ public class DataBaseController {
         return dataBaseController;
     }
 
-    public void getAdminData(Context context, Administrator data, DataBaseCallBack dataBaseCallBack) {
-        DataBaseAsyncUtils.getInstanse().new GetUserAsyncTask(((BaseActivity) context).getDb(), dataBaseCallBack).execute(data);
+    public void getAdminDataByEmail(Context context, Administrator data, DataBaseCallBack dataBaseCallBack) {
+        DataBaseAsyncUtils.getInstanse().new GetAdminByEmailAsyncTask(((BaseActivity) context).getDb(), dataBaseCallBack).execute(data);
+    }
+
+    public void getAdminData(Context context, DataBaseCallBack dataBaseCallBack) {
+        DataBaseAsyncUtils.getInstanse().new GetAllAdminAsyncTask(((BaseActivity) context).getDb(), dataBaseCallBack).execute();
+    }
+
+    public void updateAdmin(Context context, Administrator administrator,DataBaseCallBack dataBaseCallBack) {
+        DataBaseAsyncUtils.getInstanse().new UpdateAdmin(((BaseActivity) context).getDb(), dataBaseCallBack).execute(administrator);
     }
 
     public void insertAdministorDetails(Context context, Administrator data, DataBaseCallBack dataBaseCallBack) {
@@ -63,6 +72,10 @@ public class DataBaseController {
         DataBaseAsyncUtils.getInstanse().new UpdateProduct(((BaseActivity) context).getDb(), dataBaseCallBack).execute(data);
     }
 
+    public void updateProductQty(Context context, Product data) {
+        DataBaseAsyncUtils.getInstanse().new UpdateProductQty(((BaseActivity) context).getDb()).execute(data);
+    }
+
     public void deleteProduct(Context context, Product data, DataBaseCallBack dataBaseCallBack) {
         DataBaseAsyncUtils.getInstanse().new DeleteProduct(((BaseActivity) context).getDb(), dataBaseCallBack).execute(data);
     }
@@ -91,4 +104,7 @@ public class DataBaseController {
         DataBaseAsyncUtils.getInstanse().new GetSearchOrders(((BaseActivity) context).getDb(), dataBaseCallBack).execute(searchText);
     }
 
+    public void deleteAllTables(Context context) {
+        DataBaseAsyncUtils.getInstanse().new DeleteAllTables(((BaseActivity) context).getDb()).execute();
+    }
 }

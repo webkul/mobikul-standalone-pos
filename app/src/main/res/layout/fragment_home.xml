@@ -5,6 +5,14 @@
 
     <data>
 
+        <import type="com.webkul.mobikul.mobikulstandalonepos.constants.BundleConstants" />
+
+        <import type="android.view.View" />
+
+        <variable
+            name="visibility"
+            type="boolean" />
+
         <variable
             name="cartData"
             type="com.webkul.mobikul.mobikulstandalonepos.model.CartModel" />
@@ -14,23 +22,16 @@
             type="com.webkul.mobikul.mobikulstandalonepos.handlers.HomeFragmentHandler" />
     </data>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/product_rv"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:background="@android:color/white"
-            app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
+        android:background="@color/backgroundColor">
 
         <RelativeLayout
+            android:id="@+id/cart_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
+            android:layout_alignParentBottom="true"
             android:background="@android:color/white"
             android:onClick="@{()->handler.goToCart(cartData)}">
 
@@ -44,7 +45,6 @@
                 android:orientation="horizontal">
 
                 <TextView
-
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/spacing_small"
@@ -82,5 +82,25 @@
 
         </RelativeLayout>
 
-    </LinearLayout>
+        <include
+            android:id="@+id/empty_view"
+            layout="@layout/empty_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/cart_view"
+            android:layout_marginTop="@dimen/spacing_generic"
+            app:page="@{BundleConstants.EmptyLayoutType.PRODUCT}"
+            app:visibility="@{visibility}" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/product_rv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/spacing_generic"
+            android:layout_above="@+id/cart_view"
+            android:background="@android:color/white"
+            android:visibility="@{visibility ? View.VISIBLE : View.GONE}"
+            app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
+
+    </RelativeLayout>
 </layout>

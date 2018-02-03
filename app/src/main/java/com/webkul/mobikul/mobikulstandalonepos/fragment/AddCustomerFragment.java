@@ -17,7 +17,7 @@ import com.webkul.mobikul.mobikulstandalonepos.handlers.AddCustomerFragmentHandl
 public class AddCustomerFragment extends Fragment {
     private static final String ARG_PARAM1 = "customer";
     private static final String ARG_PARAM2 = "param2";
-    FragmentAddCustomerBinding binding;
+    public FragmentAddCustomerBinding binding;
     private Customer customer;
 
     public AddCustomerFragment() {
@@ -45,7 +45,6 @@ public class AddCustomerFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         ((CustomerActivity) getContext())
                 .setTitle(getContext().getString(R.string.new_customer));
-        Toast.makeText(getActivity(), customer + "", Toast.LENGTH_SHORT).show();
         binding.setData(customer);
         ((CustomerActivity) getActivity()).binding.setData(customer);
         ((CustomerActivity) getActivity()).binding.setHandler2(new AddCustomerFragmentHandler(getActivity()));

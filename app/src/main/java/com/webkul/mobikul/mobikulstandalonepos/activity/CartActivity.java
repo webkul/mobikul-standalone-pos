@@ -40,13 +40,15 @@ public class CartActivity extends BaseActivity {
 
     private void setCartProducts(CartModel cartData) {
         binding.setData(cartData);
-        binding.setHandler(new CartHandler(this));
+        binding.setHandler(new CartHandler(this, binding));
         if (cartData != null && cartData.getProducts().size() > 0) {
             CartProductAdapter adapter = new CartProductAdapter(this, cartData.getProducts());
             binding.cartProductRv.setAdapter(adapter);
             binding.setVisibility(true);
+            binding.delete.setVisibility(View.VISIBLE);
         } else {
             binding.setVisibility(false);
+            binding.delete.setVisibility(View.GONE);
         }
     }
 
@@ -75,8 +77,10 @@ public class CartActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Customer customer = (Customer) data.getExtras().getSerializable("customer");
-        binding.getData().setCustomer(customer);
-        AppSharedPref.setCartData(this, Helper.fromCartModelToString(binding.getData()));
+        if (data != null && data.getExtras() != null) {
+            Customer customer = (Customer) data.getExtras().getSerializable("customer");
+            binding.getData().setCustomer(customer);
+            AppSharedPref.setCartData(this, Helper.fromCartModelToString(binding.getData()));
+        }
     }
 }

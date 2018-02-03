@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.webkul.mobikul.mobikulstandalonepos.R;
 import com.webkul.mobikul.mobikulstandalonepos.db.AppDatabase;
@@ -73,6 +74,13 @@ public abstract class BaseActivity extends AppCompatActivity {
 ////        Helper.setBadgeCount(this, icon, AppSharedPref.getCartCount(this, 0));
 //        return true;
 //    }
+
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        db.close();
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

@@ -27,7 +27,10 @@ public interface OrderDao {
     @Insert
     long[] insertAll(OrderEntity... orderEntities);
 
-    @Delete
-    void delete(OrderEntity OrderEntity);
+//    @Delete
+//    void delete(OrderEntity OrderEntity);
+
+    @Query("DELETE FROM OrderEntity")
+    void delete();
 
 }

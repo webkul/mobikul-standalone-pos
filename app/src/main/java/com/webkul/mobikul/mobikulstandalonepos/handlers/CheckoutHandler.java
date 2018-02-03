@@ -19,6 +19,8 @@ import com.webkul.mobikul.mobikulstandalonepos.activity.PlaceOrderActivity;
 import com.webkul.mobikul.mobikulstandalonepos.db.entity.Category;
 import com.webkul.mobikul.mobikulstandalonepos.fragment.AddCategoryFragment;
 import com.webkul.mobikul.mobikulstandalonepos.fragment.CashFragment;
+import com.webkul.mobikul.mobikulstandalonepos.helper.AppSharedPref;
+import com.webkul.mobikul.mobikulstandalonepos.helper.Helper;
 import com.webkul.mobikul.mobikulstandalonepos.model.CashModel;
 import com.webkul.mobikul.mobikulstandalonepos.model.TotalModel;
 
@@ -49,7 +51,6 @@ public class CheckoutHandler {
         fragmentTransaction.add(((Checkout) context).checkoutBinding.frameLayout.getId(), fragment, fragment.getClass().getSimpleName());
         fragmentTransaction.addToBackStack(fragment.getClass().getSimpleName()).commit();
     }
-
 
     public void orderPlaced(CashModel cashData, TotalModel totalData) {
         if (isValidated(cashData)) {

@@ -4,9 +4,13 @@ import android.content.Context;
 import android.content.ContextWrapper;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Vibrator;
+import android.view.View;
+import android.view.animation.AnimationUtils;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.webkul.mobikul.mobikulstandalonepos.R;
 import com.webkul.mobikul.mobikulstandalonepos.model.CartModel;
 import com.webkul.mobikul.mobikulstandalonepos.model.ProductCategoryModel;
 
@@ -66,6 +70,13 @@ public class Helper {
         }.getType();
         CartModel cartData = gson.fromJson(cartDataString, type);
         return cartData;
+    }
+
+    public static void shake(Context context, View view) {
+        Vibrator vibrateObject = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+        // Vibrate for 200 milliseconds
+        vibrateObject.vibrate(300);
+        view.startAnimation(AnimationUtils.loadAnimation(context, R.anim.shake_error));
     }
 
 }

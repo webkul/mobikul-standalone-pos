@@ -35,6 +35,9 @@
                 android:background="@android:color/white"
                 android:paddingTop="@dimen/spacing_normal"
                 android:text="Quickly Manage"
+                android:paddingLeft="@dimen/spacing_tiny"
+                android:paddingStart="@dimen/spacing_tiny"
+                android:paddingBottom="@dimen/spacing_tiny"
                 android:textColor="#8F000000"
                 android:textSize="@dimen/text_size_small" />
 

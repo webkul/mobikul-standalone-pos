@@ -49,6 +49,9 @@ public interface ApplicationConstants {
     String SUCCESS_MSG_7 = "Wrong Credentials";
     String SUCCESS_MSG = "Success";
 
+    //    admin
+    String SUCCESS_MSG_1_UPDATE_ADMIN_DETAILS = "Details Updated.";
+
     //    error codes
     int ERROR_CODE = 1;
 

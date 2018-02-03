@@ -9,9 +9,11 @@
 
         <item name="android:buttonStyle">@style/DefaultButtonStyle</item>
         <item name="android:textViewStyle">@style/DefaultTextStyle</item>
-        <item name="buttonStyle">@style/DefaultButtonStyle</item>
+        <!--<item name="buttonStyle">@style/DefaultButtonStyle</item>-->
 
         <item name="actionBarTheme">@style/AppTheme.AppBarOverlay</item>
+        <!--<item name="android:actionBarWidgetTheme">@style/MyActionBarWidgetTheme</item>-->
+        <!--<item name="actionBarWidgetTheme">@style/MyActionBarWidgetTheme</item>-->
 
     </style>
 
@@ -19,6 +21,12 @@
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="MyActionBarWidgetTheme" parent="AppTheme">
+        .....
+        .....
+        <item name="android:textColorHint">@color/colorAccent</item>
     </style>
 
     <!-- Default Button Style -->

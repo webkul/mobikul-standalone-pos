@@ -45,9 +45,7 @@ public class MoreAdapter extends RecyclerView.Adapter<MoreAdapter.ViewHolder> {
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
-
         MoreRvItemsBinding binding;
-
         public ViewHolder(View itemView) {
             super(itemView);
             binding = MoreRvItemsBinding.bind(itemView);

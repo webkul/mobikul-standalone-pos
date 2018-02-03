@@ -30,13 +30,13 @@ public class DataBaseAsyncUtils {
         return dataBaseAsyncUtils;
     }
 
-    class GetUserAsyncTask extends AsyncTask<Administrator, Void,
+    class GetAdminByEmailAsyncTask extends AsyncTask<Administrator, Void,
             Administrator> {
 
         private final DataBaseCallBack dataBaseCallBack;
         private AppDatabase db;
 
-        GetUserAsyncTask(AppDatabase userDatabase, DataBaseCallBack dataBaseCallBack) {
+        GetAdminByEmailAsyncTask(AppDatabase userDatabase, DataBaseCallBack dataBaseCallBack) {
             db = userDatabase;
             this.dataBaseCallBack = dataBaseCallBack;
         }
@@ -46,6 +46,39 @@ public class DataBaseAsyncUtils {
             Administrator administrator;
             try {
                 administrator = db.administratorDao().findByEmail(administrators[0].getEmail(), administrators[0].getPassword());
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
+            return administrator;
+        }
+
+        @Override
+        protected void onPostExecute(Administrator administrator) {
+            super.onPostExecute(administrator);
+            if (administrator != null)
+                dataBaseCallBack.onSuccess(administrator, SUCCESS_MSG_2_SIGN_IN);
+            else
+                dataBaseCallBack.onFailure(ERROR_CODE, ERROR_MSG_2);
+        }
+    }
+
+    class GetAllAdminAsyncTask extends AsyncTask<Void, Void,
+            Administrator> {
+
+        private final DataBaseCallBack dataBaseCallBack;
+        private AppDatabase db;
+
+        GetAllAdminAsyncTask(AppDatabase userDatabase, DataBaseCallBack dataBaseCallBack) {
+            db = userDatabase;
+            this.dataBaseCallBack = dataBaseCallBack;
+        }
+
+        @Override
+        protected Administrator doInBackground(Void... voids) {
+            Administrator administrator;
+            try {
+                administrator = db.administratorDao().getAll();
             } catch (Exception e) {
                 e.printStackTrace();
                 return null;
@@ -90,6 +123,38 @@ public class DataBaseAsyncUtils {
             super.onPostExecute(aBoolean);
             if (aBoolean) {
                 dataBaseCallBack.onSuccess(true, SUCCESS_MSG_1_SIGN_UP);
+            } else
+                dataBaseCallBack.onFailure(ERROR_CODE, ERROR_MSG);
+        }
+    }
+
+    public class UpdateAdmin extends AsyncTask<Administrator, Void,
+            Boolean> {
+
+        private AppDatabase db;
+        private final DataBaseCallBack dataBaseCallBack;
+
+        public UpdateAdmin(AppDatabase userDatabase, DataBaseCallBack dataBaseCallBack) {
+            db = userDatabase;
+            this.dataBaseCallBack = dataBaseCallBack;
+        }
+
+        @Override
+        protected Boolean doInBackground(Administrator... administrator) {
+            try {
+                db.administratorDao().updateAdminById(administrator[0].getFirstName(), administrator[0].getLastName(), administrator[0].getUsername(), administrator[0].getUid());
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
+            return true;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            super.onPostExecute(aBoolean);
+            if (aBoolean) {
+                dataBaseCallBack.onSuccess(true, SUCCESS_MSG_1_UPDATE_ADMIN_DETAILS);
             } else
                 dataBaseCallBack.onFailure(ERROR_CODE, ERROR_MSG);
         }
@@ -353,6 +418,33 @@ public class DataBaseAsyncUtils {
         }
     }
 
+    public class UpdateProductQty extends AsyncTask<Product, Void,
+            Boolean> {
+
+        private AppDatabase db;
+
+        public UpdateProductQty(AppDatabase userDatabase) {
+            db = userDatabase;
+        }
+
+        @Override
+        protected Boolean doInBackground(Product... products) {
+            try {
+                db.productDao().updateProductQty(Integer.parseInt(products[0].getQuantity()) - Integer.parseInt(products[0].getCartQty()) + ""
+                        , products[0].getPId());
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
+            return true;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            super.onPostExecute(aBoolean);
+        }
+    }
+
 
     public class DeleteProduct extends AsyncTask<Product, Void,
             Boolean> {
@@ -522,7 +614,6 @@ public class DataBaseAsyncUtils {
 
         @Override
         protected List<Product> doInBackground(String... texts) {
-            Log.d("text", texts[0] + "");
             return db.productDao().getSearchData(texts[0]);
         }
 
@@ -559,6 +650,25 @@ public class DataBaseAsyncUtils {
                 dataBaseCallBack.onSuccess(searchData, SUCCESS_MSG);
             } else
                 dataBaseCallBack.onFailure(ERROR_CODE, ERROR_MSG);
+        }
+    }
+
+    public class DeleteAllTables extends AsyncTask<Void, Void,
+            Void> {
+
+        private AppDatabase db;
+
+        public DeleteAllTables(AppDatabase userDatabase) {
+            db = userDatabase;
+        }
+
+        @Override
+        protected Void doInBackground(Void... texts) {
+            db.orderDao().delete();
+            db.productDao().delete();
+            db.categoryDao().delete();
+            db.customerDao().delete();
+            return null;
         }
     }
 }
