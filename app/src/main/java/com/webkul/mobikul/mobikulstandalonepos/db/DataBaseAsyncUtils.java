@@ -4,10 +4,14 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.webkul.mobikul.mobikulstandalonepos.db.converters.DataConverter;
 import com.webkul.mobikul.mobikulstandalonepos.db.entity.Administrator;
+import com.webkul.mobikul.mobikulstandalonepos.db.entity.CashDrawerModel;
 import com.webkul.mobikul.mobikulstandalonepos.db.entity.Category;
 import com.webkul.mobikul.mobikulstandalonepos.db.entity.Customer;
+import com.webkul.mobikul.mobikulstandalonepos.db.entity.HoldCart;
+import com.webkul.mobikul.mobikulstandalonepos.db.entity.Options;
 import com.webkul.mobikul.mobikulstandalonepos.db.entity.OrderEntity;
 import com.webkul.mobikul.mobikulstandalonepos.db.entity.Product;
 import com.webkul.mobikul.mobikulstandalonepos.interfaces.DataBaseCallBack;
@@ -315,7 +319,7 @@ public class DataBaseAsyncUtils {
     }
 
     public class AddProductAsyncTask extends AsyncTask<Product, Void,
-            Boolean> {
+            Long> {
 
         private AppDatabase db;
         private final DataBaseCallBack dataBaseCallBack;
@@ -326,21 +330,22 @@ public class DataBaseAsyncUtils {
         }
 
         @Override
-        protected Boolean doInBackground(Product... products) {
+        protected Long doInBackground(Product... products) {
+            long[] id;
             try {
-                db.productDao().insertAll(products);
+                id = db.productDao().insertAll(products);
             } catch (Exception e) {
                 e.printStackTrace();
-                return false;
+                return Long.valueOf(0);
             }
-            return true;
+            return id[0];
         }
 
         @Override
-        protected void onPostExecute(Boolean aBoolean) {
-            super.onPostExecute(aBoolean);
-            if (aBoolean) {
-                dataBaseCallBack.onSuccess(true, SUCCESS_MSG_6_ADD_PRODUCT);
+        protected void onPostExecute(Long id) {
+            super.onPostExecute(id);
+            if (id != 0) {
+                dataBaseCallBack.onSuccess(id, SUCCESS_MSG_6_ADD_PRODUCT);
             } else
                 dataBaseCallBack.onFailure(ERROR_CODE, ERROR_MSG);
         }
@@ -360,6 +365,33 @@ public class DataBaseAsyncUtils {
         @Override
         protected List<Product> doInBackground(Void... voids) {
             List<Product> products = db.productDao().getAll();
+            return products;
+        }
+
+        @Override
+        protected void onPostExecute(List<Product> products) {
+            super.onPostExecute(products);
+            if (products != null) {
+                dataBaseCallBack.onSuccess(products, SUCCESS_MSG);
+            } else
+                dataBaseCallBack.onFailure(ERROR_CODE, ERROR_MSG);
+        }
+    }
+
+    public class GetAllEnabledProducts extends AsyncTask<Void, Void,
+            List<Product>> {
+
+        private AppDatabase db;
+        private final DataBaseCallBack dataBaseCallBack;
+
+        public GetAllEnabledProducts(AppDatabase userDatabase, DataBaseCallBack dataBaseCallBack) {
+            db = userDatabase;
+            this.dataBaseCallBack = dataBaseCallBack;
+        }
+
+        @Override
+        protected List<Product> doInBackground(Void... voids) {
+            List<Product> products = db.productDao().getEnabledProduct(true);
             return products;
         }
 
@@ -444,7 +476,6 @@ public class DataBaseAsyncUtils {
             super.onPostExecute(aBoolean);
         }
     }
-
 
     public class DeleteProduct extends AsyncTask<Product, Void,
             Boolean> {
@@ -668,7 +699,281 @@ public class DataBaseAsyncUtils {
             db.productDao().delete();
             db.categoryDao().delete();
             db.customerDao().delete();
+            db.holdCartDao().delete();
             return null;
+        }
+    }
+
+    public class AddCartDataToHoldCart extends AsyncTask<HoldCart, Void,
+            Long> {
+
+        private AppDatabase db;
+        private final DataBaseCallBack dataBaseCallBack;
+
+        public AddCartDataToHoldCart(AppDatabase userDatabase, DataBaseCallBack dataBaseCallBack) {
+            db = userDatabase;
+            this.dataBaseCallBack = dataBaseCallBack;
+        }
+
+        @Override
+        protected Long doInBackground(HoldCart... holdCarts) {
+            long[] id;
+            try {
+                id = db.holdCartDao().insertAll(holdCarts[0]);
+                Log.d(TAG, "doInBackground: " + id[0]);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return Long.valueOf(0);
+            }
+            return id[0];
+        }
+
+        @Override
+        protected void onPostExecute(Long orderId) {
+            super.onPostExecute(orderId);
+            if (orderId != 0) {
+                dataBaseCallBack.onSuccess(orderId, SUCCESS_MSG_1_ADD_HOLD_CART);
+            } else
+                dataBaseCallBack.onFailure(ERROR_CODE, ERROR_MSG);
+        }
+    }
+
+    public class GetHoldCartData extends AsyncTask<Void, Void,
+            List<HoldCart>> {
+
+        private AppDatabase db;
+        private final DataBaseCallBack dataBaseCallBack;
+
+        public GetHoldCartData(AppDatabase userDatabase, DataBaseCallBack dataBaseCallBack) {
+            db = userDatabase;
+            this.dataBaseCallBack = dataBaseCallBack;
+        }
+
+        @Override
+        protected List<HoldCart> doInBackground(Void... voids) {
+            List<HoldCart> holdCarts = db.holdCartDao().getAll();
+            return holdCarts;
+        }
+
+        @Override
+        protected void onPostExecute(List<HoldCart> holdCarts) {
+            super.onPostExecute(holdCarts);
+            if (holdCarts != null) {
+                dataBaseCallBack.onSuccess(holdCarts, SUCCESS_MSG);
+            } else
+                dataBaseCallBack.onFailure(ERROR_CODE, ERROR_MSG);
+        }
+    }
+
+    public class DeleteHoldCartById extends AsyncTask<HoldCart, Void,
+            Boolean> {
+
+        private AppDatabase db;
+
+        public DeleteHoldCartById(AppDatabase userDatabase) {
+            db = userDatabase;
+        }
+
+        @Override
+        protected Boolean doInBackground(HoldCart... holdCarts) {
+            try {
+                db.holdCartDao().delete(holdCarts[0].getHoldCartId() - 12000);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
+            return true;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            super.onPostExecute(aBoolean);
+        }
+    }
+
+    public class GetProductByBarcode extends AsyncTask<String, Void,
+            Product> {
+
+        private AppDatabase db;
+        private final DataBaseCallBack dataBaseCallBack;
+
+        public GetProductByBarcode(AppDatabase userDatabase, DataBaseCallBack dataBaseCallBack) {
+            db = userDatabase;
+            this.dataBaseCallBack = dataBaseCallBack;
+        }
+
+        @Override
+        protected Product doInBackground(String... texts) {
+            return db.productDao().getProductByBarcode(texts[0]);
+        }
+
+        @Override
+        protected void onPostExecute(Product searchData) {
+            super.onPostExecute(searchData);
+            if (searchData != null) {
+                dataBaseCallBack.onSuccess(searchData, SUCCESS_MSG);
+            } else
+                dataBaseCallBack.onFailure(ERROR_CODE, ERROR_MSG);
+        }
+    }
+
+    public class AddCashDrawerData extends AsyncTask<CashDrawerModel, Void,
+            Void> {
+
+        private AppDatabase db;
+
+        public AddCashDrawerData(AppDatabase userDatabase) {
+            db = userDatabase;
+        }
+
+        @Override
+        protected Void doInBackground(CashDrawerModel... cashDrawerModels) {
+            db.cashDrawerDao().insertAll(cashDrawerModels[0]);
+            return null;
+        }
+    }
+
+    public class UpdateCashData extends AsyncTask<CashDrawerModel, Void,
+            Boolean> {
+
+        private AppDatabase db;
+        private DataBaseCallBack callBack;
+
+        public UpdateCashData(AppDatabase userDatabase, DataBaseCallBack callBack) {
+            db = userDatabase;
+            this.callBack = callBack;
+        }
+
+        @Override
+        protected Boolean doInBackground(CashDrawerModel... cashDrawerModel) {
+            try {
+                DataConverter converter = new DataConverter();
+                db.cashDrawerDao().updateCashDrawerModelByDate(cashDrawerModel[0].getClosingBalance()
+                        , cashDrawerModel[0].getNetRevenue()
+                        , cashDrawerModel[0].getInAmount()
+                        , cashDrawerModel[0].getOutAmount()
+                        , converter.fromCashDrawerItemToString(cashDrawerModel[0].getCashDrawerItems())
+                        , cashDrawerModel[0].getDate());
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
+            return true;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean success) {
+            super.onPostExecute(success);
+            if (success) {
+                callBack.onSuccess(success, "Update!");
+            } else {
+                callBack.onFailure(ERROR_CODE, ERROR_MSG);
+            }
+        }
+    }
+
+    public class GetCashDrawerDataByDate extends AsyncTask<String, Void,
+            CashDrawerModel> {
+
+        private AppDatabase db;
+        private final DataBaseCallBack dataBaseCallBack;
+
+        public GetCashDrawerDataByDate(AppDatabase userDatabase, DataBaseCallBack dataBaseCallBack) {
+            db = userDatabase;
+            this.dataBaseCallBack = dataBaseCallBack;
+        }
+
+        @Override
+        protected CashDrawerModel doInBackground(String... date) {
+            return db.cashDrawerDao().loadAllByDate(date[0]);
+        }
+
+        @Override
+        protected void onPostExecute(CashDrawerModel cashDrawerModel) {
+            super.onPostExecute(cashDrawerModel);
+            if (cashDrawerModel != null) {
+                dataBaseCallBack.onSuccess(cashDrawerModel, SUCCESS_MSG);
+            } else
+                dataBaseCallBack.onFailure(ERROR_CODE, ERROR_MSG);
+        }
+    }
+
+    public class GetAllCashDrawerData extends AsyncTask<Void, Void,
+            List<CashDrawerModel>> {
+
+        private AppDatabase db;
+        private final DataBaseCallBack dataBaseCallBack;
+
+        public GetAllCashDrawerData(AppDatabase userDatabase, DataBaseCallBack dataBaseCallBack) {
+            db = userDatabase;
+            this.dataBaseCallBack = dataBaseCallBack;
+        }
+
+        @Override
+        protected List<CashDrawerModel> doInBackground(Void... voids) {
+            return db.cashDrawerDao().getAll();
+        }
+
+        @Override
+        protected void onPostExecute(List<CashDrawerModel> cashDrawerModelList) {
+            super.onPostExecute(cashDrawerModelList);
+            if (cashDrawerModelList != null) {
+                dataBaseCallBack.onSuccess(cashDrawerModelList, SUCCESS_MSG);
+            } else
+                dataBaseCallBack.onFailure(ERROR_CODE, ERROR_MSG);
+        }
+    }
+
+    public class AddOptions extends AsyncTask<Options, Void,
+            Long> {
+
+        private AppDatabase db;
+        private final DataBaseCallBack dataBaseCallBack;
+
+        public AddOptions(AppDatabase userDatabase, DataBaseCallBack dataBaseCallBack) {
+            db = userDatabase;
+            this.dataBaseCallBack = dataBaseCallBack;
+        }
+
+        @Override
+        protected Long doInBackground(Options... options) {
+            Long[] id = db.optionDao().insertAll(options);
+            return id[0];
+        }
+
+        @Override
+        protected void onPostExecute(Long id) {
+            super.onPostExecute(id);
+            if (id != null) {
+                dataBaseCallBack.onSuccess(id, SUCCESS_MSG_1_ADD_OPTION);
+            } else
+                dataBaseCallBack.onFailure(ERROR_CODE, ERROR_MSG);
+        }
+    }
+
+    public class GetOptions extends AsyncTask<Void, Void,
+            List<Options>> {
+
+        private AppDatabase db;
+        private final DataBaseCallBack dataBaseCallBack;
+
+        public GetOptions(AppDatabase userDatabase, DataBaseCallBack dataBaseCallBack) {
+            db = userDatabase;
+            this.dataBaseCallBack = dataBaseCallBack;
+        }
+
+        @Override
+        protected List<Options> doInBackground(Void... voids) {
+            return db.optionDao().getAll();
+        }
+
+        @Override
+        protected void onPostExecute(List<Options> options) {
+            super.onPostExecute(options);
+            if (options != null) {
+                dataBaseCallBack.onSuccess(options, SUCCESS_MSG);
+            } else
+                dataBaseCallBack.onFailure(ERROR_CODE, ERROR_MSG);
         }
     }
 }

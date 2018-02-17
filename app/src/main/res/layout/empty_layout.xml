@@ -21,9 +21,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
         android:layout_gravity="center"
         android:background="@color/white"
+        android:orientation="vertical"
         android:padding="@dimen/spacing_normal"
         android:visibility="@{!visibility ? View.VISIBLE : View.GONE}">
 
@@ -38,7 +38,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textSize="@dimen/text_size_medium"
             android:textStyle="bold"
             app:emptyTextHeading="@{page}"
             tools:text="empty" />
@@ -49,10 +49,8 @@
             android:gravity="center"
             android:padding="5dp"
             android:textColor="@color/secondaryTextColor"
-            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textSize="@dimen/text_size_small"
             app:emptyTextSubHeading="@{page}"
             tools:text="sub heading" />
-
     </LinearLayout>
-
 </layout>

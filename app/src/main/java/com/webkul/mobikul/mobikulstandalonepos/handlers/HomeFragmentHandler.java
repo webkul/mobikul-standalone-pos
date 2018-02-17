@@ -46,8 +46,7 @@ public class HomeFragmentHandler {
         CartModel cartData = ((HomeFragment) fragment).binding.getCartData();
         subTotal = Double.parseDouble(cartData.getTotals().getSubTotal());
         counter = Integer.parseInt(cartData.getTotals().getQty());
-        Log.d(TAG, "onClickProduct: " + Integer.parseInt(product.getCartQty()));
-        if (Integer.parseInt(product.getQuantity()) > Integer.parseInt(product.getCartQty())) {
+        if (product.isStock() && Integer.parseInt(product.getQuantity()) > Integer.parseInt(product.getCartQty())) {
             if (product.getSpecialPrice().isEmpty())
                 subTotal = subTotal + Double.parseDouble(product.getPrice());
             else
@@ -90,6 +89,7 @@ public class HomeFragmentHandler {
             cartData.getTotals().setFormatedGrandTotal(currencySymbol + df.format(grandTotal) + "");
             cartData.getTotals().setFormatedRoundTotal(currencySymbol + Math.ceil(grandTotal) + "");
             AppSharedPref.setCartData(context, Helper.fromCartModelToString(cartData));
+            ToastHelper.showToast(context, "" + product.getProductName() + " is added to cart.", Toast.LENGTH_SHORT);
         } else {
             ToastHelper.showToast(context, "The quantity for " + product.getProductName() + " is not available", Toast.LENGTH_LONG);
         }

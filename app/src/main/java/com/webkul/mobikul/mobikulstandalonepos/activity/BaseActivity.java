@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatDelegate;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -40,9 +41,14 @@ public abstract class BaseActivity extends AppCompatActivity {
     public AppDatabase getDb() {
         db = Room.databaseBuilder(getApplicationContext(),
                 AppDatabase.class, "db_pos")
-                .addMigrations(MIGRATION_1_2)
+//                .addMigrations(MIGRATION_1_2)
+                .fallbackToDestructiveMigration()
                 .build();
         return db;
+    }
+
+    static {
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
     }
 
     protected void showBackButton(boolean show) {

@@ -55,7 +55,7 @@ public class SplashScreenActivity extends AppCompatActivity {
         super.onResume();
         isOnline();
         if (isInternetAvailable) {
-            if (versionCompare(latestVersion, currentVersion) >= 1) {
+            if (Float.parseFloat(latestVersion) > Float.parseFloat(currentVersion)) {
                 if (sweetAlert != null) {
                     sweetAlert.dismissWithAnimation();
                 }

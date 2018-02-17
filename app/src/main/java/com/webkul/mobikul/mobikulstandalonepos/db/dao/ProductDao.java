@@ -31,6 +31,9 @@ public interface ProductDao {
     @Query("SELECT * FROM Product WHERE is_enabled = :isEnabled")
     List<Product> getEnabledProduct(boolean isEnabled);
 
+    @Query("SELECT * FROM Product WHERE barCode = :barcode")
+    Product getProductByBarcode(String barcode);
+
     @Query("UPDATE Product SET quantity = :qty WHERE pId = :pId")
     void updateProductQty(String qty, int pId);
 
@@ -55,7 +58,7 @@ public interface ProductDao {
 
 
     @Insert
-    void insertAll(Product... Products);
+    long[] insertAll(Product... Products);
 
     @Delete
     void delete(Product Product);

@@ -81,9 +81,16 @@ public class Product extends BaseObservable implements Serializable, Parcelable 
     @ColumnInfo(name = "weight")
     private String weight;
 
+    @ColumnInfo(name = "barCode")
+    private String barCode;
+
     @TypeConverters(DataConverter.class)
     @ColumnInfo(name = "productCategories")
     private List<ProductCategoryModel> productCategories;
+
+    @TypeConverters(DataConverter.class)
+    @ColumnInfo(name = "options")
+    private List<Options> options;
     @Ignore
     private String cartQty;
     @Ignore
@@ -105,6 +112,8 @@ public class Product extends BaseObservable implements Serializable, Parcelable 
         stock = in.readByte() != 0;
         image = in.readString();
         weight = in.readString();
+        barCode = in.readString();
+        productCategories = in.createTypedArrayList(ProductCategoryModel.CREATOR);
         cartQty = in.readString();
         displayError = in.readByte() != 0;
     }
@@ -282,6 +291,8 @@ public class Product extends BaseObservable implements Serializable, Parcelable 
     @Bindable
 
     public String getImage() {
+        if (image == null)
+            return "";
         return image;
     }
 
@@ -365,6 +376,26 @@ public class Product extends BaseObservable implements Serializable, Parcelable 
         this.formattedSpecialPrice = formattedSpecialPrice;
     }
 
+    @Bindable
+    public String getBarCode() {
+        if (barCode == null)
+            return "";
+        return barCode;
+    }
+
+    public void setBarCode(String barCode) {
+        this.barCode = barCode;
+        notifyPropertyChanged(BR.barCode);
+    }
+
+    public List<Options> getOptions() {
+        return options;
+    }
+
+    public void setOptions(List<Options> options) {
+        this.options = options;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -387,6 +418,8 @@ public class Product extends BaseObservable implements Serializable, Parcelable 
         dest.writeByte((byte) (stock ? 1 : 0));
         dest.writeString(image);
         dest.writeString(weight);
+        dest.writeString(barCode);
+        dest.writeTypedList(productCategories);
         dest.writeString(cartQty);
         dest.writeByte((byte) (displayError ? 1 : 0));
     }

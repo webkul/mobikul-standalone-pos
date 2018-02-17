@@ -2,16 +2,31 @@ package com.webkul.mobikul.mobikulstandalonepos.handlers;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.content.ContextCompat;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
+import com.webkul.mobikul.mobikulstandalonepos.R;
 import com.webkul.mobikul.mobikulstandalonepos.activity.Checkout;
 import com.webkul.mobikul.mobikulstandalonepos.activity.CartActivity;
 import com.webkul.mobikul.mobikulstandalonepos.activity.CustomerActivity;
+import com.webkul.mobikul.mobikulstandalonepos.activity.MainActivity;
 import com.webkul.mobikul.mobikulstandalonepos.databinding.ActivityCartBinding;
+import com.webkul.mobikul.mobikulstandalonepos.db.DataBaseController;
+import com.webkul.mobikul.mobikulstandalonepos.db.entity.HoldCart;
 import com.webkul.mobikul.mobikulstandalonepos.helper.AppSharedPref;
 import com.webkul.mobikul.mobikulstandalonepos.helper.Helper;
+import com.webkul.mobikul.mobikulstandalonepos.helper.SweetAlertBox;
 import com.webkul.mobikul.mobikulstandalonepos.helper.ToastHelper;
+import com.webkul.mobikul.mobikulstandalonepos.interfaces.DataBaseCallBack;
 import com.webkul.mobikul.mobikulstandalonepos.model.CartModel;
+
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
 /**
  * Created by aman.gupta on 18/1/18. @Webkul Software Private limited
@@ -19,21 +34,87 @@ import com.webkul.mobikul.mobikulstandalonepos.model.CartModel;
 
 public class CartHandler {
 
+    private final String currencySymbol;
     private Context context;
     private ActivityCartBinding binding;
 
     public CartHandler(Context context, ActivityCartBinding binding) {
         this.context = context;
         this.binding = binding;
+        currencySymbol = context.getResources().getString(R.string.currency_symbol);
     }
 
-    public void holdOrder(CartModel cartData) {
+    public void holdCart(CartModel cartData) {
+        final HoldCart holdCart = new HoldCart();
+        holdCart.setCartData(Helper.fromStringToCartModel(AppSharedPref.getCartData(context)));
+        holdCart.setQty(cartData.getTotals().getQty());
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MMMM-yy");
+        String date = simpleDateFormat.format(new Date());
+        holdCart.setDate(date);
+        simpleDateFormat = new SimpleDateFormat("hh:mm a");
+        String currentTime = simpleDateFormat.format(new Date());
+        holdCart.setTime(currentTime + "");
 
+        DataBaseController.getInstanse().addHoldCart(context, holdCart, new DataBaseCallBack() {
+            @Override
+            public void onSuccess(Object responseData, String successMsg) {
+                AppSharedPref.deleteCartData(context);
+                binding.setData(Helper.fromStringToCartModel(AppSharedPref.getCartData(context)));
+                binding.setVisibility(false);
+                binding.delete.setVisibility(View.GONE);
+                SweetAlertBox.getInstance().showSuccessPopUp(context, context.getString(R.string.success), successMsg);
+
+//                SweetAlertDialog sweetAlert = new SweetAlertDialog(context, SweetAlertDialog.SUCCESS_TYPE);
+//                sweetAlert.setTitleText(context.getString(R.string.success))
+//                        .setContentText(successMsg /*+ " Do you want to see?"*/)
+//                        .setConfirmText(context.getResources().getString(R.string.yes))
+//                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+//                            @Override
+//                            public void onClick(SweetAlertDialog sDialog) {
+//                                sDialog.dismissWithAnimation();
+//                            }
+//                        })
+////                        .setCancelText(context.getResources().getString(R.string.no))
+////                        .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+////                            @Override
+////                            public void onClick(SweetAlertDialog sDialog) {
+////                                sDialog.dismissWithAnimation();
+////                            }
+////                        })
+//                        .show();
+//                sweetAlert.mC.setBackgroundColor(ContextCompat.getColor(context,R.color.colorAccent));
+//                sweetAlert.setCancelable(false);
+                ToastHelper.showToast(context, successMsg + "", Toast.LENGTH_LONG);
+            }
+
+            @Override
+            public void onFailure(int errorCode, String errorMsg) {
+                ToastHelper.showToast(context, errorMsg + "", Toast.LENGTH_LONG);
+            }
+        });
     }
 
     public void deleteAll() {
-        AppSharedPref.deleteCartData(context);
-        ((CartActivity) context).finish();
+        SweetAlertDialog sweetAlert = new SweetAlertDialog(context, SweetAlertDialog.WARNING_TYPE);
+        sweetAlert.setTitleText(context.getString(R.string.warning))
+                .setContentText("Are you sure?" /*+ " Do you want to see?"*/)
+                .setConfirmText(context.getResources().getString(R.string.yes))
+                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sDialog) {
+                        sDialog.dismissWithAnimation();
+                        AppSharedPref.deleteCartData(context);
+                        ((CartActivity) context).recreate();
+                    }
+                })
+                .setCancelText(context.getResources().getString(R.string.no))
+                .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sDialog) {
+                        sDialog.dismissWithAnimation();
+                    }
+                })
+                .show();
     }
 
     public void proceedToCheckout(CartModel cartData) {
@@ -51,5 +132,17 @@ public class CartHandler {
         Intent i = new Intent(context, CustomerActivity.class);
         i.putExtra("choose_customer", "");
         ((CartActivity) context).startActivityForResult(i, 2);
+    }
+
+    public void customDiscount(CartModel cartData, String customDiscount) {
+        DecimalFormat df = new DecimalFormat("####0.00");
+        double newGrandTotal = Double.parseDouble(cartData.getTotals().getGrandTotal()) - Double.parseDouble(customDiscount);
+        cartData.getTotals().setFormatedDiscount(currencySymbol + df.format(Double.parseDouble(customDiscount)) + "");
+        cartData.getTotals().setGrandTotal(df.format(newGrandTotal) + "");
+        cartData.getTotals().setRoundTotal(Math.ceil(newGrandTotal) + "");
+        cartData.getTotals().setFormatedGrandTotal(currencySymbol + df.format(newGrandTotal) + "");
+        cartData.getTotals().setFormatedRoundTotal(currencySymbol + Math.ceil(newGrandTotal) + "");
+        AppSharedPref.setCartData(context, Helper.fromCartModelToString(cartData));
+        ((CartActivity) context).recreate();
     }
 }

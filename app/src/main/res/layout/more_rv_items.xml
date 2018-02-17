@@ -44,6 +44,7 @@
             android:enabled="@{data.enabled ? true : false}"
             android:text="@{data.label}"
             android:textColor="@{data.enabled ? @color/text_color : @color/textColorLight}"
+            android:textSize="@dimen/text_size_small"
             tools:text="More Options" />
 
         <View

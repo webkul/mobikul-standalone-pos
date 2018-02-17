@@ -19,28 +19,28 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="@dimen/spacing_huge"
+            android:layout_marginBottom="@dimen/spacing_max"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/heading"
-                android:layout_width="150dp"
+                android:layout_width="@dimen/text_view_heading_width"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:text="@string/category_management"
-                android:textSize="@dimen/text_size_medium"
+                android:textSize="@dimen/text_size_large"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/subheading"
-                android:layout_width="250dp"
+                android:layout_width="@dimen/text_view_subheading_width"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:text="@string/you_can_simply_add_and_manage_the_categoies"
                 android:textColor="@color/secondaryTextColor"
-                android:textSize="@dimen/text_size_tiny" />
+                android:textSize="@dimen/text_size_small" />
 
         </LinearLayout>
 
@@ -68,6 +68,7 @@
             android:textColor="@color/colorAccent"
             android:textSize="@dimen/text_size_large"
             android:textStyle="bold"
+            android:visibility="gone"
             tools:textColor="@color/colorAccent" />
     </RelativeLayout>
 </layout>

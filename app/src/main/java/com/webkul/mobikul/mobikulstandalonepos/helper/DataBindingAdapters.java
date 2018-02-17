@@ -1,14 +1,22 @@
 package com.webkul.mobikul.mobikulstandalonepos.helper;
 
 import android.databinding.BindingAdapter;
+import android.databinding.InverseBindingAdapter;
+import android.databinding.InverseBindingListener;
 import android.graphics.drawable.Drawable;
+import android.support.v7.app.AppCompatDelegate;
+import android.support.v7.widget.AppCompatSpinner;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.squareup.picasso.Picasso;
 import com.webkul.mobikul.mobikulstandalonepos.R;
 import com.webkul.mobikul.mobikulstandalonepos.constants.BundleConstants;
 
@@ -26,26 +34,46 @@ public class DataBindingAdapters {
         if (imageUrl != null && imageUrl.isEmpty()) {
             imageUrl = null;
         }
-
-        Log.d(TAG, "loadImage: " + imageUrl);
         /*LOAD WITHOUT PLACE HOLDER*/
         if (imageUrl != null && !imageUrl.equalsIgnoreCase("")) {
-            Glide.with(view.getContext())
-                    .load(imageUrl).placeholder(R.drawable.ic_product_placeholder)
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .skipMemoryCache(true)
-                    .dontAnimate()
-                    .into(view);
-            Log.d("Image", imageUrl + "");
+            try {
+                Glide.with(view.getContext())
+                        .load(imageUrl)
+//                    .error(R.drawable.ic_error)
+                        .diskCacheStrategy(DiskCacheStrategy.NONE)
+                        .skipMemoryCache(true)
+                        .dontAnimate()
+                        .into(view);
+            } catch (Exception e) {
+                view.setImageResource(R.drawable.ic_error);
+            }
         } else {
-            Glide.with(view.getContext())
-                    .load(R.drawable.ic_product_placeholder).placeholder(R.drawable.ic_product_placeholder)
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .skipMemoryCache(true)
-                    .dontAnimate()
-                    .into(view);
+            view.setImageResource(R.drawable.ic_product_placeholder);
             Log.d("Placeholder Image", imageUrl + "---" + view);
         }
+    }
+
+    @BindingAdapter(value = {"selectedValue", "selectedValueAttrChanged"}, requireAll = false)
+    public static void bindSpinnerData(AppCompatSpinner pAppCompatSpinner, String newSelectedValue, final InverseBindingListener newTextAttrChanged) {
+        pAppCompatSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                newTextAttrChanged.onChange();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+        if (newSelectedValue != null) {
+            int pos = ((ArrayAdapter<String>) pAppCompatSpinner.getAdapter()).getPosition(newSelectedValue);
+            pAppCompatSpinner.setSelection(pos, true);
+        }
+    }
+
+    @InverseBindingAdapter(attribute = "selectedValue", event = "selectedValueAttrChanged")
+    public static String captureSelectedValue(AppCompatSpinner pAppCompatSpinner) {
+        return (String) pAppCompatSpinner.getSelectedItem();
     }
 
     @BindingAdapter({"emptyTextSubHeading"})
@@ -63,8 +91,17 @@ public class DataBindingAdapters {
             case CART:
                 textview.setText(textview.getContext().getString(R.string.add_products_to_your_cart_first));
                 break;
+            case HOLD:
+                textview.setText(textview.getContext().getString(R.string.subtitle_hold_cart));
+                break;
             case CATEGORY:
                 textview.setText(textview.getContext().getString(R.string.you_do_not_have_any_category_yet));
+                break;
+            case PAYMENT:
+                textview.setText(textview.getContext().getString(R.string.empty_subtitle_payment_methods));
+                break;
+            case CASHDRAWER:
+                textview.setText(textview.getContext().getString(R.string.empty_subtitle_cash_drawer));
                 break;
 //            case NOTIFICATION:
 //                textview.setText(textview.getContext().getString(R.string.no_recent_notifications));
@@ -91,8 +128,17 @@ public class DataBindingAdapters {
             case CART:
                 textview.setText(textview.getContext().getString(R.string.your_bag_is_empty));
                 break;
+            case HOLD:
+                textview.setText(textview.getContext().getString(R.string.empty_hold_cart));
+                break;
             case CATEGORY:
                 textview.setText(textview.getContext().getString(R.string.no_category));
+                break;
+            case PAYMENT:
+                textview.setText(textview.getContext().getString(R.string.empty_payment_methods));
+                break;
+            case CASHDRAWER:
+                textview.setText(textview.getContext().getString(R.string.empty_cash_drawer));
                 break;
 //            case NOTIFICATION:
 //                textview.setText(textview.getContext().getString(R.string.no_notification));
@@ -118,8 +164,17 @@ public class DataBindingAdapters {
             case CART:
                 imageview.setImageResource(R.drawable.ic_empty_cart);
                 break;
+            case HOLD:
+                imageview.setImageResource(R.drawable.ic_empty_hold_cart);
+                break;
             case CATEGORY:
                 imageview.setImageResource(R.drawable.ic_empty_category);
+                break;
+            case PAYMENT:
+                imageview.setImageResource(R.drawable.ic_empty_payment);
+                break;
+            case CASHDRAWER:
+                imageview.setImageResource(R.drawable.ic_empty_product_list);
                 break;
 //            case NOTIFICATION:
 //                imageview.setImageResource(R.drawable.ic_vector_empty_notification);

@@ -6,7 +6,18 @@
         inStock, please Update now ?</string>
     <string name="update">Update</string>
     <string name="later">Later</string>
+    <string name="remind_me_later">Remind me later</string>
+    <string name="never">Never</string>
 
+    <string name="demo_app_popup">This is a demo application, all the data will reset after 1 hour.\n Do you want to see this message again?</string>
+    <!---->
+    <!---->
+    <!--sweetalert box-->
+    <string name="loading">Loading...</string>
+    <string name="wait_for_a_moment">Wait for a moment</string>
+    <string name="warning">Warning</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
     <!---->
     <!---->
     <!--activities name-->
@@ -109,6 +120,8 @@
     <string name="special_price">Special Price</string>
     <string name="out_of_stock">Out of Stock</string>
     <string name="in_stock_with_qty">%s - In Stock</string>
+    <string name="enable_product">Enable Product</string>
+
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -139,6 +152,12 @@
     <string name="you_do_not_have_any_category_yet">You do not have any category yet.</string>
     <string name="no_order">No Orders</string>
     <string name="shop_first_to_see_your_orders_here">Shop first to see your orders here.</string>
+    <string name="empty_hold_cart">No hold Cart</string>
+    <string name="subtitle_hold_cart">There is nothing in your hold cart.</string>
+    <string name="empty_payment_methods">No Payment Methods</string>
+    <string name="empty_subtitle_payment_methods">There are no payment methods enabled or exist.</string>
+    <string name="empty_cash_drawer">No Cash History</string>
+    <string name="empty_subtitle_cash_drawer">There are no cash history found in your cash drawer.</string>
 
     <!--customer info-->
     <string name="title_activity_customer">Customers</string>
@@ -163,7 +182,9 @@
     <string name="title_activity_view_order_details">ViewOrderDetails</string>
     <string name="payment_information">Payment Information</string>
     <string name="sign_out">Sign Out</string>
-    <string name="title_activity_my_account_info">MyAccountInfo</string>
+
+    <!--account info-->
+    <string name="title_activity_my_account_info">Account Info</string>
 
     <!--walkthrough pages string-->
     <string name="title_activity_walkthrough">WalkthroughActivity</string>
@@ -181,6 +202,59 @@
     <string name="username">Username</string>
     <string name="old_password">Old Password</string>
     <string name="new_password">New Password</string>
+    <string name="no_category_subtitle">First create category to use this option.</string>
 
+    <!--hold cart string-->
+    <string name="hold_id">Hold #%s</string>
+    <string name="export_database">Export Database</string>
+    <string name="import_database">Import Database</string>
+    <string name="db_exported">DB Exported</string>
+    <string name="db_imported">DB Imported</string>
+    <string name="subtitle_dp_imported">Your database has been imported successfully.</string>
 
+    <!--Payment Methods-->
+    <string name="title_activity_payment_method">Payment Methods</string>
+    <string name="apply_custom_discount">Apply Custom Discount</string>
+
+    <!--barcode-->
+    <string name="scan_barcode_button">Scan barcode</string>
+    <string name="no_barcode_captured">No barcode captured</string>
+    <string name="barcode_error_format">"Error reading barcode: %1$s"</string>
+
+    <!-- Strings related to barcode scanner -->
+    <string name="ok">OK</string>
+    <string name="permission_camera_rationale">Access to the camera is needed for detection</string>
+    <string name="no_camera_permission">This application cannot run because it does not have the camera permission.  The application will now exit.</string>
+    <string name="low_storage_error">Face detector dependencies cannot be downloaded due to low device storage</string>
+    <string name="generate_barcode">Generate Barcode</string>
+    <string name="barcode">Barcode</string>
+    <string name="barcode_saved">Barcode Saved!</string>
+    <string name="image_saved_to">Image saved to-</string>
+
+    <!--option string-->
+    <string name="title_activity_options">Options</string>
+    <string name="type">Type</string>
+    <string name="option">Option</string>
+    <string name="option_name">Option Name</string>
+    <string name="option_values">Option Values</string>
+    <string name="add_option">Add Option</string>
+    <string name="edit_option">Edit Option</string>
+
+    <string-array name="type">
+        <item>Select</item>
+        <item>Radio</item>
+        <item>Checkbox</item>
+        <item>Text</item>
+        <item>TextArea</item>
+        <item>Date</item>
+        <item>Time</item>
+        <item>Date &amp; Time</item>
+    </string-array>
+
+    <!--cash drawer string-->
+    <string name="title_activity_cash_drawer">Cash Drawer</string>
+    <string name="amt_returned">Amt. Returned </string>
+    <string name="net_revenue">Net Revenue - </string>
+    <string name="net_revenue_">Net Revenue - %s</string>
+    <string name="amt_collected">Amt. Collected</string>
 </resources>

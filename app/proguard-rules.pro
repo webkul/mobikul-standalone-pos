@@ -39,3 +39,13 @@
     boolean mShiftingMode;
 }
 -keeppackagenames org.jsoup.nodes
+-keep class cn.pedant.SweetAlert.Rotate3dAnimation {
+    public <init>(...);
+}
+
+# OkHttp
+-keep class com.squareup.okhttp.** { *; }
+-keep interface com.squareup.okhttp.** { *; }
+-dontwarn com.squareup.okhttp.**
+
+-dontwarn com.squareup.picasso.**

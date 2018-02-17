@@ -3,6 +3,9 @@ package com.webkul.mobikul.mobikulstandalonepos.helper;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import static android.content.Context.MODE_PRIVATE;
 
 /**
@@ -28,6 +31,11 @@ public class AppSharedPref {
     private static final String IS_LOGGED_IN = "IS_LOGGED_in";
     private static final String IS_SHOW_WALKTHROUGH = "IS_SHOW_WALKTHROUGH";
     private static final String KEY_CART_DATA = "CART_DATA";
+    private static final String KEY_TIME = "time";
+    private static final String KEY_REMINDER = "REMINDER_MSG";
+    private static final String KEY_CASH = "IS_CASH";
+    private static final String KEY_DATE = "DATE";
+    private static final String KEY_OPTION_VALUE_IDS = "OPTION_VALUE_IDS";
 
     /*SHARED PREF AND EDITOR*/
     @SuppressWarnings("WeakerAccess")
@@ -113,12 +121,36 @@ public class AppSharedPref {
         getSharedPreferenceEditor(context, APP_PREF).remove(KEY_CART_DATA + getUserId(context)).apply();
     }
 
-
     public static void setTime(Context context, long time) {
-        getSharedPreferenceEditor(context, APP_PREF).putLong("TIME", time).apply();
+        getSharedPreferenceEditor(context, APP_PREF).putLong(KEY_TIME, time).apply();
     }
 
     public static long getTime(Context context, long time) {
-        return getSharedPreference(context, APP_PREF).getLong("TIME", time);
+        return getSharedPreference(context, APP_PREF).getLong(KEY_TIME, time);
     }
+
+    public static void setReminderMsgShown(Context context, boolean isReminder) {
+        getSharedPreferenceEditor(context, APP_PREF).putBoolean(KEY_REMINDER, isReminder).apply();
+    }
+
+    public static boolean isReminderMsgShown(Context context, boolean isReminder) {
+        return getSharedPreference(context, APP_PREF).getBoolean(KEY_REMINDER, isReminder);
+    }
+
+    public static void setCashEnabled(Context context, boolean isCashEnabled) {
+        getSharedPreferenceEditor(context, APP_PREF).putBoolean(KEY_CASH, isCashEnabled).apply();
+    }
+
+    public static boolean isCashEnabled(Context context, boolean isCashEnabled) {
+        return getSharedPreference(context, APP_PREF).getBoolean(KEY_CASH, isCashEnabled);
+    }
+
+    public static String getDate(Context context) {
+        return getSharedPreference(context, APP_PREF).getString(KEY_DATE, "");
+    }
+
+    public static void setDate(Context context, String date) {
+        getSharedPreferenceEditor(context, APP_PREF).putString(KEY_DATE, date).apply();
+    }
+
 }

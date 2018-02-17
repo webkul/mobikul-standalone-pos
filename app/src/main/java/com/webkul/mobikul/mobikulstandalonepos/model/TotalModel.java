@@ -12,7 +12,7 @@ import java.io.Serializable;
  * Created by aman.gupta on 17/1/18. @Webkul Software Private limited
  */
 
-public class TotalModel extends BaseObservable implements Serializable{
+public class TotalModel extends BaseObservable implements Serializable {
     private String subTotal;
     private String formatedSubTotal;
     private String qty;
@@ -55,7 +55,7 @@ public class TotalModel extends BaseObservable implements Serializable{
     @Bindable
     public String getDiscount() {
         if (discount == null)
-            return "0.00";
+            return "";
         return discount;
     }
 
@@ -99,6 +99,7 @@ public class TotalModel extends BaseObservable implements Serializable{
         this.qty = qty;
         notifyPropertyChanged(BR.qty);
     }
+
     @Bindable
     public String getFormatedSubTotal() {
         if (formatedSubTotal == null) {

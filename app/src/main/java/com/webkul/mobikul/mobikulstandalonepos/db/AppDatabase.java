@@ -8,17 +8,26 @@ import android.arch.persistence.room.migration.Migration;
 
 import com.webkul.mobikul.mobikulstandalonepos.db.converters.DataConverter;
 import com.webkul.mobikul.mobikulstandalonepos.db.dao.AdministratorDao;
+import com.webkul.mobikul.mobikulstandalonepos.db.dao.CashDrawerDao;
 import com.webkul.mobikul.mobikulstandalonepos.db.dao.CategoryDao;
 import com.webkul.mobikul.mobikulstandalonepos.db.dao.CustomerDao;
+import com.webkul.mobikul.mobikulstandalonepos.db.dao.HoldCartDao;
+import com.webkul.mobikul.mobikulstandalonepos.db.dao.OptionDao;
+import com.webkul.mobikul.mobikulstandalonepos.db.dao.OptionValuesDao;
 import com.webkul.mobikul.mobikulstandalonepos.db.dao.OrderDao;
 import com.webkul.mobikul.mobikulstandalonepos.db.dao.ProductDao;
 import com.webkul.mobikul.mobikulstandalonepos.db.entity.Administrator;
+import com.webkul.mobikul.mobikulstandalonepos.db.entity.CashDrawerModel;
 import com.webkul.mobikul.mobikulstandalonepos.db.entity.Category;
 import com.webkul.mobikul.mobikulstandalonepos.db.entity.Customer;
+import com.webkul.mobikul.mobikulstandalonepos.db.entity.HoldCart;
+import com.webkul.mobikul.mobikulstandalonepos.db.entity.OptionValues;
+import com.webkul.mobikul.mobikulstandalonepos.db.entity.Options;
 import com.webkul.mobikul.mobikulstandalonepos.db.entity.OrderEntity;
 import com.webkul.mobikul.mobikulstandalonepos.db.entity.Product;
 
-@Database(entities = {Administrator.class, Category.class, Product.class, Customer.class, OrderEntity.class}, version = 8, exportSchema = false)
+@Database(entities = {Administrator.class, Category.class, Product.class, Customer.class, OrderEntity.class
+        , HoldCart.class, CashDrawerModel.class, Options.class, OptionValues.class}, version = 9, exportSchema = false)
 @TypeConverters(DataConverter.class)
 public abstract class AppDatabase extends RoomDatabase {
     public abstract AdministratorDao administratorDao();
@@ -31,7 +40,15 @@ public abstract class AppDatabase extends RoomDatabase {
 
     public abstract OrderDao orderDao();
 
-    public static final Migration MIGRATION_1_2 = new Migration(7, 8) {
+    public abstract HoldCartDao holdCartDao();
+
+    public abstract CashDrawerDao cashDrawerDao();
+
+    public abstract OptionDao optionDao();
+
+    public abstract OptionValuesDao optionValuesDao();
+
+    public static final Migration MIGRATION_1_2 = new Migration(8, 9) {
         @Override
         public void migrate(SupportSQLiteDatabase database) {
 
@@ -87,4 +104,5 @@ public abstract class AppDatabase extends RoomDatabase {
 //            database.execSQL("ALTER TABLE Product ADD COLUMN formatted_price TEXT");
         }
     };
+
 }

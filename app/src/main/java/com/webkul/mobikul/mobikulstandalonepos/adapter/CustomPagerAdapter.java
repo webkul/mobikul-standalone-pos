@@ -57,11 +57,6 @@ public class CustomPagerAdapter extends PagerAdapter {
         } else {
             itemView.findViewById(R.id.done).setVisibility(View.GONE);
         }
-        if (position > 1 && position != mResources.length - 1) {
-            itemView.findViewById(R.id.skip).setVisibility(View.VISIBLE);
-        } else {
-            itemView.findViewById(R.id.skip).setVisibility(View.GONE);
-        }
 
         itemView.findViewById(R.id.done).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,15 +68,6 @@ public class CustomPagerAdapter extends PagerAdapter {
             }
         });
 
-        itemView.findViewById(R.id.skip).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AppSharedPref.setShowWalkThrough(context, false);
-                Intent i = new Intent(context, MainActivity.class);
-                context.startActivity(i);
-                ((WalkthroughActivity) context).finish();
-            }
-        });
         container.addView(itemView);
         return itemView;
     }

@@ -75,11 +75,11 @@ public class ProductActivity extends BaseActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CAMERA_REQUEST) {
-            if (data != null && data.getExtras()!=null) {
+            if (data != null && data.getExtras() != null) {
                 Bitmap photo = (Bitmap) data.getExtras().get("data");
+                Log.d(TAG, "onActivityResult: " + binding.getData().getPId() + "");
                 Uri uri = Helper.saveToInternalStorage(ProductActivity.this, photo, binding.getData().getPId() + "");
                 android.support.v4.app.Fragment fragment = mSupportFragmentManager.findFragmentByTag(AddProductFragment.class.getSimpleName());
-                Log.d(TAG, "onActivityResult: " + uri);
                 ((AddProductFragment) fragment).binding.getData().setImage(uri.toString());
 //            binding.getData().setImage(path.toString());
                 synchronized (binding.getData()) {
