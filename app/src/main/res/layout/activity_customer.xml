@@ -29,6 +29,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/backgroundColor"
         tools:context="com.webkul.mobikul.mobikulstandalonepos.activity.CustomerActivity">
 
         <android.support.design.widget.AppBarLayout
@@ -92,6 +93,7 @@
             android:id="@+id/customer_fl"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_generic"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <include

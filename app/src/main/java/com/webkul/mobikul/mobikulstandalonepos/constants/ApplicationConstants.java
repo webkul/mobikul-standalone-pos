@@ -1,5 +1,7 @@
 package com.webkul.mobikul.mobikulstandalonepos.constants;
 
+import com.webkul.mobikul.mobikulstandalonepos.BuildConfig;
+
 /**
  * Created by anchit.makkar on 19/12/17.
  */
@@ -7,6 +9,7 @@ package com.webkul.mobikul.mobikulstandalonepos.constants;
 public interface ApplicationConstants {
 
     int DEFAULT_BACK_PRESSED_TIME_TO_CLOSE = 2000;
+    public static String DB_FILEPATH = "/data/" + BuildConfig.APPLICATION_ID + "/databases/db_pos";
 
     //    more fragment option ids
     int MORE_MENU_CASH_DRAWER = 1;
@@ -16,6 +19,7 @@ public interface ApplicationConstants {
     int MORE_MENU_CUSTOMERS = 5;
     int MORE_MENU_CATEGORIES = 6;
     int MORE_MENU_PRODUCTS = 7;
+    int MORE_MENU_OPTIONS = 16;
     int MORE_MENU_GIFT_CARD = 8;
     int MORE_MENU_DISCOUNTS_AND_CART_RULES = 9;
     int MORE_MENU_TAXES = 10;
@@ -44,13 +48,20 @@ public interface ApplicationConstants {
     String SUCCESS_MSG_6_ADD_CUSTOMER = "Customer has been registered successfully!";
     String SUCCESS_MSG_7_DELETE_CUSTOMER = "This Customer has been deleted successfully!";
     String SUCCESS_MSG_8_UPDATE_CUSTOMER = "Customer details Updated.";
-
+    //orderplace
     String SUCCESS_MSG_9_ORDER_PLACED = "Order placed successfully.";
     String SUCCESS_MSG_7 = "Wrong Credentials";
     String SUCCESS_MSG = "Success";
+    //hold
+    String SUCCESS_MSG_1_ADD_HOLD_CART = "You cart data is successfully added in hold cart.";
+    String SUCCESS_MSG_2_DELETE_HOLD_CART = "Deleted.";
 
     //    admin
     String SUCCESS_MSG_1_UPDATE_ADMIN_DETAILS = "Details Updated.";
+
+    //option
+    String SUCCESS_MSG_1_ADD_OPTION = "Success: You have added option successfully.";
+    String SUCCESS_MSG_2_DELETE_OPTION = "Deleted.";
 
     //    error codes
     int ERROR_CODE = 1;

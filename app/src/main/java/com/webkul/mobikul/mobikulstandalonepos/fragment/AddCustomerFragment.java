@@ -50,7 +50,7 @@ public class AddCustomerFragment extends Fragment {
         ((CustomerActivity) getActivity()).binding.setHandler2(new AddCustomerFragmentHandler(getActivity()));
         ((CustomerActivity) getActivity()).binding.addCustomer.setVisibility(View.GONE);
         ((CustomerActivity) getActivity()).binding.saveCustomer.setVisibility(View.VISIBLE);
-        ((CustomerActivity) getActivity()).binding.deleteCustomer.setVisibility(View.VISIBLE);
+//        ((CustomerActivity) getActivity()).binding.deleteCustomer.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -58,7 +58,7 @@ public class AddCustomerFragment extends Fragment {
         super.onDetach();
         ((CustomerActivity) getActivity()).binding.addCustomer.setVisibility(View.VISIBLE);
         ((CustomerActivity) getActivity()).binding.saveCustomer.setVisibility(View.GONE);
-        ((CustomerActivity) getActivity()).binding.deleteCustomer.setVisibility(View.GONE);
+//        ((CustomerActivity) getActivity()).binding.deleteCustomer.setVisibility(View.GONE);
         getActivity().recreate();
         ((CustomerActivity) getContext())
                 .setTitle(getContext().getString(R.string.title_activity_category));

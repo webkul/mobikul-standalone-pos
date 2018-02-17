@@ -36,6 +36,7 @@ import static com.webkul.mobikul.mobikulstandalonepos.constants.ApplicationConst
 import static com.webkul.mobikul.mobikulstandalonepos.constants.ApplicationConstants.MORE_MENU_DISCOUNTS_AND_CART_RULES;
 import static com.webkul.mobikul.mobikulstandalonepos.constants.ApplicationConstants.MORE_MENU_GIFT_CARD;
 import static com.webkul.mobikul.mobikulstandalonepos.constants.ApplicationConstants.MORE_MENU_MY_ACCOUNT_INFO;
+import static com.webkul.mobikul.mobikulstandalonepos.constants.ApplicationConstants.MORE_MENU_OPTIONS;
 import static com.webkul.mobikul.mobikulstandalonepos.constants.ApplicationConstants.MORE_MENU_PAYMENT_METHODS;
 import static com.webkul.mobikul.mobikulstandalonepos.constants.ApplicationConstants.MORE_MENU_POS_USERS;
 import static com.webkul.mobikul.mobikulstandalonepos.constants.ApplicationConstants.MORE_MENU_PRODUCTS;
@@ -47,7 +48,7 @@ import static com.webkul.mobikul.mobikulstandalonepos.constants.ApplicationConst
 
 public class MoreFragment extends Fragment {
 
-    FragmentMoreBinding binding;
+    public FragmentMoreBinding binding;
     String[] label;
     int[] icons;
     int[] menus;
@@ -80,13 +81,12 @@ public class MoreFragment extends Fragment {
     }
 
     List<MoreData> createData() {
-        label = new String[]{getString(R.string.cash_drawer), getString(R.string.sync_with_store), getString(R.string.sales_and_reporting), getString(R.string.my_account_info)};
-        icons = new int[]{R.drawable.icon_drawer_light, R.drawable.icon_sync_store, R.drawable.icon_sales, R.drawable.icon_my_account};
+        label = new String[]{getString(R.string.cash_drawer), getString(R.string.sales_and_reporting), getString(R.string.my_account_info)};
+        icons = new int[]{R.drawable.icon_drawer_light, R.drawable.icon_sales, R.drawable.icon_my_account};
         menus = new int[]{MORE_MENU_CASH_DRAWER,
-                MORE_MENU_SYNC_WITH_STORE,
                 MORE_MENU_SALES_AND_REPORTING,
                 MORE_MENU_MY_ACCOUNT_INFO};
-        boolean enabled[] = {false, false, false, true};
+        boolean enabled[] = {true, false, true};
 
         List<MoreData> moreData = new ArrayList<>();
         for (int i = 0; i < label.length; i++) {
@@ -97,23 +97,23 @@ public class MoreFragment extends Fragment {
 
 
     List<MoreData> createDataForQuickManage() {
-        label = new String[]{getString(R.string.customers), getString(R.string.categories), getString(R.string.products), getString(R.string.gift_card)
+        label = new String[]{getString(R.string.customers), getString(R.string.categories), getString(R.string.products), "Options", getString(R.string.gift_card)
                 , getString(R.string.discounts_and_cart_rules), getString(R.string.taxes), getString(R.string.payment_methods)
-                , getString(R.string.shipping_methods), getString(R.string.pos_users), getString(R.string.user_roles)};
-        icons = new int[]{R.drawable.icon_customers, R.drawable.icon_category, R.drawable.icon_box, R.drawable.icon_gift, R.drawable.icon_discount
-                , R.drawable.icon_tax, R.drawable.icon_card, R.drawable.icon_shipping, R.drawable.icon_users, R.drawable.icon_roles};
+                , getString(R.string.pos_users), getString(R.string.user_roles)};
+        icons = new int[]{R.drawable.icon_customers, R.drawable.icon_category, R.drawable.icon_box, R.drawable.icon_box, R.drawable.icon_gift, R.drawable.icon_discount
+                , R.drawable.icon_tax, R.drawable.icon_card, R.drawable.icon_users, R.drawable.icon_roles};
         menus = new int[]{MORE_MENU_CUSTOMERS,
                 MORE_MENU_CATEGORIES,
                 MORE_MENU_PRODUCTS,
+                MORE_MENU_OPTIONS,
                 MORE_MENU_GIFT_CARD,
                 MORE_MENU_DISCOUNTS_AND_CART_RULES,
                 MORE_MENU_TAXES,
                 MORE_MENU_PAYMENT_METHODS,
-                MORE_MENU_SHIPPING_METHODS,
                 MORE_MENU_POS_USERS,
                 MORE_MENU_USER_ROLES};
 
-        boolean enabled[] = {true, true, true, false, false, false, false, false, false, false};
+        boolean enabled[] = {true, true, true, true, false, false, false, true, false, false};
 
         List<MoreData> moreData = new ArrayList<>();
         for (int i = 0; i < label.length; i++) {
@@ -135,6 +135,8 @@ public class MoreFragment extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         final MenuItem searchItem = menu.findItem(R.id.menu_item_search);
+        final MenuItem barcodeItem = menu.findItem(R.id.menu_item_scan_barcode);
         searchItem.setVisible(false);
+        barcodeItem.setVisible(false);
     }
 }

@@ -2,18 +2,24 @@ package com.webkul.mobikul.mobikulstandalonepos.handlers;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.webkul.mobikul.mobikulstandalonepos.activity.BaseActivity;
+import com.webkul.mobikul.mobikulstandalonepos.activity.MainActivity;
 import com.webkul.mobikul.mobikulstandalonepos.activity.MyAccountInfo;
+import com.webkul.mobikul.mobikulstandalonepos.activity.SignUpSignInActivity;
 import com.webkul.mobikul.mobikulstandalonepos.db.DataBaseController;
 import com.webkul.mobikul.mobikulstandalonepos.db.entity.Administrator;
 import com.webkul.mobikul.mobikulstandalonepos.fragment.SignUpFragment;
+import com.webkul.mobikul.mobikulstandalonepos.helper.AppSharedPref;
 import com.webkul.mobikul.mobikulstandalonepos.helper.Helper;
 import com.webkul.mobikul.mobikulstandalonepos.helper.ToastHelper;
 import com.webkul.mobikul.mobikulstandalonepos.interfaces.DataBaseCallBack;
+
+import static com.webkul.mobikul.mobikulstandalonepos.helper.AppSharedPref.USER_PREF;
 
 /**
  * Created by aman.gupta on 3/2/18. @Webkul Software Private limited
@@ -64,4 +70,13 @@ public class MyAccountInfoHandler {
         }
         return false;
     }
+
+//    public void signOut() {
+//        AppSharedPref.getSharedPreferenceEditor(context, USER_PREF).clear().apply();
+//        Intent i = new Intent(context, SignUpSignInActivity.class);
+//        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+//        context.startActivity(i);
+//        ((MyAccountInfo) context).finish();
+//    }
+
 }

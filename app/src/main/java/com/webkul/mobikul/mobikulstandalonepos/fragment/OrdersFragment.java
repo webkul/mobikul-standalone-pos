@@ -50,10 +50,6 @@ public class OrdersFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-//        if (getArguments() != null) {
-//            mParam1 = getArguments().getString(ARG_PARAM1);
-//            mParam2 = getArguments().getString(ARG_PARAM2);
-//        }
     }
 
     @Override
@@ -75,8 +71,11 @@ public class OrdersFragment extends Fragment {
                     if (orders.size() > 0)
                         orders.clear();
                     orders.addAll((List<OrderEntity>) responseData);
-                    orderAdapter = new OrderAdapter(getActivity(), orders);
-                    binding.orderRv.setAdapter(orderAdapter);
+                    if (orderAdapter == null) {
+                        orderAdapter = new OrderAdapter(getActivity(), orders);
+                        binding.orderRv.setAdapter(orderAdapter);
+                    } else
+                        orderAdapter.notifyDataSetChanged();
                     binding.setVisibility(true);
                 } else {
                     binding.setVisibility(false);
@@ -102,6 +101,8 @@ public class OrdersFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
+        final MenuItem barcodeItem = menu.findItem(R.id.menu_item_scan_barcode);
+        barcodeItem.setVisible(false);
         final MenuItem searchItem = menu.findItem(R.id.menu_item_search);
         searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
         searchItem.setVisible(true);
@@ -110,7 +111,6 @@ public class OrdersFragment extends Fragment {
         ((EditText) searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text)).setHintTextColor(getResources().getColor(R.color.colorAccent));
         searchView.setMaxWidth(Integer.MAX_VALUE);
         searchOrders = new ArrayList<>();
-
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -124,19 +124,14 @@ public class OrdersFragment extends Fragment {
                     DataBaseController.getInstanse().getSearchOrders(getActivity(), newText, new DataBaseCallBack() {
                         @Override
                         public void onSuccess(Object responseData, String successMsg) {
-                            Log.d(TAG, "onSuccess: " + " size-" + ((List<Product>) responseData).size());
                             if (!(searchOrders.toString().equalsIgnoreCase(responseData.toString()))) {
                                 if (searchOrders.size() > 0) {
                                     searchOrders.clear();
-                                    orderAdapter = null;
                                 }
                                 searchOrders.addAll((List<OrderEntity>) responseData);
-                                if (orderAdapter == null) {
-                                    orderAdapter = new OrderAdapter(getActivity(), searchOrders);
-                                    binding.orderRv.setAdapter(orderAdapter);
-                                } else {
-                                    orderAdapter.notifyDataSetChanged();
-                                }
+                                orderAdapter = new OrderAdapter(getActivity(), searchOrders);
+                                binding.orderRv.setAdapter(orderAdapter);
+//                                orderAdapter.notifyDataSetChanged();
                             }
                         }
 
@@ -155,6 +150,4 @@ public class OrdersFragment extends Fragment {
         });
 
     }
-
-
 }

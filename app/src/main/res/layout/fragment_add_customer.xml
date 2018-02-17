@@ -22,9 +22,9 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="@dimen/spacing_generic"
                 android:background="@color/white"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/spacing_generic">
 
                 <TextView
                     android:layout_width="match_parent"

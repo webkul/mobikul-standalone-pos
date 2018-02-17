@@ -75,7 +75,6 @@ public class Administrator extends BaseObservable {
 
     @Bindable({"displayError", "lastName"})
     public String getLastNameError() {
-        Log.d("isDisplayError", isDisplayError() + "");
         if (!isDisplayError()) {
             return "";
         }
@@ -99,7 +98,6 @@ public class Administrator extends BaseObservable {
 
     @Bindable({"displayError", "email"})
     public String getEmailError() {
-        Log.d("isDisplayError", isDisplayError() + "");
         if (!isDisplayError()) {
             return "";
         }
@@ -126,7 +124,6 @@ public class Administrator extends BaseObservable {
 
     @Bindable({"displayError", "password"})
     public String getPasswordError() {
-        Log.d("isDisplayError", isDisplayError() + "");
         if (!isDisplayError()) {
             return "";
         }

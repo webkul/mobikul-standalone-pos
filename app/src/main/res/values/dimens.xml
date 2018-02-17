@@ -23,5 +23,8 @@
     <dimen name="fab_margin">16dp</dimen>
 
     <dimen name="product_image_dimens">120dp</dimen>
+    <dimen name="text_view_heading_width">150dp</dimen>
+    <dimen name="text_view_subheading_width">250dp</dimen>
+    <dimen name="drawer_item_height">55dp</dimen>
 
 </resources>

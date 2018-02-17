@@ -22,7 +22,6 @@ import com.webkul.mobikul.mobikulstandalonepos.interfaces.DataBaseCallBack;
 public class AddNEditCategoryHandler {
 
     private final Context context;
-//    private final FragmentAddCategoryBinding binding;
 
     public AddNEditCategoryHandler(Context context) {
         this.context = context;
@@ -45,7 +44,6 @@ public class AddNEditCategoryHandler {
                         ft.commit();
                         ((BaseActivity) context).mSupportFragmentManager.popBackStackImmediate();
                         Toast.makeText(context, successMsg, Toast.LENGTH_SHORT).show();
-
                     }
 
                     @Override
@@ -92,7 +90,6 @@ public class AddNEditCategoryHandler {
                 }
             });
         }
-
     }
 
     public boolean isValidated(Category category) {

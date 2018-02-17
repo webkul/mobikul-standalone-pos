@@ -1,6 +1,9 @@
 package com.webkul.mobikul.mobikulstandalonepos.fragment;
 
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.graphics.Bitmap;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -17,10 +20,13 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.gms.common.api.CommonStatusCodes;
+import com.google.android.gms.vision.barcode.Barcode;
 import com.webkul.mobikul.mobikulstandalonepos.R;
 import com.webkul.mobikul.mobikulstandalonepos.activity.BaseActivity;
 import com.webkul.mobikul.mobikulstandalonepos.activity.MainActivity;
 import com.webkul.mobikul.mobikulstandalonepos.adapter.HomePageProductAdapter;
+import com.webkul.mobikul.mobikulstandalonepos.barcode.BarcodeCaptureActivity;
 import com.webkul.mobikul.mobikulstandalonepos.databinding.FragmentHomeBinding;
 import com.webkul.mobikul.mobikulstandalonepos.db.DataBaseController;
 import com.webkul.mobikul.mobikulstandalonepos.db.entity.Product;
@@ -46,6 +52,7 @@ public class HomeFragment extends Fragment {
     private SearchView searchView;
     private String ARG_PARAM1 = "category_id";
     private String cId;
+    private int BARCODE_READER_REQUEST_CODE = 1;
 
     public static HomeFragment newInstance(/*String param1, String param2*/) {
         HomeFragment fragment = new HomeFragment();
@@ -77,7 +84,7 @@ public class HomeFragment extends Fragment {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false);
         loadHomeProduct();
         loadCartData();
-
+        binding.setVisibility(true);
         binding.setHandler(new HomeFragmentHandler(getContext()));
         return binding.getRoot();
     }
@@ -92,7 +99,7 @@ public class HomeFragment extends Fragment {
     }
 
     public void setProduct() {
-        DataBaseController.getInstanse().getProducts(getActivity(), new DataBaseCallBack() {
+        DataBaseController.getInstanse().getAllEnabledProducts(getActivity(), new DataBaseCallBack() {
             @Override
             public void onSuccess(Object responseData, String msg) {
                 if (!responseData.toString().equalsIgnoreCase("[]")) {
@@ -125,25 +132,28 @@ public class HomeFragment extends Fragment {
             selectedProductsByCategory = new ArrayList<>();
         if (selectedProductsByCategory.size() > 0)
             selectedProductsByCategory.clear();
-        for (Product product : products) {
-            for (ProductCategoryModel pro : product.getProductCategories()) {
-                if (cId.equalsIgnoreCase(pro.getcId())) {
-                    selectedProductsByCategory.add(product);
-                    break;
+        if (products != null) {
+            for (Product product : products) {
+                for (ProductCategoryModel pro : product.getProductCategories()) {
+                    if (cId.equalsIgnoreCase(pro.getcId())) {
+                        selectedProductsByCategory.add(product);
+                        break;
+                    }
                 }
             }
-        }
-        if (productAdapterForSelectedCategory == null) {
-            productAdapterForSelectedCategory = new HomePageProductAdapter(getActivity(), selectedProductsByCategory);
-            binding.productRv.setAdapter(productAdapterForSelectedCategory);
-        } else {
-            productAdapterForSelectedCategory.notifyDataSetChanged();
+            if (productAdapterForSelectedCategory == null) {
+                productAdapterForSelectedCategory = new HomePageProductAdapter(getActivity(), selectedProductsByCategory);
+                binding.productRv.setAdapter(productAdapterForSelectedCategory);
+            } else {
+                productAdapterForSelectedCategory.notifyDataSetChanged();
+            }
         }
     }
 
     @Override
     public void onResume() {
         super.onResume();
+
         if (getContext() != null) {
             ((BaseActivity) getContext())
                     .setActionbarTitle(getContext().getString(R.string.home_fragment_title));
@@ -189,19 +199,13 @@ public class HomeFragment extends Fragment {
                     DataBaseController.getInstanse().getSearchData(getActivity(), newText, new DataBaseCallBack() {
                         @Override
                         public void onSuccess(Object responseData, String successMsg) {
-                            Log.d(TAG, "onSuccess: " + " size-" + ((List<Product>) responseData).size());
                             if (!(searchProduct.toString().equalsIgnoreCase(responseData.toString()))) {
                                 if (searchProduct.size() > 0) {
                                     searchProduct.clear();
-                                    productAdapter = null;
                                 }
                                 searchProduct.addAll((List<Product>) responseData);
-                                if (productAdapter == null) {
-                                    productAdapter = new HomePageProductAdapter(getActivity(), searchProduct);
-                                    binding.productRv.setAdapter(productAdapter);
-                                } else {
-                                    productAdapter.notifyDataSetChanged();
-                                }
+                                productAdapter = new HomePageProductAdapter(getActivity(), searchProduct);
+                                binding.productRv.setAdapter(productAdapter);
                             }
                         }
 
@@ -217,9 +221,47 @@ public class HomeFragment extends Fragment {
                 }
                 return false;
             }
-
         });
 
+        final MenuItem barCodeItem = menu.findItem(R.id.menu_item_scan_barcode);
+        barCodeItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+//                Intent intent = new Intent("com.google.zxing.client.android.SCAN");
+//                intent.putExtra("SCAN_MODE", "QR_CODE_MODE");
+//                startActivityForResult(intent, 0);
+                Intent intent = new Intent(getActivity(), BarcodeCaptureActivity.class);
+                getActivity().startActivityForResult(intent, BARCODE_READER_REQUEST_CODE);
+                return false;
+            }
+        });
     }
 
+
+    public void onActivityResult(final int requestCode, int resultCode, Intent intent) {
+        if (requestCode == BARCODE_READER_REQUEST_CODE) {
+            if (resultCode == CommonStatusCodes.SUCCESS) {
+                if (intent != null) {
+                    Barcode barcode = intent.getParcelableExtra(BarcodeCaptureActivity.BarcodeObject);
+                    Point[] p = barcode.cornerPoints;
+
+                    DataBaseController.getInstanse().getProductByBarcode(getActivity(), barcode.displayValue, new DataBaseCallBack() {
+                        @Override
+                        public void onSuccess(Object responseData, String successMsg) {
+                            binding.getHandler().onClickProduct((Product) responseData);
+                        }
+
+                        @Override
+                        public void onFailure(int errorCode, String errorMsg) {
+
+                        }
+                    });
+
+                } else
+                    Toast.makeText(getActivity(), "No code found!!", Toast.LENGTH_SHORT).show();
+            } else
+                Log.e(TAG, String.format(getString(R.string.barcode_error_format),
+                        CommonStatusCodes.getStatusCodeString(resultCode)));
+        }
+    }
 }

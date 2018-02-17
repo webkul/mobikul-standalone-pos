@@ -183,12 +183,13 @@
 
                         <Button
                             android:id="@+id/print_invoice"
+                            style="@style/DefaultButtonStyle"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_gravity="bottom"
                             android:layout_weight="1"
-                            android:drawableLeft="@drawable/ic_print"
-                            android:drawableStart="@drawable/ic_print"
+                            android:drawableLeft="@drawable/ic_print_wrapper"
+                            android:drawableStart="@drawable/ic_print_wrapper"
                             android:enabled="false"
                             android:onClick="@{()->handler.printInvoice(orderData)}"
                             android:text="@string/print_invoice"
@@ -197,13 +198,14 @@
 
                         <Button
                             android:id="@+id/proceed"
+                            style="@style/DefaultButtonStyle"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_gravity="bottom"
                             android:layout_marginLeft="@dimen/spacing_generic"
                             android:layout_weight="1"
-                            android:drawableLeft="@drawable/ic_print"
-                            android:drawableStart="@drawable/ic_print"
+                            android:drawableLeft="@drawable/ic_email_wrapper"
+                            android:drawableStart="@drawable/ic_email_wrapper"
                             android:enabled="false"
                             android:onClick="@{()->handler.mailInvoice(orderData)}"
                             android:text="@string/email_invoice"
@@ -215,12 +217,13 @@
 
             <Button
                 android:id="@+id/home"
+                style="@style/DefaultButtonStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
                 android:layout_margin="@dimen/spacing_generic"
-                android:drawableLeft="@drawable/ic_home_white"
-                android:drawableStart="@drawable/ic_home_white"
+                android:drawableLeft="@drawable/ic_home_white_wrapper"
+                android:drawableStart="@drawable/ic_home_white_wrapper"
                 android:onClick="@{()->handler.goToHome()}"
                 android:text="@string/back_to_home"
                 android:textSize="@dimen/text_size_medium"

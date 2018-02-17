@@ -5,6 +5,14 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
 android {
+    signingConfigs {
+        config {
+            keyAlias 'stand-alone-pos-key'
+            keyPassword 'newEra@01jan2018'
+            storeFile file('/home/users/aman.gupta/Desktop/Mobikul-Stand-Alone-POS/stand-alone-pos.jks')
+            storePassword 'newEra@01jan2018'
+        }
+    }
     compileSdkVersion 26
     buildToolsVersion "27.0.0"
     dataBinding.enabled = true
@@ -12,16 +20,26 @@ android {
         applicationId "com.webkul.mobikul.mobikulstandalonepos"
         minSdkVersion 17
         targetSdkVersion 26
-        versionCode 1
-        versionName "1.0"
+        versionCode 3
+        versionName "1.2"
         vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        signingConfig signingConfigs.config
     }
     buildTypes {
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+        debug {
+            resValue("string", "PORT_NUMBER", "8081")
+        }
+    }
+//    lintOptions {
+//        checkReleaseBuilds false
+//    }
+
+    productFlavors {
     }
 }
 
@@ -34,13 +52,13 @@ dependencies {
     implementation project(':mail')
     implementation project(':mobikuldialoglibrary-release')
     implementation project(':MobikulAutoScrollableView-release')
-
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+    //noinspection GradleCompatible
     implementation "com.android.support:support-v4:$support_version"
+    /*SWEET ALERT DIALOG*/
     implementation 'com.android.support:support-v4:26.1.0'
     compile "cn.pedant.sweetalert:library:$sweetalert_version"
     implementation "com.android.support:design:$support_version"
-    testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
     // ViewModel and LiveData
@@ -54,11 +72,21 @@ dependencies {
     implementation "com.google.code.gson:gson:$gson_version"
     //glide
     implementation "com.github.bumptech.glide:glide:$glide_version"
-
-    implementation "org.fabiomsr:moneytextview:1.1.0"
     //jsoup
     compile 'org.jsoup:jsoup:1.10.2'
-    /*SWEET ALERT DIALOG*/
-    compile 'cn.pedant.sweetalert:library:1.3'
+    //see database
+    debugCompile 'com.amitshekhar.android:debug-db:1.0.3'
 
+    implementation 'com.google.firebase:firebase-crash:11.8.0'
+//
+//    compile files('libs/picasso-2.5.2.jar')
+//
+//    compile 'com.android.volley:volley:1.0.0'
+//current time
+    compile 'commons-net:commons-net:3.3'
+
+    compile 'com.google.zxing:core:3.2.1'
+    compile 'com.journeyapps:zxing-android-embedded:3.2.0@aar'
+    implementation 'com.google.android.gms:play-services-vision:11.8.0'
+    implementation 'info.androidhive:barcode-reader:1.1.5'
 }

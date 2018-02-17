@@ -1,0 +1,52 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="data"
+            type="com.webkul.mobikul.mobikulstandalonepos.db.entity.OptionValues" />
+
+        <variable
+            name="handler"
+            type="com.webkul.mobikul.mobikulstandalonepos.handlers.OptionHandler" />
+    </data>
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/white"
+        android:clickable="false"
+        android:padding="@dimen/spacing_generic">
+
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/category_name_tnl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <!--app:error="@{data.categoryNameError}"-->
+            <!--app:errorEnabled="@{data.displayError}"-->
+            <EditText
+                android:id="@+id/category_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="30dp"
+                android:hint="Option Value"
+                android:inputType="text"
+                android:singleLine="true"
+                android:text="@={data.optionValueName}"
+                android:textColorHint="@color/gray" />
+        </android.support.design.widget.TextInputLayout>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_margin="@dimen/spacing_tiny"
+            android:onClick="@{()->handler.removeOption(data)}"
+            android:padding="@dimen/spacing_generic"
+            app:srcCompat="@drawable/ic_close_round" />
+    </RelativeLayout>
+</layout>

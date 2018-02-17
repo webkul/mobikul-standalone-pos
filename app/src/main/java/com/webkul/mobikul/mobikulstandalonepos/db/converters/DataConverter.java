@@ -4,8 +4,11 @@ import android.arch.persistence.room.TypeConverter;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.webkul.mobikul.mobikulstandalonepos.db.entity.Options;
 import com.webkul.mobikul.mobikulstandalonepos.model.CartModel;
+import com.webkul.mobikul.mobikulstandalonepos.model.CashDrawerItems;
 import com.webkul.mobikul.mobikulstandalonepos.model.CashModel;
+import com.webkul.mobikul.mobikulstandalonepos.db.entity.OptionValues;
 import com.webkul.mobikul.mobikulstandalonepos.model.ProductCategoryModel;
 
 import java.io.Serializable;
@@ -39,6 +42,54 @@ public class DataConverter implements Serializable {
         }.getType();
         List<ProductCategoryModel> productCategoriesList = gson.fromJson(productCategoriesString, type);
         return productCategoriesList;
+    }
+
+    @TypeConverter
+    public String fromOptionValuesList(List<OptionValues> optionValues) {
+        if (optionValues == null) {
+            return (null);
+        }
+        Gson gson = new Gson();
+        Type type = new TypeToken<List<OptionValues>>() {
+        }.getType();
+        String json = gson.toJson(optionValues, type);
+        return json;
+    }
+
+    @TypeConverter
+    public List<OptionValues> toOptionValuesList(String optionValuesString) {
+        if (optionValuesString == null) {
+            return (null);
+        }
+        Gson gson = new Gson();
+        Type type = new TypeToken<List<OptionValues>>() {
+        }.getType();
+        List<OptionValues> productCategoriesList = gson.fromJson(optionValuesString, type);
+        return productCategoriesList;
+    }
+
+    @TypeConverter
+    public String fromOptionList(List<Options> options) {
+        if (options == null) {
+            return (null);
+        }
+        Gson gson = new Gson();
+        Type type = new TypeToken<List<Options>>() {
+        }.getType();
+        String json = gson.toJson(options, type);
+        return json;
+    }
+
+    @TypeConverter
+    public List<Options> toOptionsList(String optionString) {
+        if (optionString == null) {
+            return (null);
+        }
+        Gson gson = new Gson();
+        Type type = new TypeToken<List<Options>>() {
+        }.getType();
+        List<Options> productOptionList = gson.fromJson(optionString, type);
+        return productOptionList;
     }
 
     @TypeConverter
@@ -87,5 +138,29 @@ public class DataConverter implements Serializable {
         }.getType();
         CashModel cashData = gson.fromJson(cashDataString, type);
         return cashData;
+    }
+
+    @TypeConverter
+    public String fromCashDrawerItemToString(List<CashDrawerItems> cashDrawerItems) {
+        if (cashDrawerItems == null) {
+            return (null);
+        }
+        Gson gson = new Gson();
+        Type type = new TypeToken<List<CashDrawerItems>>() {
+        }.getType();
+        String json = gson.toJson(cashDrawerItems, type);
+        return json;
+    }
+
+    @TypeConverter
+    public List<CashDrawerItems> fromStringToCashDrawerItem(String cashDrawerItemsString) {
+        if (cashDrawerItemsString == null) {
+            return (null);
+        }
+        Gson gson = new Gson();
+        Type type = new TypeToken<List<CashDrawerItems>>() {
+        }.getType();
+        List<CashDrawerItems> cashDrawerItems = gson.fromJson(cashDrawerItemsString, type);
+        return cashDrawerItems;
     }
 }

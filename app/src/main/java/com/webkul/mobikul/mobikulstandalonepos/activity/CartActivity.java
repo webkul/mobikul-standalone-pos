@@ -22,7 +22,7 @@ import com.webkul.mobikul.mobikulstandalonepos.model.CartModel;
 
 public class CartActivity extends BaseActivity {
 
-    ActivityCartBinding binding;
+    public ActivityCartBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,10 +32,9 @@ public class CartActivity extends BaseActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         CartModel cartData = null;
         if (getIntent().getExtras() != null) {
-            cartData = Helper.fromStringToCartModel(getIntent().getExtras().getString("cartData"));
+            cartData = Helper.fromStringToCartModel(AppSharedPref.getCartData(this));
         }
         setCartProducts(cartData);
-
     }
 
     private void setCartProducts(CartModel cartData) {
@@ -45,10 +44,8 @@ public class CartActivity extends BaseActivity {
             CartProductAdapter adapter = new CartProductAdapter(this, cartData.getProducts());
             binding.cartProductRv.setAdapter(adapter);
             binding.setVisibility(true);
-            binding.delete.setVisibility(View.VISIBLE);
         } else {
             binding.setVisibility(false);
-            binding.delete.setVisibility(View.GONE);
         }
     }
 

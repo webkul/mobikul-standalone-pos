@@ -44,6 +44,8 @@ public class MyAccountInfo extends BaseActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
         menu.findItem(R.id.menu_item_search).setVisible(false);
+        final MenuItem barcodeItem = menu.findItem(R.id.menu_item_scan_barcode);
+        barcodeItem.setVisible(false);
         return true;
     }
 

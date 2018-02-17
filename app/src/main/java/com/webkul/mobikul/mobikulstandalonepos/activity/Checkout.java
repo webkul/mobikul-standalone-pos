@@ -15,6 +15,7 @@ import android.view.View;
 import com.webkul.mobikul.mobikulstandalonepos.R;
 import com.webkul.mobikul.mobikulstandalonepos.databinding.ActivityCheckoutBinding;
 import com.webkul.mobikul.mobikulstandalonepos.handlers.CheckoutHandler;
+import com.webkul.mobikul.mobikulstandalonepos.helper.AppSharedPref;
 import com.webkul.mobikul.mobikulstandalonepos.model.CartModel;
 
 public class Checkout extends BaseActivity {
@@ -36,7 +37,7 @@ public class Checkout extends BaseActivity {
             cartData = (CartModel) getIntent().getExtras().getSerializable("cartData");
             checkoutBinding.setData(cartData);
         }
-
+        checkoutBinding.setVisibility(AppSharedPref.isCashEnabled(this, true));
         checkoutBinding.setHandler(new CheckoutHandler(this));
     }
 
