@@ -32,6 +32,7 @@ import com.webkul.mobikul.mobikulstandalonepos.db.entity.Product;
 import com.webkul.mobikul.mobikulstandalonepos.db.entity.Product;
 import com.webkul.mobikul.mobikulstandalonepos.fragment.ManageCategoriesFragment;
 import com.webkul.mobikul.mobikulstandalonepos.fragment.AddProductFragment;
+import com.webkul.mobikul.mobikulstandalonepos.fragment.ManageOptionsFragment;
 import com.webkul.mobikul.mobikulstandalonepos.helper.SweetAlertBox;
 import com.webkul.mobikul.mobikulstandalonepos.helper.ToastHelper;
 import com.webkul.mobikul.mobikulstandalonepos.interfaces.DataBaseCallBack;
@@ -148,8 +149,25 @@ public class AddProductFragmentHandler {
 
     }
 
-    public void saveImage(Product product) {
+    public void selectOptions(Product product, boolean edit) {
+        FragmentManager fragmentManager = ((AppCompatActivity) context).getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left);
+        Fragment fragment;
+        fragment = ((BaseActivity) context).mSupportFragmentManager.findFragmentByTag(ManageOptionsFragment.class.getSimpleName());
+        if (fragment == null)
+            fragment = new ManageOptionsFragment();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("product", product);
+        bundle.putSerializable("edit", edit);
+        fragment.setArguments(bundle);
+        fragmentTransaction.add(((ProductActivity) context).binding.productFl.getId(), fragment, fragment.getClass().getSimpleName());
+        fragmentTransaction.addToBackStack(fragment.getClass().getSimpleName()).commit();
 
+    }
+
+    public void saveImage(Product product) {
+        ActivityCompat.requestPermissions((ProductActivity) context, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE}, 666);
         String root = Environment.getExternalStorageDirectory().toString();
         File myDir = new File(root + "/pos-barcodes");
         myDir.mkdirs();

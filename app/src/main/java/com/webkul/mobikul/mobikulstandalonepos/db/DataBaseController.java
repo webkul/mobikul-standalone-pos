@@ -113,9 +113,12 @@ public class DataBaseController {
         DataBaseAsyncUtils.getInstanse().new GetSearchOrders(((BaseActivity) context).getDb(), dataBaseCallBack).execute(searchText);
     }
 
+
+    // -------------------- delete all tables -------------------------
     public void deleteAllTables(Context context) {
         DataBaseAsyncUtils.getInstanse().new DeleteAllTables(((BaseActivity) context).getDb()).execute();
     }
+
 
     public void addHoldCart(Context context, HoldCart data, DataBaseCallBack dataBaseCallBack) {
         DataBaseAsyncUtils.getInstanse().new AddCartDataToHoldCart(((BaseActivity) context).getDb(), dataBaseCallBack).execute(data);
@@ -156,4 +159,13 @@ public class DataBaseController {
     public void getOptions(Context context, DataBaseCallBack dataBaseCallBack) {
         DataBaseAsyncUtils.getInstanse().new GetOptions(((BaseActivity) context).getDb(), dataBaseCallBack).execute();
     }
+
+    public void updateOptions(Context context, Options data, DataBaseCallBack dataBaseCallBack) {
+        DataBaseAsyncUtils.getInstanse().new UpdateOptions(((BaseActivity) context).getDb(), dataBaseCallBack).execute(data);
+    }
+
+    public void deleteOption(Context context, Options data, DataBaseCallBack dataBaseCallBack) {
+        DataBaseAsyncUtils.getInstanse().new DeleteOption(((BaseActivity) context).getDb(), dataBaseCallBack).execute(data);
+    }
+
 }

@@ -21,7 +21,7 @@ import java.util.List;
 
 public class AddOptionFragment extends Fragment {
     private static final String ARG_PARAM1 = "options";
-    private static final String ARG_PARAM2 = "IS_EDIT";
+    private static final String ARG_PARAM2 = "edit";
     public List<OptionValues> optionValues;
     public FragmentAddOptionBinding binding;
     public OptionValuesAdapter optionValuesAdapter;
@@ -45,23 +45,24 @@ public class AddOptionFragment extends Fragment {
                              Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_add_option, container, false);
         optionValues = new ArrayList<>();
-        options.setOptionValues(optionValues);
         return binding.getRoot();
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        binding.setData(options);
-        binding.setHandler(new OptionHandler(getActivity()));
         if (isEdit) {
             ((OptionsActivity) getContext())
                     .setTitle(getContext().getString(R.string.edit_option));
+            optionValues.addAll(options.getOptionValues());
             ((OptionsActivity) getActivity()).binding.deleteOption.setVisibility(View.VISIBLE);
         } else {
             ((OptionsActivity) getContext())
                     .setTitle(getContext().getString(R.string.add_option));
+            options.setOptionValues(optionValues);
         }
+        binding.setData(options);
+        binding.setHandler(new OptionHandler(getActivity()));
         ((OptionsActivity) getActivity()).binding.setEdit(isEdit);
         ((OptionsActivity) getActivity()).binding.setData(options);
         ((OptionsActivity) getActivity()).binding.addOption.setVisibility(View.GONE);

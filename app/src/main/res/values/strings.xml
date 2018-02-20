@@ -1,9 +1,9 @@
 <resources>
 
     <!--app name-->
-    <string name="app_name">Mobikul POS</string>
+    <string name="app_name">Mobikul POS - Point of Sale</string>
     <string name="new_version_available">There is a newer version of Mobikul POS application
-        inStock, please Update now ?</string>
+        , please Update now?</string>
     <string name="update">Update</string>
     <string name="later">Later</string>
     <string name="remind_me_later">Remind me later</string>
@@ -150,6 +150,7 @@
     <string name="no_products_available_yet">There are no products available yet.</string>
     <string name="no_category">No Categories</string>
     <string name="you_do_not_have_any_category_yet">You do not have any category yet.</string>
+    <string name="no_category_subtitle">First create category to use this option.</string>
     <string name="no_order">No Orders</string>
     <string name="shop_first_to_see_your_orders_here">Shop first to see your orders here.</string>
     <string name="empty_hold_cart">No hold Cart</string>
@@ -158,6 +159,9 @@
     <string name="empty_subtitle_payment_methods">There are no payment methods enabled or exist.</string>
     <string name="empty_cash_drawer">No Cash History</string>
     <string name="empty_subtitle_cash_drawer">There are no cash history found in your cash drawer.</string>
+    <string name="no_options">No Options</string>
+    <string name="you_do_not_have_any_option_yet">You do not have any option yet.</string>
+    <string name="no_options_subtitle">First create product options to use.</string>
 
     <!--customer info-->
     <string name="title_activity_customer">Customers</string>
@@ -202,7 +206,6 @@
     <string name="username">Username</string>
     <string name="old_password">Old Password</string>
     <string name="new_password">New Password</string>
-    <string name="no_category_subtitle">First create category to use this option.</string>
 
     <!--hold cart string-->
     <string name="hold_id">Hold #%s</string>
@@ -241,14 +244,14 @@
     <string name="edit_option">Edit Option</string>
 
     <string-array name="type">
-        <item>Select</item>
+        <!--<item>Select</item>-->
         <item>Radio</item>
         <item>Checkbox</item>
         <item>Text</item>
-        <item>TextArea</item>
-        <item>Date</item>
-        <item>Time</item>
-        <item>Date &amp; Time</item>
+        <!--<item>TextArea</item>-->
+        <!--<item>Date</item>-->
+        <!--<item>Time</item>-->
+        <!--<item>Date &amp; Time</item>-->
     </string-array>
 
     <!--cash drawer string-->
@@ -257,4 +260,6 @@
     <string name="net_revenue">Net Revenue - </string>
     <string name="net_revenue_">Net Revenue - %s</string>
     <string name="amt_collected">Amt. Collected</string>
+    <string name="choose_option">Choose Options</string>
+    <string name="choose_options">Choose Options</string>
 </resources>

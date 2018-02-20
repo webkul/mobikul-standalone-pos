@@ -2,6 +2,7 @@ package com.webkul.mobikul.mobikulstandalonepos.db.entity;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
@@ -25,6 +26,10 @@ public class OptionValues extends BaseObservable implements Serializable {
     private String optionValuePrice;
     @ColumnInfo(name = "option_value_sort_order")
     private int sortOrder;
+    @Ignore
+    private boolean selected;
+    @Ignore
+    private boolean isAddToCart;
 
     @Bindable
     public String getOptionValueName() {
@@ -40,6 +45,8 @@ public class OptionValues extends BaseObservable implements Serializable {
 
 
     public String getOptionValuePrice() {
+        if (optionValuePrice == null)
+            return "";
         return optionValuePrice;
     }
 
@@ -55,7 +62,6 @@ public class OptionValues extends BaseObservable implements Serializable {
         this.sortOrder = sortOrder;
     }
 
-
     public int getOptionValueId() {
         return optionValueId;
     }
@@ -70,5 +76,23 @@ public class OptionValues extends BaseObservable implements Serializable {
 
     public void setOptionId(int optionId) {
         this.optionId = optionId;
+    }
+
+    @Bindable
+    public boolean isSelected() {
+        return selected;
+    }
+
+    public void setSelected(boolean isSelected) {
+        this.selected = isSelected;
+        notifyPropertyChanged(BR.selected);
+    }
+
+    public boolean isAddToCart() {
+        return isAddToCart;
+    }
+
+    public void setAddToCart(boolean addToCart) {
+        isAddToCart = addToCart;
     }
 }

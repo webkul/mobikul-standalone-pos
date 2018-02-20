@@ -94,6 +94,8 @@ public class Product extends BaseObservable implements Serializable, Parcelable 
     @Ignore
     private String cartQty;
     @Ignore
+    private String cartProductSubtotal;
+    @Ignore
     private boolean displayError;
 
     protected Product(Parcel in) {
@@ -389,6 +391,8 @@ public class Product extends BaseObservable implements Serializable, Parcelable 
     }
 
     public List<Options> getOptions() {
+        if (options == null)
+            options = new ArrayList<>();
         return options;
     }
 
@@ -422,5 +426,13 @@ public class Product extends BaseObservable implements Serializable, Parcelable 
         dest.writeTypedList(productCategories);
         dest.writeString(cartQty);
         dest.writeByte((byte) (displayError ? 1 : 0));
+    }
+
+    public String getCartProductSubtotal() {
+        return cartProductSubtotal;
+    }
+
+    public void setCartProductSubtotal(String cartProductSubtotal) {
+        this.cartProductSubtotal = cartProductSubtotal;
     }
 }

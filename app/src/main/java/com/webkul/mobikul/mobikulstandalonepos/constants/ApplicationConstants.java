@@ -61,7 +61,9 @@ public interface ApplicationConstants {
 
     //option
     String SUCCESS_MSG_1_ADD_OPTION = "Success: You have added option successfully.";
-    String SUCCESS_MSG_2_DELETE_OPTION = "Deleted.";
+    String SUCCESS_MSG_2_DELETE_OPTION = "This Options has been deleted!";
+    String SUCCESS_MSG_3_UPDATE_PRODUCT = "Option Updated.";
+
 
     //    error codes
     int ERROR_CODE = 1;

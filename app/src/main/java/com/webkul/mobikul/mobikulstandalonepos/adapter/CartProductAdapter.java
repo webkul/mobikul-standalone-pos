@@ -9,8 +9,10 @@ import android.view.ViewGroup;
 
 import com.webkul.mobikul.mobikulstandalonepos.R;
 import com.webkul.mobikul.mobikulstandalonepos.databinding.ItemCartProductBinding;
+import com.webkul.mobikul.mobikulstandalonepos.db.entity.Options;
 import com.webkul.mobikul.mobikulstandalonepos.db.entity.Product;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.zip.Inflater;
 
@@ -33,12 +35,22 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(context);
         View rootView = inflater.inflate(R.layout.item_cart_product, null, false);
+
         return new CartProductAdapter.ViewHolder(rootView);
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.binding.setData(products.get(position));
+        List<Options> optionList = new ArrayList<>();
+        for (Options options : products.get(position).getOptions()) {
+            if (options.isSelected()) {
+                optionList.add(options);
+            }
+        }
+
+        CartOptionAdapter cartOptionAdapter = new CartOptionAdapter(context, optionList);
+        holder.binding.optionRv.setAdapter(cartOptionAdapter);
     }
 
     @Override

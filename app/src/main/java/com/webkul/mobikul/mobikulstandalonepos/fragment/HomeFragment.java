@@ -33,6 +33,7 @@ import com.webkul.mobikul.mobikulstandalonepos.db.entity.Product;
 import com.webkul.mobikul.mobikulstandalonepos.handlers.HomeFragmentHandler;
 import com.webkul.mobikul.mobikulstandalonepos.helper.AppSharedPref;
 import com.webkul.mobikul.mobikulstandalonepos.helper.Helper;
+import com.webkul.mobikul.mobikulstandalonepos.helper.ToastHelper;
 import com.webkul.mobikul.mobikulstandalonepos.interfaces.DataBaseCallBack;
 import com.webkul.mobikul.mobikulstandalonepos.model.CartModel;
 import com.webkul.mobikul.mobikulstandalonepos.model.ProductCategoryModel;
@@ -258,7 +259,7 @@ public class HomeFragment extends Fragment {
                     });
 
                 } else
-                    Toast.makeText(getActivity(), "No code found!!", Toast.LENGTH_SHORT).show();
+                    ToastHelper.showToast(getActivity(), "No code found!!", Toast.LENGTH_SHORT);
             } else
                 Log.e(TAG, String.format(getString(R.string.barcode_error_format),
                         CommonStatusCodes.getStatusCodeString(resultCode)));

@@ -58,10 +58,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:background="?attr/selectableItemBackgroundBorderless"
+                        android:onClick="@{()-> handler.deleteOption(data)}"
                         android:padding="@dimen/spacing_generic"
                         android:visibility="gone"
                         app:srcCompat="@drawable/ic_icon_order_delete" />
-                    <!--android:onClick="@{()-> addOptionFragmentHandler.deleteOption(data)}"-->
 
                     <ImageView
                         android:id="@+id/save_option"

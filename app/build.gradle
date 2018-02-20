@@ -20,8 +20,8 @@ android {
         applicationId "com.webkul.mobikul.mobikulstandalonepos"
         minSdkVersion 17
         targetSdkVersion 26
-        versionCode 3
-        versionName "1.2"
+        versionCode 4
+        versionName "1.3"
         vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         signingConfig signingConfigs.config
@@ -31,9 +31,9 @@ android {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
-        debug {
-            resValue("string", "PORT_NUMBER", "8081")
-        }
+//        debug {
+//            resValue("string", "PORT_NUMBER", "8081")
+//        }
     }
 //    lintOptions {
 //        checkReleaseBuilds false

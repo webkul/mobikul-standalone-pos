@@ -431,6 +431,7 @@ public class DataBaseAsyncUtils {
                         , products[0].isStock()
                         , products[0].getWeight()
                         , (new DataConverter()).fromProductCategoriesList(products[0].getProductCategories())
+                        , (new DataConverter()).fromOptionList(products[0].getOptions())
                         , products[0].getPId());
             } catch (Exception e) {
                 e.printStackTrace();
@@ -700,6 +701,8 @@ public class DataBaseAsyncUtils {
             db.categoryDao().delete();
             db.customerDao().delete();
             db.holdCartDao().delete();
+            db.optionDao().delete();
+            db.cashDrawerDao().delete();
             return null;
         }
     }
@@ -974,6 +977,75 @@ public class DataBaseAsyncUtils {
                 dataBaseCallBack.onSuccess(options, SUCCESS_MSG);
             } else
                 dataBaseCallBack.onFailure(ERROR_CODE, ERROR_MSG);
+        }
+    }
+
+    public class UpdateOptions extends AsyncTask<Options, Void,
+            Boolean> {
+
+        private AppDatabase db;
+        private final DataBaseCallBack dataBaseCallBack;
+
+        public UpdateOptions(AppDatabase userDatabase, DataBaseCallBack dataBaseCallBack) {
+            db = userDatabase;
+            this.dataBaseCallBack = dataBaseCallBack;
+        }
+
+        @Override
+        protected Boolean doInBackground(Options... options) {
+            try {
+                db.optionDao().updateOptionsById(options[0].getOptionName()
+                        , options[0].getType()
+                        , (new DataConverter()).fromOptionValuesList(options[0].getOptionValues())
+                        , options[0].getOptionId());
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
+            return true;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            super.onPostExecute(aBoolean);
+            if (aBoolean) {
+                dataBaseCallBack.onSuccess(aBoolean, SUCCESS_MSG_3_UPDATE_PRODUCT);
+            } else {
+                dataBaseCallBack.onFailure(ERROR_CODE, ERROR_MSG);
+            }
+        }
+    }
+
+    public class DeleteOption extends AsyncTask<Options, Void,
+            Boolean> {
+
+        private AppDatabase db;
+        private final DataBaseCallBack dataBaseCallBack;
+
+        public DeleteOption(AppDatabase userDatabase, DataBaseCallBack dataBaseCallBack) {
+            db = userDatabase;
+            this.dataBaseCallBack = dataBaseCallBack;
+        }
+
+        @Override
+        protected Boolean doInBackground(Options... options) {
+            try {
+                db.optionDao().delete(options[0]);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
+            return true;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            super.onPostExecute(aBoolean);
+            if (aBoolean) {
+                dataBaseCallBack.onSuccess(aBoolean, SUCCESS_MSG_2_DELETE_OPTION);
+            } else {
+                dataBaseCallBack.onFailure(ERROR_CODE, ERROR_MSG);
+            }
         }
     }
 }
