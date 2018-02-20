@@ -58,6 +58,11 @@ public class CartActivity extends BaseActivity {
     }
 
     @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
         setCartProducts(Helper.fromStringToCartModel(AppSharedPref.getCartData(this)));

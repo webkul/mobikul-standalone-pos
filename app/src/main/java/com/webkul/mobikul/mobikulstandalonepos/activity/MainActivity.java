@@ -105,7 +105,7 @@ public class MainActivity extends BaseActivity implements LocationListener {
         loadHomeFragment();
         openingBalance();
         reminderMsg();
-//        getCurrentTime();
+        getCurrentTime();
     }
 
     private void openingBalance() {

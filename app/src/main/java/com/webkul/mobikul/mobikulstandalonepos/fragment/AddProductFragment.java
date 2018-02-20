@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
@@ -21,9 +22,14 @@ import com.journeyapps.barcodescanner.BarcodeEncoder;
 import com.webkul.mobikul.mobikulstandalonepos.R;
 import com.webkul.mobikul.mobikulstandalonepos.activity.ProductActivity;
 import com.webkul.mobikul.mobikulstandalonepos.adapter.ProductCategoryAdapter;
+import com.webkul.mobikul.mobikulstandalonepos.adapter.ProductOptionsAdapter;
 import com.webkul.mobikul.mobikulstandalonepos.databinding.FragmentAddProductBinding;
+import com.webkul.mobikul.mobikulstandalonepos.db.entity.Options;
 import com.webkul.mobikul.mobikulstandalonepos.db.entity.Product;
 import com.webkul.mobikul.mobikulstandalonepos.handlers.AddProductFragmentHandler;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by aman.gupta on 01/10/17. @Webkul Software Private limited
@@ -91,11 +97,25 @@ public class AddProductFragment extends Fragment {
             ((ProductActivity) getActivity()).binding.deleteProduct.setVisibility(View.GONE);
         }
         setProductCategory();
+        setProductOptions();
         binding.setEdit(isEdit);
         ((ProductActivity) getActivity()).binding.setEdit(isEdit);
         ((ProductActivity) getActivity()).binding.setData(product);
         ((ProductActivity) getActivity()).binding.addProduct.setVisibility(View.GONE);
         ((ProductActivity) getActivity()).binding.saveProduct.setVisibility(View.VISIBLE);
+    }
+
+    public void setProductOptions() {
+        if (binding.getData() != null && binding.getData().getOptions() != null) {
+            List<Options> optionsList = new ArrayList<>();
+            for (Options option : binding.getData().getOptions()) {
+                if (option.isSelected())
+                    optionsList.add(option);
+            }
+            ProductOptionsAdapter productOptionsAdapter = new ProductOptionsAdapter(getActivity(), optionsList);
+            binding.optionRv.setAdapter(productOptionsAdapter);
+            binding.setData(binding.getData());
+        }
     }
 
     public void setBarcode(String barCodeNumber) {

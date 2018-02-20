@@ -27,7 +27,7 @@ import com.webkul.mobikul.mobikulstandalonepos.db.entity.OrderEntity;
 import com.webkul.mobikul.mobikulstandalonepos.db.entity.Product;
 
 @Database(entities = {Administrator.class, Category.class, Product.class, Customer.class, OrderEntity.class
-        , HoldCart.class, CashDrawerModel.class, Options.class, OptionValues.class}, version = 9, exportSchema = false)
+        , HoldCart.class, CashDrawerModel.class, Options.class, OptionValues.class}, version = 10, exportSchema = false)
 @TypeConverters(DataConverter.class)
 public abstract class AppDatabase extends RoomDatabase {
     public abstract AdministratorDao administratorDao();

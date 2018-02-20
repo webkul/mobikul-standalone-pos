@@ -2,6 +2,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="data"
             type="com.webkul.mobikul.mobikulstandalonepos.db.entity.Options" />
@@ -63,6 +65,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_tiny"
                     android:text="@string/type"
                     android:textSize="@dimen/text_size_medium" />
 
@@ -75,8 +78,10 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_generic"
                     android:text="@string/option_values"
-                    android:textSize="@dimen/text_size_medium" />
+                    android:textSize="@dimen/text_size_medium"
+                    android:visibility="@{!data.type.equalsIgnoreCase(`text`)  ? View.VISIBLE : View.GONE}" />
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/option_values_rv"
@@ -94,6 +99,7 @@
             android:layout_gravity="bottom|end"
             android:layout_margin="@dimen/fab_margin"
             android:onClick="@{()->handler.addOptionValue()}"
+            android:visibility="@{!data.type.equalsIgnoreCase(`text`)  ? View.VISIBLE : View.GONE}"
             app:srcCompat="@drawable/ic_add" />
     </FrameLayout>
 </layout>

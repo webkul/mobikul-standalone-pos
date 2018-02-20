@@ -36,7 +36,8 @@ public class Options extends BaseObservable implements Serializable {
 
     @ColumnInfo(name = "sort_order")
     private int sortOrder;
-
+    @Ignore
+    private boolean selected;
     @Ignore
     private boolean displayError;
 
@@ -71,6 +72,7 @@ public class Options extends BaseObservable implements Serializable {
         notifyPropertyChanged(BR.optionName);
     }
 
+    @Bindable
     public String getType() {
         if (type == null)
             return type;
@@ -79,6 +81,7 @@ public class Options extends BaseObservable implements Serializable {
 
     public void setType(String type) {
         this.type = type;
+        notifyPropertyChanged(BR.type);
     }
 
     public List<OptionValues> getOptionValues() {
@@ -111,4 +114,13 @@ public class Options extends BaseObservable implements Serializable {
         notifyPropertyChanged(BR.displayError);
     }
 
+    @Bindable
+    public boolean isSelected() {
+        return selected;
+    }
+
+    public void setSelected(boolean selected) {
+        this.selected = selected;
+        notifyPropertyChanged(BR.selected);
+    }
 }

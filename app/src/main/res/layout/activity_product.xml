@@ -24,6 +24,10 @@
             type="com.webkul.mobikul.mobikulstandalonepos.handlers.ManageCategoriesFragmentHandler" />
 
         <variable
+            name="manageOptionFragmentHandler"
+            type="com.webkul.mobikul.mobikulstandalonepos.handlers.ManageOptionFragmentHandler" />
+
+        <variable
             name="data"
             type="com.webkul.mobikul.mobikulstandalonepos.db.entity.Product" />
 
@@ -101,6 +105,17 @@
                         android:layout_toRightOf="@+id/delete_product"
                         android:background="?attr/selectableItemBackgroundBorderless"
                         android:onClick="@{()-> manageCategoryFragmentHandler.saveCategoryToProduct(data, edit)}"
+                        android:padding="@dimen/spacing_generic"
+                        android:visibility="gone"
+                        app:srcCompat="@drawable/ic_submit_fill" />
+
+                    <ImageView
+                        android:id="@+id/save_selected_optios"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@+id/delete_product"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:onClick="@{()-> manageOptionFragmentHandler.saveOptionToProduct(data, edit)}"
                         android:padding="@dimen/spacing_generic"
                         android:visibility="gone"
                         app:srcCompat="@drawable/ic_submit_fill" />

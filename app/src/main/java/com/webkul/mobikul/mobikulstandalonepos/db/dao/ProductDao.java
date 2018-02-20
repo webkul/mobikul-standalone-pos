@@ -39,7 +39,8 @@ public interface ProductDao {
 
     @Query("UPDATE Product SET image = :imagePath, is_enabled = :isEnabled, product_name = :ProductName, sku = :sku, price = :price" +
             ", special_price = :specialPrice, is_taxable_goods_applied = :isTaxableGoodsApplied, track_inventory= :trackInventory" +
-            ", quantity = :qty , stock_availability = :inStock, weight = :weight, productCategories = :productCategories WHERE pId = :pId")
+            ", quantity = :qty , stock_availability = :inStock, weight = :weight, productCategories = :productCategories" +
+            ", options = :productOptions WHERE pId = :pId")
 
     @TypeConverters(DataConverter.class)
     void updateProduct(String imagePath
@@ -54,6 +55,7 @@ public interface ProductDao {
             , boolean inStock
             , String weight
             , String productCategories
+            , String productOptions
             , int pId);
 
 

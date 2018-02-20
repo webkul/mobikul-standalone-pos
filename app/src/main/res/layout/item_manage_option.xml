@@ -3,21 +3,26 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="data"
             type="com.webkul.mobikul.mobikulstandalonepos.db.entity.Options" />
 
         <variable
-            name="handler"
-            type="com.webkul.mobikul.mobikulstandalonepos.handlers.OptionHandler" />
+            name="product"
+            type="com.webkul.mobikul.mobikulstandalonepos.db.entity.Product" />
 
+        <variable
+            name="handler"
+            type="com.webkul.mobikul.mobikulstandalonepos.handlers.ManageOptionFragmentHandler" />
     </data>
 
     <RelativeLayout xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="wrap_content"
         android:layout_height="55dp"
-        android:onClick="@{()-> handler.onClickOption(data)}">
+        android:onClick="@{()->handler.onOptionsSelect(data, product)}">
 
         <LinearLayout
             android:id="@+id/icons"
@@ -43,10 +48,10 @@
             android:layout_margin="@dimen/spacing_normal"
             android:text="@{data.optionName}"
             android:textColor="@color/textColor"
-            tools:text="Option" />
+            tools:text="More Options" />
 
         <ImageView
-            android:id="@+id/arrow"
+            android:id="@+id/selected_category"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
@@ -54,7 +59,8 @@
             android:layout_centerVertical="true"
             android:layout_marginEnd="@dimen/spacing_normal"
             android:layout_marginRight="@dimen/spacing_normal"
-            app:srcCompat="@drawable/ic_arrow_right" />
+            android:visibility="@{data.isSelected ? View.VISIBLE : View.GONE}"
+            app:srcCompat="@drawable/ic_submit_fill" />
 
         <View
             android:layout_width="match_parent"
