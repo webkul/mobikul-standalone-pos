@@ -7,6 +7,7 @@ import android.databinding.Bindable;
 import com.webkul.mobikul.mobikulstandalonepos.BR;
 
 import java.io.Serializable;
+import java.text.DecimalFormat;
 
 /**
  * Created by aman.gupta on 24/1/18. @Webkul Software Private limited
@@ -47,9 +48,10 @@ public class CashModel extends BaseObservable implements Serializable {
     public void setCollectedCash(String collectedCash) {
         this.collectedCash = collectedCash;
         if (!collectedCash.isEmpty()) {
+            DecimalFormat df = new DecimalFormat("####0.00");
             Double change = Double.parseDouble(collectedCash) - Double.parseDouble(getTotal());
             if (change > 0) {
-                setChangeDue(change + "");
+                setChangeDue(df.format(change) + "");
                 setChangeDueVisibility(true);
             } else {
                 setChangeDue(0.00 + "");

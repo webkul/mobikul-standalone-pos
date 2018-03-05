@@ -95,12 +95,14 @@ public class HomeFragmentHandler {
     }
 
     void addToCart(Product product, CartModel cartData) {
-        if (product.getSpecialPrice().isEmpty())
+        double price;
+        if (product.getSpecialPrice().isEmpty()) {
             subTotal = subTotal + Double.parseDouble(product.getPrice());
-        else
+            price = Double.parseDouble(product.getPrice());
+        } else {
             subTotal = subTotal + Double.parseDouble(product.getSpecialPrice());
-
-
+            price = Double.parseDouble(product.getSpecialPrice());
+        }
         for (int i = 0; i < product.getOptions().size(); i++) {
             if (!product.getOptions().get(i).getType().equalsIgnoreCase("text"))
                 for (OptionValues optionValues : product.getOptions().get(i).getOptionValues()) {
@@ -109,7 +111,6 @@ public class HomeFragmentHandler {
                 }
         }
         counter++;
-        grandTotal = subTotal + Float.parseFloat(cartData.getTotals().getTax());
         boolean isProductAlreadyInCart = false;
         int position = -1;
         for (Product product1 : cartData.getProducts()) {
@@ -132,10 +133,19 @@ public class HomeFragmentHandler {
             cartData.getProducts().add(position, product);
         }
 
-//         // decimal format
-//        String formatedSubtotal = df.format(subTotal);
-//        String formatedGrandTotal = df.format(grandTotal);
+        double taxRate = 0;
+        if (!product.getProductTax().toString().isEmpty()) {
 
+            if (product.getProductTax().getType().contains("%")) {
+                taxRate = (price / 100.0f) * Double.parseDouble(product.getProductTax().getTaxRate());
+            } else {
+                taxRate = price + Double.parseDouble(product.getProductTax().getTaxRate());
+            }
+        }
+
+        cartData.getTotals().setTax(df.format(Double.parseDouble(cartData.getTotals().getTax()) + taxRate) + "");
+
+        grandTotal = subTotal + Double.parseDouble(cartData.getTotals().getTax());
         cartData.getTotals().setSubTotal(df.format(subTotal) + "");
         cartData.getTotals().setQty(counter + "");
         cartData.getTotals().setTax(cartData.getTotals().getTax());

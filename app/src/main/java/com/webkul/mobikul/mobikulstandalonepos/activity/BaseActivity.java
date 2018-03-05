@@ -13,10 +13,13 @@ import android.widget.Toast;
 
 import com.webkul.mobikul.mobikulstandalonepos.R;
 import com.webkul.mobikul.mobikulstandalonepos.db.AppDatabase;
+import com.webkul.mobikul.mobikulstandalonepos.helper.AppSharedPref;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
 import static com.webkul.mobikul.mobikulstandalonepos.db.AppDatabase.MIGRATION_1_2;
+import static com.webkul.mobikul.mobikulstandalonepos.db.AppDatabase.destroyDbInstance;
+import static com.webkul.mobikul.mobikulstandalonepos.db.AppDatabase.getAppDatabase;
 
 /**
  * Created by aman.gupta on 4/1/17. @Webkul Software Private limited
@@ -39,12 +42,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     public AppDatabase getDb() {
-        db = Room.databaseBuilder(getApplicationContext(),
-                AppDatabase.class, "db_pos")
-//                .addMigrations(MIGRATION_1_2)
-                .fallbackToDestructiveMigration()
-                .build();
-        return db;
+        return getAppDatabase(this);
     }
 
     static {
@@ -85,7 +83,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        db.close();
+        destroyDbInstance();
     }
 
     @Override

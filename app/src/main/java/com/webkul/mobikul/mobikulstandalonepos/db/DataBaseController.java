@@ -14,6 +14,8 @@ import com.webkul.mobikul.mobikulstandalonepos.db.entity.HoldCart;
 import com.webkul.mobikul.mobikulstandalonepos.db.entity.Options;
 import com.webkul.mobikul.mobikulstandalonepos.db.entity.OrderEntity;
 import com.webkul.mobikul.mobikulstandalonepos.db.entity.Product;
+//import com.webkul.mobikul.mobikulstandalonepos.db.entity.Tax;
+import com.webkul.mobikul.mobikulstandalonepos.db.entity.Tax;
 import com.webkul.mobikul.mobikulstandalonepos.interfaces.DataBaseCallBack;
 
 /**
@@ -77,6 +79,10 @@ public class DataBaseController {
         DataBaseAsyncUtils.getInstanse().new GetAllEnabledProducts(((BaseActivity) context).getDb(), dataBaseCallBack).execute();
     }
 
+    public void getAllLowStockProducts(Context context, int minQty, DataBaseCallBack dataBaseCallBack) {
+        DataBaseAsyncUtils.getInstanse().new GetAllLowStockProducts(((BaseActivity) context).getDb(), dataBaseCallBack).execute(minQty);
+    }
+
     public void updateProduct(Context context, Product data, DataBaseCallBack dataBaseCallBack) {
         DataBaseAsyncUtils.getInstanse().new UpdateProduct(((BaseActivity) context).getDb(), dataBaseCallBack).execute(data);
     }
@@ -95,6 +101,14 @@ public class DataBaseController {
 
     public void addCustomer(Context context, Customer data, DataBaseCallBack dataBaseCallBack) {
         DataBaseAsyncUtils.getInstanse().new AddCustomerAsyncTask(((BaseActivity) context).getDb(), dataBaseCallBack).execute(data);
+    }
+
+    public void updateCustomer(Context context, Customer data, DataBaseCallBack dataBaseCallBack) {
+        DataBaseAsyncUtils.getInstanse().new UpdateCustomerAsyncTask(((BaseActivity) context).getDb(), dataBaseCallBack).execute(data);
+    }
+
+    public void deleteCustomer(Context context, Customer customer, DataBaseCallBack callBack) {
+        DataBaseAsyncUtils.getInstanse().new DeleteCustomer(((BaseActivity) context).getDb(), callBack).execute(customer);
     }
 
     public void generateOrder(Context context, OrderEntity data, DataBaseCallBack dataBaseCallBack) {
@@ -166,6 +180,26 @@ public class DataBaseController {
 
     public void deleteOption(Context context, Options data, DataBaseCallBack dataBaseCallBack) {
         DataBaseAsyncUtils.getInstanse().new DeleteOption(((BaseActivity) context).getDb(), dataBaseCallBack).execute(data);
+    }
+
+    public void addTaxRate(Context context, Tax options, DataBaseCallBack dataBaseCallBack) {
+        DataBaseAsyncUtils.getInstanse().new AddTaxRate(((BaseActivity) context).getDb(), dataBaseCallBack).execute(options);
+    }
+
+    public void getAllTaxes(Context context, DataBaseCallBack dataBaseCallBack) {
+        DataBaseAsyncUtils.getInstanse().new GetAllTaxes(((BaseActivity) context).getDb(), dataBaseCallBack).execute();
+    }
+
+    public void getAllEnabledTaxes(Context context, DataBaseCallBack dataBaseCallBack) {
+        DataBaseAsyncUtils.getInstanse().new GetAllEnabledTaxes(((BaseActivity) context).getDb(), dataBaseCallBack).execute();
+    }
+
+    public void updateTax(Context context, Tax tax, DataBaseCallBack dataBaseCallBack) {
+        DataBaseAsyncUtils.getInstanse().new UpdateTaxRate(((BaseActivity) context).getDb(), dataBaseCallBack).execute(tax);
+    }
+
+    public void deleteTax(Context context, Tax data, DataBaseCallBack dataBaseCallBack) {
+        DataBaseAsyncUtils.getInstanse().new DeleteTax(((BaseActivity) context).getDb(), dataBaseCallBack).execute(data);
     }
 
 }

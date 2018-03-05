@@ -113,7 +113,7 @@ public class MoreFragment extends Fragment {
                 MORE_MENU_POS_USERS,
                 MORE_MENU_USER_ROLES};
 
-        boolean enabled[] = {true, true, true, true, false, false, false, true, false, false};
+        boolean enabled[] = {true, true, true, true, false, false, true, true, false, false};
 
         List<MoreData> moreData = new ArrayList<>();
         for (int i = 0; i < label.length; i++) {

@@ -81,7 +81,7 @@
                     android:layout_marginTop="@dimen/spacing_generic"
                     android:text="@string/option_values"
                     android:textSize="@dimen/text_size_medium"
-                    android:visibility="@{!data.type.equalsIgnoreCase(`text`)  ? View.VISIBLE : View.GONE}" />
+                    android:visibility="@{!data.type.equalsIgnoreCase(`text`) &amp;&amp; !data.type.equalsIgnoreCase(`TextArea`) ? View.VISIBLE : View.GONE}" />
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/option_values_rv"
@@ -99,7 +99,7 @@
             android:layout_gravity="bottom|end"
             android:layout_margin="@dimen/fab_margin"
             android:onClick="@{()->handler.addOptionValue()}"
-            android:visibility="@{!data.type.equalsIgnoreCase(`text`)  ? View.VISIBLE : View.GONE}"
+            android:visibility="@{!data.type.equalsIgnoreCase(`text`) &amp;&amp; !data.type.equalsIgnoreCase(`TextArea`) ? View.VISIBLE : View.GONE}"
             app:srcCompat="@drawable/ic_add" />
     </FrameLayout>
 </layout>

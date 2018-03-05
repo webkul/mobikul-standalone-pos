@@ -34,7 +34,6 @@ public class DrawerAdapter extends RecyclerView.Adapter<DrawerAdapter.ViewHolder
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(context);
         NavDrawerItemsBinding binding = NavDrawerItemsBinding.inflate(inflater, parent, false);
-//        View rootView = inflater.inflate(R.layout.nav_drawer_items, parent, false);
         return new DrawerAdapter.ViewHolder(binding);
     }
 

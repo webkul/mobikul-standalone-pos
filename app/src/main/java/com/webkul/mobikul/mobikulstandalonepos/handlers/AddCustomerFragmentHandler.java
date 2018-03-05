@@ -11,6 +11,7 @@ import com.webkul.mobikul.mobikulstandalonepos.db.entity.Category;
 import com.webkul.mobikul.mobikulstandalonepos.db.entity.Customer;
 import com.webkul.mobikul.mobikulstandalonepos.fragment.AddCategoryFragment;
 import com.webkul.mobikul.mobikulstandalonepos.fragment.AddCustomerFragment;
+import com.webkul.mobikul.mobikulstandalonepos.fragment.AddProductFragment;
 import com.webkul.mobikul.mobikulstandalonepos.helper.ToastHelper;
 import com.webkul.mobikul.mobikulstandalonepos.interfaces.DataBaseCallBack;
 
@@ -26,26 +27,46 @@ public class AddCustomerFragmentHandler {
         this.context = context;
     }
 
-    public void saveCustomer(Customer customer) {
+    public void saveCustomer(Customer customer, boolean isEdit) {
+
         if (isValidated(customer)) {
+            if (!isEdit) {
+                DataBaseController.getInstanse().addCustomer(context, customer, new DataBaseCallBack() {
+                    @Override
+                    public void onSuccess(Object responseData, String successMsg) {
+                        Fragment fragment = ((BaseActivity) context).mSupportFragmentManager.findFragmentByTag(com.webkul.mobikul.mobikulstandalonepos.fragment.AddCustomerFragment.class.getSimpleName());
+                        FragmentTransaction ft = ((BaseActivity) context).mSupportFragmentManager.beginTransaction();
+                        ft.detach(fragment);
+                        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE);
+                        ft.commit();
+                        ((BaseActivity) context).mSupportFragmentManager.popBackStackImmediate();
+                        ToastHelper.showToast(context, successMsg, Toast.LENGTH_LONG);
+                    }
 
-            DataBaseController.getInstanse().addCustomer(context, customer, new DataBaseCallBack() {
-                @Override
-                public void onSuccess(Object responseData, String successMsg) {
-                    Fragment fragment = ((BaseActivity) context).mSupportFragmentManager.findFragmentByTag(com.webkul.mobikul.mobikulstandalonepos.fragment.AddCustomerFragment.class.getSimpleName());
-                    FragmentTransaction ft = ((BaseActivity) context).mSupportFragmentManager.beginTransaction();
-                    ft.detach(fragment);
-                    ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE);
-                    ft.commit();
-                    ((BaseActivity) context).mSupportFragmentManager.popBackStackImmediate();
-                    ToastHelper.showToast(context, successMsg, Toast.LENGTH_LONG);
-                }
+                    @Override
+                    public void onFailure(int errorCode, String errorMsg) {
+                        ToastHelper.showToast(context, errorMsg, Toast.LENGTH_LONG);
+                    }
+                });
+            } else {
+                DataBaseController.getInstanse().updateCustomer(context, customer, new DataBaseCallBack() {
+                    @Override
+                    public void onSuccess(Object responseData, String successMsg) {
+                        Fragment fragment = ((BaseActivity) context).mSupportFragmentManager.findFragmentByTag(com.webkul.mobikul.mobikulstandalonepos.fragment.AddCustomerFragment.class.getSimpleName());
+                        FragmentTransaction ft = ((BaseActivity) context).mSupportFragmentManager.beginTransaction();
+                        ft.detach(fragment);
+                        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE);
+                        ft.commit();
+                        ((BaseActivity) context).mSupportFragmentManager.popBackStackImmediate();
+                        ToastHelper.showToast(context, successMsg, Toast.LENGTH_LONG);
+                    }
 
-                @Override
-                public void onFailure(int errorCode, String errorMsg) {
-                    ToastHelper.showToast(context, errorMsg, Toast.LENGTH_LONG);
-                }
-            });
+                    @Override
+                    public void onFailure(int errorCode, String errorMsg) {
+                        ToastHelper.showToast(context, errorMsg, Toast.LENGTH_LONG);
+                    }
+                });
+            }
         }
     }
 
@@ -77,5 +98,25 @@ public class AddCustomerFragmentHandler {
     }
 
     public void deleteCustomer(Customer customer) {
+        if (customer != null) {
+            DataBaseController.getInstanse().deleteCustomer(context, customer, new DataBaseCallBack() {
+                @Override
+                public void onSuccess(Object responseData, String successMsg) {
+                    Fragment fragment = ((BaseActivity) context).mSupportFragmentManager.findFragmentByTag(AddCustomerFragment.class.getSimpleName());
+                    FragmentTransaction ft = ((BaseActivity) context).mSupportFragmentManager.beginTransaction();
+                    ft.detach(fragment);
+                    ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE);
+                    ft.commit();
+                    ((BaseActivity) context).mSupportFragmentManager.popBackStackImmediate();
+                    ToastHelper.showToast(context, successMsg, Toast.LENGTH_LONG);
+                }
+
+                @Override
+                public void onFailure(int errorCode, String errorMsg) {
+                    ToastHelper.showToast(context, errorMsg, Toast.LENGTH_LONG);
+
+                }
+            });
+        }
     }
 }

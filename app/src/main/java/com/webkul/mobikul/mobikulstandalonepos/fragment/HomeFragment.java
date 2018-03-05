@@ -96,6 +96,8 @@ public class HomeFragment extends Fragment {
             cartData = new CartModel();
         else
             cartData = Helper.fromStringToCartModel(AppSharedPref.getCartData(getActivity()));
+        if (cartData.getTotals().getFormatedSubTotal().equalsIgnoreCase("0.00"))
+            cartData.getTotals().setFormatedSubTotal(getString(R.string.currency_symbol) + cartData.getTotals().getFormatedSubTotal());
         binding.setCartData(cartData);
     }
 
@@ -123,7 +125,7 @@ public class HomeFragment extends Fragment {
 
             @Override
             public void onFailure(int errorCode, String errorMsg) {
-                Toast.makeText(getActivity(), errorMsg + "", Toast.LENGTH_SHORT).show();
+                ToastHelper.showToast(getActivity(), errorMsg + "", Toast.LENGTH_SHORT);
             }
         });
     }

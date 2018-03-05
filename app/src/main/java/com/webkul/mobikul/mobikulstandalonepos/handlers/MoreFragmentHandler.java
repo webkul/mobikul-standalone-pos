@@ -1,20 +1,16 @@
 package com.webkul.mobikul.mobikulstandalonepos.handlers;
 
 import android.Manifest;
-import android.arch.persistence.room.Room;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Environment;
-import android.os.StrictMode;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.webkul.mobikul.mobikulstandalonepos.BuildConfig;
 import com.webkul.mobikul.mobikulstandalonepos.R;
 import com.webkul.mobikul.mobikulstandalonepos.activity.*;
 import com.webkul.mobikul.mobikulstandalonepos.constants.ApplicationConstants;
@@ -28,20 +24,11 @@ import com.webkul.mobikul.mobikulstandalonepos.helper.ZipManager;
 import com.webkul.mobikul.mobikulstandalonepos.interfaces.DataBaseCallBack;
 import com.webkul.mobikul.mobikulstandalonepos.model.MoreData;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.nio.channels.FileChannel;
-import java.util.List;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
-import java.util.zip.ZipOutputStream;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
@@ -94,6 +81,10 @@ public class MoreFragmentHandler {
                 i = new Intent(context, OptionsActivity.class);
                 context.startActivity(i);
                 break;
+            case MORE_MENU_TAXES:
+                i = new Intent(context, TaxActivity.class);
+                context.startActivity(i);
+                break;
             case MORE_MENU_PAYMENT_METHODS:
                 i = new Intent(context, PaymentMethodActivity.class);
                 context.startActivity(i);
@@ -103,12 +94,35 @@ public class MoreFragmentHandler {
         }
     }
 
-    public void signOut() {
-        AppSharedPref.getSharedPreferenceEditor(context, USER_PREF).clear().apply();
-        Intent i = new Intent(context, SignUpSignInActivity.class);
-        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+    public void lowStockProducts() {
+        Intent i = new Intent(context, LowStockActivity.class);
         context.startActivity(i);
-        ((MainActivity) context).finish();
+    }
+
+    public void signOut() {
+        SweetAlertDialog sweetAlert = new SweetAlertDialog(context, SweetAlertDialog.WARNING_TYPE);
+        sweetAlert.setTitleText(context.getString(R.string.warning))
+                .setContentText("Do you want to logout?" /*+ " Do you want to see?"*/)
+                .setConfirmText(context.getResources().getString(R.string.yes))
+                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sDialog) {
+                        sDialog.dismissWithAnimation();
+                        AppSharedPref.getSharedPreferenceEditor(context, USER_PREF).clear().apply();
+                        Intent i = new Intent(context, SignUpSignInActivity.class);
+                        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        context.startActivity(i);
+                        ((MainActivity) context).finish();
+                    }
+                })
+                .setCancelText(context.getResources().getString(R.string.no))
+                .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sDialog) {
+                        sDialog.dismissWithAnimation();
+                    }
+                })
+                .show();
     }
 
     public void exportDB() {
@@ -199,7 +213,6 @@ public class MoreFragmentHandler {
             e.printStackTrace();
         }
     }
-
 
     public class ImportDB extends AsyncTask<String, Void,
             Boolean> {

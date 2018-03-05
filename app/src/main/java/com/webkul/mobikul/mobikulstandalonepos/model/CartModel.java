@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * Created by aman.gupta on 17/1/18. @Webkul Software Private limited
  */
-public class CartModel extends BaseObservable implements Serializable{
+public class CartModel extends BaseObservable implements Serializable {
     private List<Product> products;
     private TotalModel totals;
     private Customer customer;

@@ -112,21 +112,6 @@ public class AddProductFragmentHandler {
         }
     }
 
-    public void generateBarcode(Product product) {
-        String text = createRandomInteger(); // Whatever you need to encode in the QR code
-        Log.d(TAG, "generateBarcode: " + text);
-        product.setBarCode(text);
-        MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
-        try {
-            BitMatrix bitMatrix = multiFormatWriter.encode(text, BarcodeFormat.CODABAR, 380, 100);
-            BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
-            Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
-            getAddProductBinding().barCode.setImageBitmap(bitmap);
-        } catch (WriterException e) {
-            e.printStackTrace();
-        }
-    }
-
     private FragmentAddProductBinding getAddProductBinding() {
         AddProductFragment fragment = (AddProductFragment) ((BaseActivity) context).mSupportFragmentManager.findFragmentByTag(AddProductFragment.class.getSimpleName());
         return fragment.binding;
@@ -212,11 +197,6 @@ public class AddProductFragmentHandler {
             e.printStackTrace();
         }
         return null;
-    }
-
-    private static String createRandomInteger() {
-        String number = (long) Math.floor(Math.random() * 9_000_000L) + 1_000_000L + "" + (long) Math.floor(Math.random() * 9_000L) + "" + (long) Math.floor(Math.random() * 9_0L);
-        return number;
     }
 
     public void deleteProduct(Product product) {

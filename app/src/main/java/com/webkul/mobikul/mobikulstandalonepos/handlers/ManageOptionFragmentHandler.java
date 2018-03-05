@@ -47,7 +47,6 @@ public class ManageOptionFragmentHandler {
     }
 
     public void saveOptionToProduct(Product product, boolean isEdit) {
-
         List<Options> optionsList = new ArrayList<>();
         optionsList.addAll(product.getOptions());
         for (Options options : optionsList) {
@@ -61,8 +60,6 @@ public class ManageOptionFragmentHandler {
         }
 
         product.setOptions(optionsList);
-        Log.d("Options", new Gson().toJson(product.getOptions()) + "");
-
         Fragment fragment = ((BaseActivity) context).mSupportFragmentManager.findFragmentByTag(ManageOptionValuesFragment.class.getSimpleName());
         FragmentTransaction ft = ((BaseActivity) context).mSupportFragmentManager.beginTransaction();
         ft.detach(fragment);
@@ -72,7 +69,7 @@ public class ManageOptionFragmentHandler {
     }
 
     public void onOptionsSelect(Options options, Product product) {
-        if (!options.getType().equalsIgnoreCase("text")) {
+        if (!options.getType().equalsIgnoreCase("text") && !options.getType().equalsIgnoreCase("textarea")) {
             FragmentManager fragmentManager = ((AppCompatActivity) context).getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left);
@@ -86,7 +83,6 @@ public class ManageOptionFragmentHandler {
             fragmentTransaction.add(((ProductActivity) context).binding.productFl.getId(), fragment, fragment.getClass().getSimpleName());
             fragmentTransaction.addToBackStack(fragment.getClass().getSimpleName()).commit();
         } else {
-
             List<Options> optionsList = new ArrayList<>();
             optionsList.addAll(product.getOptions());
             for (Options options1 : optionsList) {

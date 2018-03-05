@@ -71,6 +71,21 @@
             android:layout_height="1dp"
             android:layout_alignParentBottom="true"
             android:background="#3F000000" />
+
+        <TextView
+            android:id="@+id/low_tag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_margin="@dimen/spacing_normal"
+            android:background="@color/colorAccent"
+            android:paddingBottom="@dimen/spacing_tiny"
+            android:paddingLeft="@dimen/spacing_generic"
+            android:paddingRight="@dimen/spacing_generic"
+            android:paddingTop="@dimen/spacing_tiny"
+            android:text="Low"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_small" />
     </RelativeLayout>
 
 </layout>

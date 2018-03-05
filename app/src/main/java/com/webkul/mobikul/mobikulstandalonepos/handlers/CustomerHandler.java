@@ -57,6 +57,19 @@ public class CustomerHandler {
             ((AppCompatActivity) context).finish();
         } else {
 //            edit customer stuff
+            FragmentManager fragmentManager = ((AppCompatActivity) context).getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left);
+            Fragment fragment;
+            fragment = fragmentManager.findFragmentByTag(AddCustomerFragment.class.getSimpleName());
+            if (fragment == null)
+                fragment = new AddCustomerFragment();
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("customer", customer);
+            bundle.putBoolean("edit", true);
+            fragment.setArguments(bundle);
+            fragmentTransaction.add(((CustomerActivity) context).binding.customerFl.getId(), fragment, fragment.getClass().getSimpleName());
+            fragmentTransaction.addToBackStack(fragment.getClass().getSimpleName()).commit();
         }
     }
 }

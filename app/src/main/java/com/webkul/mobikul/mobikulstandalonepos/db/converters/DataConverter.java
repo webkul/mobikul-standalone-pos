@@ -5,6 +5,7 @@ import android.arch.persistence.room.TypeConverter;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.webkul.mobikul.mobikulstandalonepos.db.entity.Options;
+import com.webkul.mobikul.mobikulstandalonepos.db.entity.Tax;
 import com.webkul.mobikul.mobikulstandalonepos.model.CartModel;
 import com.webkul.mobikul.mobikulstandalonepos.model.CashDrawerItems;
 import com.webkul.mobikul.mobikulstandalonepos.model.CashModel;
@@ -125,6 +126,30 @@ public class DataConverter implements Serializable {
         Type type = new TypeToken<CashModel>() {
         }.getType();
         String json = gson.toJson(cashData, type);
+        return json;
+    }
+
+    @TypeConverter
+    public Tax fromStringToTaxModel(String taxDataString) {
+        if (taxDataString == null) {
+            return (null);
+        }
+        Gson gson = new Gson();
+        Type type = new TypeToken<Tax>() {
+        }.getType();
+        Tax taxData = gson.fromJson(taxDataString, type);
+        return taxData;
+    }
+
+    @TypeConverter
+    public String fromTaxModelToString(Tax taxData) {
+        if (taxData == null) {
+            return (null);
+        }
+        Gson gson = new Gson();
+        Type type = new TypeToken<Tax>() {
+        }.getType();
+        String json = gson.toJson(taxData, type);
         return json;
     }
 

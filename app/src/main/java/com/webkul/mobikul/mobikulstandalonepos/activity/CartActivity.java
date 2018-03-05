@@ -47,6 +47,10 @@ public class CartActivity extends BaseActivity {
         } else {
             binding.setVisibility(false);
         }
+        if (cartData != null && cartData.getTotals().getDiscount().isEmpty())
+            binding.customerCustomDiscountTnl.setEnabled(true);
+        else
+            binding.customerCustomDiscountTnl.setEnabled(false);
     }
 
     @Override

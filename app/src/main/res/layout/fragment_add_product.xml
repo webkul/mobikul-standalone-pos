@@ -119,7 +119,6 @@
                                 android:textSize="@dimen/text_size_medium" />
                         </LinearLayout>
 
-
                         <android.support.design.widget.TextInputLayout
                             android:id="@+id/sku_til"
                             android:layout_width="match_parent"
@@ -216,6 +215,17 @@
                                 android:text="@string/yes_taxable_goods"
                                 android:textSize="@dimen/text_size_medium" />
                         </LinearLayout>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/text_tax"
+                            android:textSize="@dimen/text_size_medium" />
+
+                        <Spinner
+                            android:id="@+id/tax_spinner"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
                     </LinearLayout>
                 </android.support.v7.widget.CardView>
 
@@ -230,15 +240,6 @@
                         android:orientation="vertical"
                         android:padding="@dimen/spacing_generic">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentEnd="true"
-                            android:layout_alignParentTop="true"
-                            android:onClick="@{()->handler.generateBarcode(data)}"
-                            android:text="@string/generate_barcode"
-                            android:textColor="@color/colorAccent"
-                            android:visibility="@{edit ? View.GONE : View.VISIBLE}" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -247,27 +248,37 @@
                             android:layout_alignParentTop="true"
                             android:text="@string/barcode"
                             android:textColor="@color/textColor"
-                            android:textSize="@dimen/text_size_large"
-                            android:visibility="@{edit ? View.VISIBLE : View.GONE}" />
+                            android:textSize="@dimen/text_size_large" />
 
                         <ImageView
                             android:id="@+id/barCode"
                             android:layout_width="match_parent"
-                            android:layout_height="120dp" />
+                            android:layout_height="120dp"
+                            app:srcCompat="@drawable/ic_barcode_placeholder" />
+
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="end"
+                            android:layout_marginTop="@dimen/spacing_tiny"
                             android:drawableLeft="@drawable/ic_download_wrappar"
                             android:drawablePadding="@dimen/spacing_tiny"
                             android:drawableStart="@drawable/ic_download_wrappar"
                             android:gravity="center"
                             android:onClick="@{()->handler.saveImage(data)}"
-                            android:text="Save barcode"
+                            android:text="@string/save_barcode"
                             android:textColor="@color/colorAccent"
                             android:textSize="@dimen/text_size_small"
                             android:textStyle="bold" />
+
+                        <!--<TextView-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_centerVertical="true"-->
+                        <!--android:onClick="@{()->handler.generateBarcode(data)}"-->
+                        <!--android:text="@string/generate_barcode"-->
+                        <!--android:textColor="@color/colorAccent"-->
+                        <!--android:visibility="@{edit ? View.GONE : View.VISIBLE}" />-->
 
                     </LinearLayout>
 

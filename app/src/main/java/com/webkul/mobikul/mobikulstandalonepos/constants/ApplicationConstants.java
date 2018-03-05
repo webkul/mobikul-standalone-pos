@@ -62,7 +62,11 @@ public interface ApplicationConstants {
     //option
     String SUCCESS_MSG_1_ADD_OPTION = "Success: You have added option successfully.";
     String SUCCESS_MSG_2_DELETE_OPTION = "This Options has been deleted!";
-    String SUCCESS_MSG_3_UPDATE_PRODUCT = "Option Updated.";
+    String SUCCESS_MSG_3_UPDATE_OPTION = "Option Updated.";
+    //tax
+    String SUCCESS_MSG_1_ADD_TAX_RATE = "Success: You have added tax rate successfully.";
+    String SUCCESS_MSG_2_DELETE_TAX = "This tax rate has been deleted!";
+    String SUCCESS_MSG_3_UPDATE_TAX = "Tax rate Updated.";
 
 
     //    error codes

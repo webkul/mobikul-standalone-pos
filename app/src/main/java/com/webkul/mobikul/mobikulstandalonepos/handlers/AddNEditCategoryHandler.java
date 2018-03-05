@@ -30,7 +30,6 @@ public class AddNEditCategoryHandler {
     public void save(Category data, boolean isEdit) {
         if (isValidated(data)) {
             if (!isEdit) {
-                Category category = data;
                 data.setParentId(0);
                 data.setLevel(1);
                 data.setPath("0_" + data.getCId());

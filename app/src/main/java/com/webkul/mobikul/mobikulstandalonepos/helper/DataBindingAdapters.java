@@ -103,6 +103,12 @@ public class DataBindingAdapters {
             case CASHDRAWER:
                 textview.setText(textview.getContext().getString(R.string.empty_subtitle_cash_drawer));
                 break;
+            case OPTIONS:
+                textview.setText(textview.getContext().getString(R.string.you_do_not_have_any_option_yet));
+                break;
+            case TAX:
+                textview.setText(textview.getContext().getString(R.string.you_do_not_have_any_taxes_yet));
+                break;
 //            case NOTIFICATION:
 //                textview.setText(textview.getContext().getString(R.string.no_recent_notifications));
 //                break;
@@ -140,6 +146,12 @@ public class DataBindingAdapters {
             case CASHDRAWER:
                 textview.setText(textview.getContext().getString(R.string.empty_cash_drawer));
                 break;
+            case OPTIONS:
+                textview.setText(textview.getContext().getString(R.string.no_options));
+                break;
+            case TAX:
+                textview.setText(textview.getContext().getString(R.string.no_tax));
+                break;
 //            case NOTIFICATION:
 //                textview.setText(textview.getContext().getString(R.string.no_notification));
 //                break;
@@ -174,7 +186,13 @@ public class DataBindingAdapters {
                 imageview.setImageResource(R.drawable.ic_empty_payment);
                 break;
             case CASHDRAWER:
-                imageview.setImageResource(R.drawable.ic_empty_product_list);
+                imageview.setImageResource(R.drawable.ic_empty_cash_drawer);
+                break;
+            case OPTIONS:
+                imageview.setImageResource(R.drawable.ic_empty_options);
+                break;
+            case TAX:
+                imageview.setImageResource(R.drawable.ic_empty_tax);
                 break;
 //            case NOTIFICATION:
 //                imageview.setImageResource(R.drawable.ic_vector_empty_notification);

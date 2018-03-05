@@ -31,6 +31,9 @@ public interface ProductDao {
     @Query("SELECT * FROM Product WHERE is_enabled = :isEnabled")
     List<Product> getEnabledProduct(boolean isEnabled);
 
+    @Query("SELECT * FROM Product WHERE CAST(quantity as decimal)<= :quantity")
+    List<Product> getLowStockProducts(int quantity);
+
     @Query("SELECT * FROM Product WHERE barCode = :barcode")
     Product getProductByBarcode(String barcode);
 
@@ -67,7 +70,5 @@ public interface ProductDao {
 
     @Query("DELETE FROM Product")
     void delete();
-
-
 }
 

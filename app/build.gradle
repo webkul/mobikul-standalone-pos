@@ -13,15 +13,15 @@ android {
             storePassword 'newEra@01jan2018'
         }
     }
-    compileSdkVersion 26
+    compileSdkVersion 27
     buildToolsVersion "27.0.0"
     dataBinding.enabled = true
     defaultConfig {
         applicationId "com.webkul.mobikul.mobikulstandalonepos"
         minSdkVersion 17
-        targetSdkVersion 26
-        versionCode 4
-        versionName "1.3"
+        targetSdkVersion 27
+        versionCode 7
+        versionName "1.6"
         vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         signingConfig signingConfigs.config
@@ -31,13 +31,13 @@ android {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
-//        debug {
-//            resValue("string", "PORT_NUMBER", "8081")
-//        }
+        debug {
+            resValue("string", "PORT_NUMBER", "8081")
+        }
     }
-//    lintOptions {
-//        checkReleaseBuilds false
-//    }
+    lintOptions {
+        checkReleaseBuilds false
+    }
 
     productFlavors {
     }
@@ -52,11 +52,11 @@ dependencies {
     implementation project(':mail')
     implementation project(':mobikuldialoglibrary-release')
     implementation project(':MobikulAutoScrollableView-release')
-    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     //noinspection GradleCompatible
     implementation "com.android.support:support-v4:$support_version"
     /*SWEET ALERT DIALOG*/
-    implementation 'com.android.support:support-v4:26.1.0'
+    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+    implementation 'com.android.support:support-v4:27.0.2'
     compile "cn.pedant.sweetalert:library:$sweetalert_version"
     implementation "com.android.support:design:$support_version"
     androidTestImplementation 'com.android.support.test:runner:1.0.1'

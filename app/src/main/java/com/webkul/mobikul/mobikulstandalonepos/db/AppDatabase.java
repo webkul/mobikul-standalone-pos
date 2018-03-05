@@ -2,9 +2,11 @@ package com.webkul.mobikul.mobikulstandalonepos.db;
 
 import android.arch.persistence.db.SupportSQLiteDatabase;
 import android.arch.persistence.room.Database;
+import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
 import android.arch.persistence.room.TypeConverters;
 import android.arch.persistence.room.migration.Migration;
+import android.content.Context;
 
 import com.webkul.mobikul.mobikulstandalonepos.db.converters.DataConverter;
 import com.webkul.mobikul.mobikulstandalonepos.db.dao.AdministratorDao;
@@ -16,6 +18,7 @@ import com.webkul.mobikul.mobikulstandalonepos.db.dao.OptionDao;
 import com.webkul.mobikul.mobikulstandalonepos.db.dao.OptionValuesDao;
 import com.webkul.mobikul.mobikulstandalonepos.db.dao.OrderDao;
 import com.webkul.mobikul.mobikulstandalonepos.db.dao.ProductDao;
+import com.webkul.mobikul.mobikulstandalonepos.db.dao.TaxDao;
 import com.webkul.mobikul.mobikulstandalonepos.db.entity.Administrator;
 import com.webkul.mobikul.mobikulstandalonepos.db.entity.CashDrawerModel;
 import com.webkul.mobikul.mobikulstandalonepos.db.entity.Category;
@@ -25,11 +28,15 @@ import com.webkul.mobikul.mobikulstandalonepos.db.entity.OptionValues;
 import com.webkul.mobikul.mobikulstandalonepos.db.entity.Options;
 import com.webkul.mobikul.mobikulstandalonepos.db.entity.OrderEntity;
 import com.webkul.mobikul.mobikulstandalonepos.db.entity.Product;
+import com.webkul.mobikul.mobikulstandalonepos.db.entity.Tax;
 
 @Database(entities = {Administrator.class, Category.class, Product.class, Customer.class, OrderEntity.class
-        , HoldCart.class, CashDrawerModel.class, Options.class, OptionValues.class}, version = 10, exportSchema = false)
+        , HoldCart.class, CashDrawerModel.class, Options.class, OptionValues.class, Tax.class}, version = 11, exportSchema = false)
 @TypeConverters(DataConverter.class)
 public abstract class AppDatabase extends RoomDatabase {
+
+    private static AppDatabase mINSTANCE;
+
     public abstract AdministratorDao administratorDao();
 
     public abstract CategoryDao categoryDao();
@@ -46,7 +53,20 @@ public abstract class AppDatabase extends RoomDatabase {
 
     public abstract OptionDao optionDao();
 
+    public abstract TaxDao taxDao();
+
     public abstract OptionValuesDao optionValuesDao();
+
+
+    public static AppDatabase getAppDatabase(Context context) {
+        if (mINSTANCE == null) {
+            mINSTANCE =
+                    Room.databaseBuilder(context.getApplicationContext(), AppDatabase.class, "db_pos")
+                            .fallbackToDestructiveMigration()
+                            .build();
+        }
+        return mINSTANCE;
+    }
 
     public static final Migration MIGRATION_1_2 = new Migration(8, 9) {
         @Override
@@ -104,5 +124,9 @@ public abstract class AppDatabase extends RoomDatabase {
 //            database.execSQL("ALTER TABLE Product ADD COLUMN formatted_price TEXT");
         }
     };
+
+    public static void destroyDbInstance() {
+        mINSTANCE = null;
+    }
 
 }

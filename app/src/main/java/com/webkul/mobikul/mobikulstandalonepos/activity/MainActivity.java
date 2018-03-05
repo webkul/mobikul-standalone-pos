@@ -1,55 +1,34 @@
 package com.webkul.mobikul.mobikulstandalonepos.activity;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.SearchManager;
-import android.arch.persistence.room.Database;
-import android.arch.persistence.room.Room;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.databinding.DataBindingUtil;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.StrictMode;
-import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.internal.BottomNavigationItemView;
 import android.support.design.internal.BottomNavigationMenuView;
 import android.support.design.widget.BottomNavigationView;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
-import android.util.SparseArray;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.google.android.gms.vision.barcode.Barcode;
-import com.webkul.mobikul.mobikulstandalonepos.BuildConfig;
 import com.webkul.mobikul.mobikulstandalonepos.R;
 import com.webkul.mobikul.mobikulstandalonepos.adapter.DrawerAdapter;
-import com.webkul.mobikul.mobikulstandalonepos.adapter.HomePageProductAdapter;
 import com.webkul.mobikul.mobikulstandalonepos.customviews.CustomDialogClass;
 import com.webkul.mobikul.mobikulstandalonepos.databinding.ActivityMainBinding;
-import com.webkul.mobikul.mobikulstandalonepos.db.AppDatabase;
 import com.webkul.mobikul.mobikulstandalonepos.db.DataBaseController;
 import com.webkul.mobikul.mobikulstandalonepos.db.entity.Category;
-import com.webkul.mobikul.mobikulstandalonepos.db.entity.HoldCart;
 import com.webkul.mobikul.mobikulstandalonepos.db.entity.Product;
 import com.webkul.mobikul.mobikulstandalonepos.fragment.HoldFragment;
 import com.webkul.mobikul.mobikulstandalonepos.fragment.HomeFragment;
@@ -60,22 +39,11 @@ import com.webkul.mobikul.mobikulstandalonepos.helper.Helper;
 import com.webkul.mobikul.mobikulstandalonepos.helper.ToastHelper;
 import com.webkul.mobikul.mobikulstandalonepos.interfaces.DataBaseCallBack;
 
-import org.apache.commons.net.ntp.NTPUDPClient;
-import org.apache.commons.net.ntp.TimeInfo;
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import java.io.IOException;
 import java.lang.reflect.Field;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
-import info.androidhive.barcode.BarcodeReader;
 
 /**
  * Created by aman.gupta on 27/12/17. @Webkul Software Private limited
@@ -101,15 +69,21 @@ public class MainActivity extends BaseActivity implements LocationListener {
         mMainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         initDrawerToggle();
         initBottomNavView();
-        loadDrawerData();
         loadHomeFragment();
         openingBalance();
         reminderMsg();
-        getCurrentTime();
+//        getCurrentTime();
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
+        loadHomeFragment();
+        loadDrawerData();
     }
 
     private void openingBalance() {
-
         if (AppSharedPref.getDate(this).isEmpty() || !AppSharedPref.getDate(this).equalsIgnoreCase(Helper.getCurrentDate())) {
             CustomDialogClass customDialogClass = new CustomDialogClass(this);
             customDialogClass.show();
@@ -152,8 +126,13 @@ public class MainActivity extends BaseActivity implements LocationListener {
         private Context context;
 
         GetNetworkTime(Context context) {
-
             this.context = context;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            showLoader();
         }
 
         @Override
@@ -165,6 +144,7 @@ public class MainActivity extends BaseActivity implements LocationListener {
         @Override
         protected void onPostExecute(Long l) {
             super.onPostExecute(l);
+            hideLoader();
             storedTime = AppSharedPref.getTime(context, 0);
             Log.d(TAG, "onCreate: " + networkTS + "----" + storedTime + "---" + (networkTS - storedTime));
             if (storedTime == 0) {
@@ -185,7 +165,11 @@ public class MainActivity extends BaseActivity implements LocationListener {
     private void destoryDbForDemoUser() {
         DataBaseController.getInstanse().deleteAllTables(MainActivity.this);
         AppSharedPref.deleteCartData(this);
+        AppSharedPref.deleteSignUpdata(this);
+//        AppSharedPref.removeAllPref(this);
         AppSharedPref.setTime(this, 0);
+        AppSharedPref.setDate(this, "");
+        AppSharedPref.setReminderMsgShown(this, false);
     }
 
     public void loadDrawerData() {
@@ -207,6 +191,9 @@ public class MainActivity extends BaseActivity implements LocationListener {
                     } else {
                         drawerAdapter.notifyDataSetChanged();
                     }
+                    mMainBinding.setVisibility(true);
+                } else {
+                    mMainBinding.setVisibility(false);
                 }
             }
 
@@ -220,7 +207,7 @@ public class MainActivity extends BaseActivity implements LocationListener {
     @Override
     protected void onResume() {
         super.onResume();
-        setCategories();
+        loadDrawerData();
     }
 
     private void initDrawerToggle() {
@@ -389,6 +376,4 @@ public class MainActivity extends BaseActivity implements LocationListener {
 
         }
     }
-
-
 }
