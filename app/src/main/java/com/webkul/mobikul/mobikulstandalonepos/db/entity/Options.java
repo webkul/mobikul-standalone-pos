@@ -30,7 +30,6 @@ public class Options extends BaseObservable implements Serializable {
     @ColumnInfo(name = "option_type")
     private String type;
 
-    @TypeConverters(DataConverter.class)
     @ColumnInfo(name = "option_values")
     private List<OptionValues> optionValues;
 

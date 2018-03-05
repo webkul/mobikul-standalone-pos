@@ -136,6 +136,7 @@
     <string name="currency_symbol">$</string>
     <string name="sub_total">Sub-Total:</string>
     <string name="tax">Tax:</string>
+    <string name="text_tax">Tax</string>
     <string name="grand_total">Grand Total:</string>
     <string name="confirm_and_accept_payment">Confirm and Accept Payment</string>
     <string name="title_activity_checkout">Checkout</string>
@@ -162,6 +163,9 @@
     <string name="no_options">No Options</string>
     <string name="you_do_not_have_any_option_yet">You do not have any option yet.</string>
     <string name="no_options_subtitle">First create product options to use.</string>
+    <string name="no_tax">No Options</string>
+    <string name="you_do_not_have_any_taxes_yet">You do not have any taxes yet.</string>
+    <string name="no_tax_subtitle">First create tax to use.</string>
 
     <!--customer info-->
     <string name="title_activity_customer">Customers</string>
@@ -248,10 +252,15 @@
         <item>Radio</item>
         <item>Checkbox</item>
         <item>Text</item>
-        <!--<item>TextArea</item>-->
+        <item>TextArea</item>
         <!--<item>Date</item>-->
         <!--<item>Time</item>-->
         <!--<item>Date &amp; Time</item>-->
+    </string-array>
+
+    <string-array name="tax_type">
+        <item>Percentage (%)</item>
+        <item>Fix Amount</item>
     </string-array>
 
     <!--cash drawer string-->
@@ -262,4 +271,18 @@
     <string name="amt_collected">Amt. Collected</string>
     <string name="choose_option">Choose Options</string>
     <string name="choose_options">Choose Options</string>
+    <string name="save_barcode">Save barcode</string>
+    <string name="left"><![CDATA[<<]]></string>
+    <string name="right"><![CDATA[>>]]></string>
+
+    <!--tax string-->
+    <string name="title_activity_tax">Taxes</string>
+    <string name="add_new_tax_rate">Add New Tax Rate</string>
+    <string name="tax_name">Tax Name</string>
+    <string name="enable_tax_rate">Enable Tax Rate</string>
+    <string name="add_tax_title">Add Tax Rates</string>
+    <string name="edit_tax_title">Edit Tax Rate</string>
+    <string name="tax_rate">Tax Rate</string>
+    <string name="remove">Remove</string>
+    <string name="low_stocks">Low Stock Products</string>
 </resources>

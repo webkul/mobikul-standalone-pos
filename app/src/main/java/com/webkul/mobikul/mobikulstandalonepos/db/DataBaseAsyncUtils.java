@@ -14,6 +14,7 @@ import com.webkul.mobikul.mobikulstandalonepos.db.entity.HoldCart;
 import com.webkul.mobikul.mobikulstandalonepos.db.entity.Options;
 import com.webkul.mobikul.mobikulstandalonepos.db.entity.OrderEntity;
 import com.webkul.mobikul.mobikulstandalonepos.db.entity.Product;
+import com.webkul.mobikul.mobikulstandalonepos.db.entity.Tax;
 import com.webkul.mobikul.mobikulstandalonepos.interfaces.DataBaseCallBack;
 
 import java.util.List;
@@ -405,6 +406,33 @@ public class DataBaseAsyncUtils {
         }
     }
 
+    public class GetAllLowStockProducts extends AsyncTask<Integer, Void,
+            List<Product>> {
+
+        private AppDatabase db;
+        private final DataBaseCallBack dataBaseCallBack;
+
+        public GetAllLowStockProducts(AppDatabase userDatabase, DataBaseCallBack dataBaseCallBack) {
+            db = userDatabase;
+            this.dataBaseCallBack = dataBaseCallBack;
+        }
+
+        @Override
+        protected List<Product> doInBackground(Integer... qty) {
+            List<Product> products = db.productDao().getLowStockProducts(qty[0]);
+            return products;
+        }
+
+        @Override
+        protected void onPostExecute(List<Product> products) {
+            super.onPostExecute(products);
+            if (products != null) {
+                dataBaseCallBack.onSuccess(products, SUCCESS_MSG);
+            } else
+                dataBaseCallBack.onFailure(ERROR_CODE, ERROR_MSG);
+        }
+    }
+
     public class UpdateProduct extends AsyncTask<Product, Void,
             Boolean> {
 
@@ -569,6 +597,76 @@ public class DataBaseAsyncUtils {
                 dataBaseCallBack.onSuccess(true, SUCCESS_MSG_6_ADD_CUSTOMER);
             } else
                 dataBaseCallBack.onFailure(ERROR_CODE, ERROR_MSG);
+        }
+    }
+
+
+    public class UpdateCustomerAsyncTask extends AsyncTask<Customer, Void,
+            Boolean> {
+
+        private AppDatabase db;
+        private final DataBaseCallBack dataBaseCallBack;
+
+        public UpdateCustomerAsyncTask(AppDatabase userDatabase, DataBaseCallBack dataBaseCallBack) {
+            db = userDatabase;
+            this.dataBaseCallBack = dataBaseCallBack;
+        }
+
+        @Override
+        protected Boolean doInBackground(Customer... customers) {
+            try {
+                db.customerDao().updateCustomerById(customers[0].getFirstName()
+                        , customers[0].getLastName()
+                        , customers[0].getEmail()
+                        , customers[0].getContactNumber()
+                        , customers[0].getCustomerId());
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
+            return true;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            super.onPostExecute(aBoolean);
+            if (aBoolean) {
+                dataBaseCallBack.onSuccess(true, SUCCESS_MSG_8_UPDATE_CUSTOMER);
+            } else
+                dataBaseCallBack.onFailure(ERROR_CODE, ERROR_MSG);
+        }
+    }
+
+    public class DeleteCustomer extends AsyncTask<Customer, Void,
+            Boolean> {
+
+        private AppDatabase db;
+        private final DataBaseCallBack dataBaseCallBack;
+
+        public DeleteCustomer(AppDatabase userDatabase, DataBaseCallBack dataBaseCallBack) {
+            db = userDatabase;
+            this.dataBaseCallBack = dataBaseCallBack;
+        }
+
+        @Override
+        protected Boolean doInBackground(Customer... customers) {
+            try {
+                db.customerDao().delete(customers[0]);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
+            return true;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            super.onPostExecute(aBoolean);
+            if (aBoolean) {
+                dataBaseCallBack.onSuccess(aBoolean, SUCCESS_MSG_7_DELETE_CUSTOMER);
+            } else {
+                dataBaseCallBack.onFailure(ERROR_CODE, ERROR_MSG);
+            }
         }
     }
 
@@ -1009,7 +1107,7 @@ public class DataBaseAsyncUtils {
         protected void onPostExecute(Boolean aBoolean) {
             super.onPostExecute(aBoolean);
             if (aBoolean) {
-                dataBaseCallBack.onSuccess(aBoolean, SUCCESS_MSG_3_UPDATE_PRODUCT);
+                dataBaseCallBack.onSuccess(aBoolean, SUCCESS_MSG_3_UPDATE_OPTION);
             } else {
                 dataBaseCallBack.onFailure(ERROR_CODE, ERROR_MSG);
             }
@@ -1043,6 +1141,155 @@ public class DataBaseAsyncUtils {
             super.onPostExecute(aBoolean);
             if (aBoolean) {
                 dataBaseCallBack.onSuccess(aBoolean, SUCCESS_MSG_2_DELETE_OPTION);
+            } else {
+                dataBaseCallBack.onFailure(ERROR_CODE, ERROR_MSG);
+            }
+        }
+    }
+
+
+    public class AddTaxRate extends AsyncTask<Tax, Void,
+            Long> {
+
+        private AppDatabase db;
+        private final DataBaseCallBack dataBaseCallBack;
+
+        public AddTaxRate(AppDatabase userDatabase, DataBaseCallBack dataBaseCallBack) {
+            db = userDatabase;
+            this.dataBaseCallBack = dataBaseCallBack;
+        }
+
+        @Override
+        protected Long doInBackground(Tax... taxes) {
+            Long[] id = db.taxDao().insertAll(taxes);
+            return id[0];
+        }
+
+        @Override
+        protected void onPostExecute(Long id) {
+            super.onPostExecute(id);
+            if (id != null) {
+                dataBaseCallBack.onSuccess(id, SUCCESS_MSG_1_ADD_TAX_RATE);
+            } else
+                dataBaseCallBack.onFailure(ERROR_CODE, ERROR_MSG);
+        }
+    }
+
+    public class GetAllTaxes extends AsyncTask<Void, Void,
+            List<Tax>> {
+
+        private AppDatabase db;
+        private final DataBaseCallBack dataBaseCallBack;
+
+        public GetAllTaxes(AppDatabase userDatabase, DataBaseCallBack dataBaseCallBack) {
+            db = userDatabase;
+            this.dataBaseCallBack = dataBaseCallBack;
+        }
+
+        @Override
+        protected List<Tax> doInBackground(Void... voids) {
+            List<Tax> taxes = db.taxDao().getAll();
+            return taxes;
+        }
+
+        @Override
+        protected void onPostExecute(List<Tax> taxes) {
+            super.onPostExecute(taxes);
+            if (taxes != null) {
+                dataBaseCallBack.onSuccess(taxes, SUCCESS_MSG);
+            } else
+                dataBaseCallBack.onFailure(ERROR_CODE, ERROR_MSG);
+        }
+    }
+
+    public class UpdateTaxRate extends AsyncTask<Tax, Void,
+            Boolean> {
+
+        private AppDatabase db;
+        private final DataBaseCallBack dataBaseCallBack;
+
+        public UpdateTaxRate(AppDatabase userDatabase, DataBaseCallBack dataBaseCallBack) {
+            db = userDatabase;
+            this.dataBaseCallBack = dataBaseCallBack;
+        }
+
+        @Override
+        protected Boolean doInBackground(Tax... taxes) {
+            try {
+                db.taxDao().updateTaxById(taxes[0].getTaxName(), taxes[0].isEnabled(), taxes[0].getTaxRate(), taxes[0].getTaxId());
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
+            return true;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            super.onPostExecute(aBoolean);
+            if (aBoolean) {
+                dataBaseCallBack.onSuccess(true, SUCCESS_MSG_3_UPDATE_TAX);
+            } else
+                dataBaseCallBack.onFailure(ERROR_CODE, ERROR_MSG);
+        }
+    }
+
+
+    public class GetAllEnabledTaxes extends AsyncTask<Void, Void,
+            List<Tax>> {
+
+        private AppDatabase db;
+        private final DataBaseCallBack dataBaseCallBack;
+
+        public GetAllEnabledTaxes(AppDatabase userDatabase, DataBaseCallBack dataBaseCallBack) {
+            db = userDatabase;
+            this.dataBaseCallBack = dataBaseCallBack;
+        }
+
+        @Override
+        protected List<Tax> doInBackground(Void... voids) {
+            List<Tax> tax = db.taxDao().getEnabledTax(true);
+            return tax;
+        }
+
+        @Override
+        protected void onPostExecute(List<Tax> taxList) {
+            super.onPostExecute(taxList);
+            if (taxList != null) {
+                dataBaseCallBack.onSuccess(taxList, SUCCESS_MSG);
+            } else
+                dataBaseCallBack.onFailure(ERROR_CODE, ERROR_MSG);
+        }
+    }
+
+
+    public class DeleteTax extends AsyncTask<Tax, Void,
+            Boolean> {
+
+        private AppDatabase db;
+        private final DataBaseCallBack dataBaseCallBack;
+
+        public DeleteTax(AppDatabase userDatabase, DataBaseCallBack dataBaseCallBack) {
+            db = userDatabase;
+            this.dataBaseCallBack = dataBaseCallBack;
+        }
+
+        @Override
+        protected Boolean doInBackground(Tax... taxes) {
+            try {
+                db.taxDao().delete(taxes[0]);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
+            return true;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            super.onPostExecute(aBoolean);
+            if (aBoolean) {
+                dataBaseCallBack.onSuccess(aBoolean, SUCCESS_MSG_2_DELETE_TAX);
             } else {
                 dataBaseCallBack.onFailure(ERROR_CODE, ERROR_MSG);
             }

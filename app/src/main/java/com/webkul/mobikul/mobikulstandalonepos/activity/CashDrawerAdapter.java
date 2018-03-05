@@ -53,7 +53,6 @@ class CashDrawerAdapter extends RecyclerView.Adapter<CashDrawerAdapter.ViewHolde
         public ViewHolder(View itemView) {
             super(itemView);
             binding = ItemCashDrawerBinding.bind(itemView);
-
         }
     }
 }

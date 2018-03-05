@@ -21,6 +21,6 @@ public class BundleConstants {
     public static String BUNDLE_ORDER_DATA = "order_data";
 
     public enum EmptyLayoutType {
-        PRODUCT, CATEGORY, ORDER, CART, WISHLIST, NOTIFICATION, CUSTOMER, HOLD, PAYMENT, CASHDRAWER
+        PRODUCT, CATEGORY, ORDER, CART, WISHLIST, NOTIFICATION, CUSTOMER, HOLD, PAYMENT, CASHDRAWER, OPTIONS, TAX
     }
 }

@@ -12,6 +12,10 @@
             type="boolean" />
 
         <variable
+            name="edit"
+            type="Boolean" />
+
+        <variable
             name="data"
             type="com.webkul.mobikul.mobikulstandalonepos.db.entity.Customer" />
 
@@ -78,13 +82,12 @@
                         android:layout_height="wrap_content"
                         android:layout_toRightOf="@id/delete_customer"
                         android:background="?attr/selectableItemBackgroundBorderless"
-                        android:onClick="@{()-> handler2.saveCustomer(data)}"
+                        android:onClick="@{()-> handler2.saveCustomer(data, edit)}"
                         android:padding="@dimen/spacing_generic"
                         android:visibility="gone"
                         app:srcCompat="@drawable/ic_submit_fill" />
 
                 </RelativeLayout>
-
             </android.support.v7.widget.Toolbar>
 
         </android.support.design.widget.AppBarLayout>

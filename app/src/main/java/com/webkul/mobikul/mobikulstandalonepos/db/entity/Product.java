@@ -66,6 +66,10 @@ public class Product extends BaseObservable implements Serializable, Parcelable 
     @ColumnInfo(name = "is_taxable_goods_applied")
     private boolean isTaxableGoodsApplied;
 
+    @TypeConverters(DataConverter.class)
+    @ColumnInfo(name = "product_tax")
+    private Tax productTax;
+
     @ColumnInfo(name = "track_inventory")
     private boolean trackInventory;
 
@@ -117,6 +121,7 @@ public class Product extends BaseObservable implements Serializable, Parcelable 
         barCode = in.readString();
         productCategories = in.createTypedArrayList(ProductCategoryModel.CREATOR);
         cartQty = in.readString();
+        cartProductSubtotal = in.readString();
         displayError = in.readByte() != 0;
     }
 
@@ -400,39 +405,48 @@ public class Product extends BaseObservable implements Serializable, Parcelable 
         this.options = options;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(pId);
-        dest.writeString(productName);
-        dest.writeString(productShortDes);
-        dest.writeString(sku);
-        dest.writeByte((byte) (isEnabled ? 1 : 0));
-        dest.writeString(price);
-        dest.writeString(formattedPrice);
-        dest.writeString(specialPrice);
-        dest.writeString(formattedSpecialPrice);
-        dest.writeByte((byte) (isTaxableGoodsApplied ? 1 : 0));
-        dest.writeByte((byte) (trackInventory ? 1 : 0));
-        dest.writeString(quantity);
-        dest.writeByte((byte) (stock ? 1 : 0));
-        dest.writeString(image);
-        dest.writeString(weight);
-        dest.writeString(barCode);
-        dest.writeTypedList(productCategories);
-        dest.writeString(cartQty);
-        dest.writeByte((byte) (displayError ? 1 : 0));
-    }
-
     public String getCartProductSubtotal() {
         return cartProductSubtotal;
     }
 
     public void setCartProductSubtotal(String cartProductSubtotal) {
         this.cartProductSubtotal = cartProductSubtotal;
+    }
+
+    public Tax getProductTax() {
+        return productTax;
+    }
+
+    public void setProductTax(Tax productTax) {
+        this.productTax = productTax;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(pId);
+        parcel.writeString(productName);
+        parcel.writeString(productShortDes);
+        parcel.writeString(sku);
+        parcel.writeByte((byte) (isEnabled ? 1 : 0));
+        parcel.writeString(price);
+        parcel.writeString(formattedPrice);
+        parcel.writeString(specialPrice);
+        parcel.writeString(formattedSpecialPrice);
+        parcel.writeByte((byte) (isTaxableGoodsApplied ? 1 : 0));
+        parcel.writeByte((byte) (trackInventory ? 1 : 0));
+        parcel.writeString(quantity);
+        parcel.writeByte((byte) (stock ? 1 : 0));
+        parcel.writeString(image);
+        parcel.writeString(weight);
+        parcel.writeString(barCode);
+        parcel.writeTypedList(productCategories);
+        parcel.writeString(cartQty);
+        parcel.writeString(cartProductSubtotal);
+        parcel.writeByte((byte) (displayError ? 1 : 0));
     }
 }

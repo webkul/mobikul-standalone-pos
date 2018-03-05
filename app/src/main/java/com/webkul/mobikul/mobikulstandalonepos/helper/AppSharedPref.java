@@ -2,6 +2,9 @@ package com.webkul.mobikul.mobikulstandalonepos.helper;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.support.v4.content.ContextCompat;
+
+import com.webkul.mobikul.mobikulstandalonepos.activity.MainActivity;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -121,6 +124,10 @@ public class AppSharedPref {
         getSharedPreferenceEditor(context, APP_PREF).remove(KEY_CART_DATA + getUserId(context)).apply();
     }
 
+    public static void deleteSignUpdata(Context context) {
+        getSharedPreferenceEditor(context, APP_PREF).remove(IS_SIGNED_UP).apply();
+    }
+
     public static void setTime(Context context, long time) {
         getSharedPreferenceEditor(context, APP_PREF).putLong(KEY_TIME, time).apply();
     }
@@ -153,4 +160,8 @@ public class AppSharedPref {
         getSharedPreferenceEditor(context, APP_PREF).putString(KEY_DATE, date).apply();
     }
 
+    public static void removeAllPref(Context context) {
+        getSharedPreferenceEditor(context, APP_PREF).clear();
+        getSharedPreferenceEditor(context, USER_PREF).clear();
+    }
 }

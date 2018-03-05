@@ -24,6 +24,7 @@ public class TotalModel extends BaseObservable implements Serializable {
     private String formatedGrandTotal;
     private String roundTotal;
     private String formatedRoundTotal;
+    private boolean displayError;
 
     public TotalModel() {
     }
@@ -57,6 +58,17 @@ public class TotalModel extends BaseObservable implements Serializable {
         if (discount == null)
             return "";
         return discount;
+    }
+
+    @Bindable({"displayError", "discount"})
+    public String getDiscountError() {
+        if (!isDisplayError()) {
+            return "";
+        }
+        if (getDiscount().isEmpty()) {
+            return "CUSTOM DISCOUNT IS EMPTY!";
+        }
+        return "";
     }
 
     public void setDiscount(String discount) {
@@ -156,4 +168,16 @@ public class TotalModel extends BaseObservable implements Serializable {
     public void setFormatedTax(String formatedTax) {
         this.formatedTax = formatedTax;
     }
+
+
+    @Bindable
+    public boolean isDisplayError() {
+        return displayError;
+    }
+
+    public void setDisplayError(boolean displayError) {
+        this.displayError = displayError;
+        notifyPropertyChanged(BR.displayError);
+    }
+
 }

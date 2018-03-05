@@ -58,9 +58,9 @@ public class OptionsActivity extends BaseActivity {
                             optionsAdapter.notifyDataSetChanged();
                         }
                     }
-//                    binding.setVisibility(true);
+                    binding.setVisibility(true);
                 } else {
-//                    binding.setVisibility(false);
+                    binding.setVisibility(false);
                 }
             }
 

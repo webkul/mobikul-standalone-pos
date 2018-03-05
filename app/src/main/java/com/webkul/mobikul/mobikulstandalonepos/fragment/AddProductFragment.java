@@ -12,6 +12,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import com.google.zxing.BarcodeFormat;
@@ -24,12 +26,18 @@ import com.webkul.mobikul.mobikulstandalonepos.activity.ProductActivity;
 import com.webkul.mobikul.mobikulstandalonepos.adapter.ProductCategoryAdapter;
 import com.webkul.mobikul.mobikulstandalonepos.adapter.ProductOptionsAdapter;
 import com.webkul.mobikul.mobikulstandalonepos.databinding.FragmentAddProductBinding;
+import com.webkul.mobikul.mobikulstandalonepos.db.DataBaseController;
+import com.webkul.mobikul.mobikulstandalonepos.db.converters.DataConverter;
 import com.webkul.mobikul.mobikulstandalonepos.db.entity.Options;
 import com.webkul.mobikul.mobikulstandalonepos.db.entity.Product;
+import com.webkul.mobikul.mobikulstandalonepos.db.entity.Tax;
 import com.webkul.mobikul.mobikulstandalonepos.handlers.AddProductFragmentHandler;
+import com.webkul.mobikul.mobikulstandalonepos.interfaces.DataBaseCallBack;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static android.content.ContentValues.TAG;
 
 /**
  * Created by aman.gupta on 01/10/17. @Webkul Software Private limited
@@ -43,6 +51,7 @@ public class AddProductFragment extends Fragment {
     private String mParam2;
     private boolean isEdit;
     public FragmentAddProductBinding binding;
+    String TAG = "AddProductFragment";
 
     public AddProductFragment() {
     }
@@ -95,14 +104,76 @@ public class AddProductFragment extends Fragment {
                         .setTitle(getContext().getString(R.string.add_product_title));
             }
             ((ProductActivity) getActivity()).binding.deleteProduct.setVisibility(View.GONE);
+            generateBarcode(product);
         }
         setProductCategory();
         setProductOptions();
         binding.setEdit(isEdit);
+        DataConverter dataConverter = new DataConverter();
+        Log.d(TAG, "onViewCreated: " + dataConverter.fromTaxModelToString(product.getProductTax()));
+        DataBaseController.getInstanse().getAllEnabledTaxes(getActivity(), new DataBaseCallBack() {
+            @Override
+            public void onSuccess(Object responseData, String successMsg) {
+                final List<Tax> taxList = new ArrayList<>();
+                taxList.addAll((List<Tax>) responseData);
+
+                List<String> taxStringList = new ArrayList<>();
+                for (Tax tax : taxList) {
+                    String taxValue;
+                    if (tax.getType().contains("%"))
+                        taxValue = tax.getTaxName() + " - (" + tax.getTaxRate() + "%)";
+                    else
+                        taxValue = tax.getTaxName() + " - (" + getString(R.string.currency_symbol) + tax.getTaxRate() + ")";
+                    Log.d(TAG, "onSuccess: " + taxValue);
+                    taxStringList.add(taxValue);
+                }
+                ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, taxStringList);
+                binding.taxSpinner.setAdapter(adapter);
+                binding.taxSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                        product.setProductTax(taxList.get(i));
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> adapterView) {
+
+                    }
+                });
+            }
+
+            @Override
+            public void onFailure(int errorCode, String errorMsg) {
+
+            }
+        });
+
         ((ProductActivity) getActivity()).binding.setEdit(isEdit);
         ((ProductActivity) getActivity()).binding.setData(product);
         ((ProductActivity) getActivity()).binding.addProduct.setVisibility(View.GONE);
         ((ProductActivity) getActivity()).binding.saveProduct.setVisibility(View.VISIBLE);
+    }
+
+
+    public void generateBarcode(Product product) {
+        String text = createRandomInteger(); // Whatever you need to encode in the QR code
+        Log.d(TAG, "generateBarcode: " + text);
+        product.setBarCode(text);
+        MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
+        try {
+            BitMatrix bitMatrix = multiFormatWriter.encode(text, BarcodeFormat.CODABAR, 380, 100);
+            BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
+            Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
+            binding.barCode.setImageBitmap(bitmap);
+        } catch (WriterException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    private static String createRandomInteger() {
+        String number = (long) Math.floor(Math.random() * 9_000_000L) + 1_000_000L + "" + (long) Math.floor(Math.random() * 9_000L) + "" + (long) Math.floor(Math.random() * 9_0L);
+        return number;
     }
 
     public void setProductOptions() {

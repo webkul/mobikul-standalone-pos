@@ -13,6 +13,7 @@ import com.webkul.mobikul.mobikulstandalonepos.R;
 import com.webkul.mobikul.mobikulstandalonepos.db.DataBaseController;
 import com.webkul.mobikul.mobikulstandalonepos.db.entity.CashDrawerModel;
 import com.webkul.mobikul.mobikulstandalonepos.helper.AppSharedPref;
+import com.webkul.mobikul.mobikulstandalonepos.helper.Helper;
 import com.webkul.mobikul.mobikulstandalonepos.model.CashDrawerItems;
 
 import java.text.SimpleDateFormat;
@@ -46,23 +47,30 @@ public class CustomDialogClass extends Dialog implements
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_yes:
-                CashDrawerModel cashDrawerModel = new CashDrawerModel();
-                cashDrawerModel.setOpeningBalance(((EditText) findViewById(R.id.opening_balance)).getText().toString());
-                cashDrawerModel.setClosingBalance(((EditText) findViewById(R.id.opening_balance)).getText().toString());
-                cashDrawerModel.setInAmount("0.00");
-                cashDrawerModel.setOutAmount("0.00");
-                cashDrawerModel.setNetRevenue("0.00");
-                List<CashDrawerItems> cashDrawerItemsList = new ArrayList<>();
-                cashDrawerModel.setCashDrawerItems(cashDrawerItemsList);
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MMMM-yy");
-                String date = simpleDateFormat.format(new Date());
-                cashDrawerModel.setDate(date);
-                AppSharedPref.setDate(context, date);
-                DataBaseController.getInstanse().addOpeningBalance(context, cashDrawerModel);
+                if (!((EditText) findViewById(R.id.opening_balance)).getText().toString().isEmpty()) {
+                    CashDrawerModel cashDrawerModel = new CashDrawerModel();
+                    cashDrawerModel.setOpeningBalance(((EditText) findViewById(R.id.opening_balance)).getText().toString());
+                    cashDrawerModel.setClosingBalance(((EditText) findViewById(R.id.opening_balance)).getText().toString());
+                    cashDrawerModel.setInAmount("0.00");
+                    cashDrawerModel.setOutAmount("0.00");
+                    cashDrawerModel.setNetRevenue("0.00");
+                    List<CashDrawerItems> cashDrawerItemsList = new ArrayList<>();
+                    cashDrawerModel.setCashDrawerItems(cashDrawerItemsList);
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MMMM-yy");
+                    String date = simpleDateFormat.format(new Date());
+                    cashDrawerModel.setDate(date);
+                    AppSharedPref.setDate(context, date);
+                    DataBaseController.getInstanse().addOpeningBalance(context, cashDrawerModel);
+                    findViewById(R.id.error_text).setVisibility(View.GONE);
+                    dismiss();
+                } else {
+                    Helper.shake(context, findViewById(R.id.dialog_ll));
+                    findViewById(R.id.error_text).setVisibility(View.VISIBLE);
+                }
                 break;
             default:
+                dismiss();
                 break;
         }
-        dismiss();
     }
 }

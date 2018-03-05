@@ -3,6 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+
+        <import type="com.webkul.mobikul.mobikulstandalonepos.constants.BundleConstants" />
+
+        <import type="android.view.View" />
+
+        <variable
+            name="visibility"
+            type="boolean" />
+    </data>
+
     <android.support.v4.widget.DrawerLayout
         android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
@@ -72,8 +83,8 @@
                 android:id="@+id/loader"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
+                android:layout_centerInParent="true"
                 android:layout_marginBottom="@dimen/spacing_infinity"
                 android:indeterminate="true"
                 android:visibility="gone"
@@ -92,8 +103,7 @@
 
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_height="wrap_content">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -104,12 +114,19 @@
                     android:text="@string/categories"
                     android:textSize="@dimen/text_size_small" />
 
+                <include
+                    android:id="@+id/empty_view"
+                    layout="@layout/empty_layout"
+                    app:page="@{BundleConstants.EmptyLayoutType.CATEGORY}"
+                    app:visibility="@{visibility}" />
+
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/category_rv_drawer"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@android:color/white"
                     android:clickable="true"
+                    android:visibility="@{visibility ? View.VISIBLE : View.GONE}"
                     app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
             </FrameLayout>
         </android.support.design.widget.NavigationView>

@@ -24,6 +24,7 @@ import com.webkul.mobikul.mobikulstandalonepos.model.CartModel;
 import com.webkul.mobikul.mobikulstandalonepos.model.CashDrawerItems;
 import com.webkul.mobikul.mobikulstandalonepos.model.CashModel;
 
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -83,12 +84,12 @@ public class PlaceOrderActivity extends BaseActivity {
                     public void onSuccess(Object responseData, String successMsg) {
 
                         CashDrawerModel cashDrawerModel1 = (CashDrawerModel) responseData;
-
+                        DecimalFormat df = new DecimalFormat("####0.00");
                         Log.d(TAG, "onSuccess: " + new Gson().toJson(cashDrawerModel1));
-                        cashDrawerModel.setInAmount(Double.parseDouble(cashData.getCollectedCash()) + Double.parseDouble(cashDrawerModel1.getInAmount()) + "");
-                        cashDrawerModel.setOutAmount(Double.parseDouble(cashData.getChangeDue()) + Double.parseDouble(cashDrawerModel1.getOutAmount()) + "");
-                        cashDrawerModel.setNetRevenue(Double.parseDouble(cashDrawerModel.getInAmount()) - Double.parseDouble(cashDrawerModel.getOutAmount()) + "");
-                        cashDrawerModel.setClosingBalance(Double.parseDouble(cashDrawerModel1.getClosingBalance()) + Double.parseDouble(cashData.getCollectedCash()) - Double.parseDouble(cashData.getChangeDue()) + "");
+                        cashDrawerModel.setInAmount(df.format(Double.parseDouble(cashData.getCollectedCash()) + Double.parseDouble(cashDrawerModel1.getInAmount())) + "");
+                        cashDrawerModel.setOutAmount(df.format(Double.parseDouble(cashData.getChangeDue()) + Double.parseDouble(cashDrawerModel1.getOutAmount())) + "");
+                        cashDrawerModel.setNetRevenue(df.format(Double.parseDouble(cashDrawerModel.getInAmount()) - Double.parseDouble(cashDrawerModel.getOutAmount())) + "");
+                        cashDrawerModel.setClosingBalance(df.format(Double.parseDouble(cashDrawerModel1.getClosingBalance()) + Double.parseDouble(cashData.getCollectedCash()) - Double.parseDouble(cashData.getChangeDue())) + "");
                         cashDrawerModel.setDate(cashDrawerModel1.getDate());
 
                         cashDrawerItemsList = cashDrawerModel1.getCashDrawerItems();

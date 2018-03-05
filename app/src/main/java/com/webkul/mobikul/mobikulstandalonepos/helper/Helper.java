@@ -8,6 +8,7 @@ import android.os.StrictMode;
 import android.os.Vibrator;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.view.animation.AnimationUtils;
 
 import com.google.gson.Gson;
@@ -27,7 +28,6 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 
 import static android.content.ContentValues.TAG;
 
@@ -36,6 +36,7 @@ import static android.content.ContentValues.TAG;
  */
 
 public class Helper {
+
 
     public static Uri saveToInternalStorage(Context context, Bitmap bitmapImage, String id) {
         ContextWrapper cw = new ContextWrapper(context);
@@ -94,33 +95,30 @@ public class Helper {
     public static final String TIME_SERVER = "time-a.nist.gov";
 
     public static long getCurrentNetworkTime() {
-        NTPUDPClient timeClient = new NTPUDPClient();
-        InetAddress inetAddress = null;
         long returnTime = 0;
-        try {
-            int SDK_INT = android.os.Build.VERSION.SDK_INT;
-            if (SDK_INT > 8) {
-                StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
-                        .permitAll().build();
+        NTPUDPClient timeClient = new NTPUDPClient();
+        timeClient.setDefaultTimeout(1000);
+        // Connect to network. Try again on timeout (max 6).
+        for (int retries = 7; retries >= 0; retries--) {
+
+            try {
+                StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
                 StrictMode.setThreadPolicy(policy);
-                inetAddress = InetAddress.getByName(TIME_SERVER);
+                // Try connecting to network to get time. May timeout.
+                InetAddress inetAddress = InetAddress.getByName(TIME_SERVER);
+                TimeInfo timeInfo = timeClient.getTime(inetAddress);
+                long networkTimeLong = timeInfo.getMessage().getTransmitTimeStamp().getTime();
+
+                // Convert long to Date, and Date to String. Log results.
+                Date networkTimeDate = new Date(networkTimeLong);
+                Log.i("Time", "Time from " + TIME_SERVER + ": " + networkTimeDate);
+                returnTime = networkTimeDate.getTime();
+                break;
+                // Return resulting time as a String.
+            } catch (IOException e) {
+                // Max of 6 retries.
+                Log.i("RTCTestActivity", "Unable to connect. Retries left: " + (retries - 1));
             }
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-        }
-        TimeInfo timeInfo = null;
-        try {
-            timeInfo = timeClient.getTime(inetAddress);
-
-            //long returnTime = timeInfo.getReturnTime();   //local device time
-            returnTime = timeInfo.getMessage().getTransmitTimeStamp().getTime();   //server time
-
-            Date time = new Date(returnTime);
-            Log.d(TAG, "Time_from " + TIME_SERVER + ": " + time);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
         }
         return returnTime;
     }
@@ -130,4 +128,31 @@ public class Helper {
         String date = simpleDateFormat.format(new Date());
         return date;
     }
+
+    public static int getViewWidth(final View view) {
+        ViewTreeObserver viewTreeObserver = view.getViewTreeObserver();
+        if (viewTreeObserver.isAlive()) {
+            viewTreeObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                @Override
+                public void onGlobalLayout() {
+                    view.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                }
+            });
+        }
+        return view.getWidth();
+    }
+
+    public static int getViewHeight(final View view) {
+        ViewTreeObserver viewTreeObserver = view.getViewTreeObserver();
+        if (viewTreeObserver.isAlive()) {
+            viewTreeObserver.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                @Override
+                public void onGlobalLayout() {
+                    view.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                }
+            });
+        }
+        return view.getHeight();
+    }
+
 }

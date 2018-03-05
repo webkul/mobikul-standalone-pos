@@ -11,6 +11,12 @@
             name="edit"
             type="Boolean" />
 
+        <import type="com.webkul.mobikul.mobikulstandalonepos.constants.BundleConstants" />
+
+        <variable
+            name="visibility"
+            type="boolean" />
+
         <variable
             name="handler"
             type="com.webkul.mobikul.mobikulstandalonepos.handlers.OptionHandler" />
@@ -90,6 +96,12 @@
                 android:layout_marginTop="@dimen/spacing_generic"
                 android:background="@color/white"
                 android:orientation="vertical">
+
+                <include
+                    android:id="@+id/empty_view"
+                    layout="@layout/empty_layout"
+                    app:page="@{BundleConstants.EmptyLayoutType.OPTIONS}"
+                    app:visibility="@{visibility}" />
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/option_rv"
