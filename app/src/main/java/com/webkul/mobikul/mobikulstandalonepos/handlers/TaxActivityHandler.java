@@ -25,7 +25,7 @@ public class TaxActivityHandler {
         this.context = context;
     }
 
-    public void addTax(Tax tax) {
+    public void addTax() {
         FragmentManager fragmentManager = ((AppCompatActivity) context).getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left);
@@ -35,7 +35,7 @@ public class TaxActivityHandler {
             fragment = new AddTaxFragment();
         if (!fragment.isAdded()) {
             Bundle bundle = new Bundle();
-            bundle.putSerializable("tax", tax);
+            bundle.putSerializable("tax", new Tax());
             bundle.putBoolean("edit", false);
             fragment.setArguments(bundle);
             fragmentTransaction.add(((TaxActivity) context).binding.taxFl.getId(), fragment, fragment.getClass().getSimpleName());

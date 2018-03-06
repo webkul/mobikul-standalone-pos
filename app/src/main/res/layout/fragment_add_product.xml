@@ -217,6 +217,7 @@
                         </LinearLayout>
 
                         <TextView
+                            android:id="@+id/tax_heading"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="@string/text_tax"

@@ -32,7 +32,6 @@ public class OptionValuesAdapter extends RecyclerView.Adapter<OptionValuesAdapte
         LayoutInflater inflater = LayoutInflater.from(context);
         View rootView = inflater.inflate(R.layout.item_option_value, null, false);
         return new ViewHolder(rootView);
-
     }
 
     @Override

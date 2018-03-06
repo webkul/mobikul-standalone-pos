@@ -413,12 +413,14 @@ public class Product extends BaseObservable implements Serializable, Parcelable 
         this.cartProductSubtotal = cartProductSubtotal;
     }
 
+    @Bindable
     public Tax getProductTax() {
         return productTax;
     }
 
     public void setProductTax(Tax productTax) {
         this.productTax = productTax;
+        notifyPropertyChanged(BR.productTax);
     }
 
     @Override

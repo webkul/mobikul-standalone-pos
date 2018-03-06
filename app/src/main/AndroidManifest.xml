@@ -112,6 +112,10 @@
             android:name=".activity.LowStockActivity"
             android:label="@string/low_stocks"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.OtherActivity"
+            android:label="@string/title_activity_other"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

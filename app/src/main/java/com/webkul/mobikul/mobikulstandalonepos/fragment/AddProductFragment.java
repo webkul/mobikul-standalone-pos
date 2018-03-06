@@ -109,37 +109,49 @@ public class AddProductFragment extends Fragment {
         setProductCategory();
         setProductOptions();
         binding.setEdit(isEdit);
-        DataConverter dataConverter = new DataConverter();
-        Log.d(TAG, "onViewCreated: " + dataConverter.fromTaxModelToString(product.getProductTax()));
+        final DataConverter dataConverter = new DataConverter();
         DataBaseController.getInstanse().getAllEnabledTaxes(getActivity(), new DataBaseCallBack() {
             @Override
             public void onSuccess(Object responseData, String successMsg) {
-                final List<Tax> taxList = new ArrayList<>();
-                taxList.addAll((List<Tax>) responseData);
+                if (!((List<Tax>) responseData).toString().equalsIgnoreCase("[]")) {
+                    final List<Tax> taxList = new ArrayList<>();
+                    taxList.addAll((List<Tax>) responseData);
+                    int counter = 0;
+                    int selection = -1;
+                    List<String> taxStringList = new ArrayList<>();
+                    for (Tax tax : taxList) {
+                        String taxValue;
+                        if (tax.getType().contains("%"))
+                            taxValue = tax.getTaxName() + " - (" + tax.getTaxRate() + "%)";
+                        else
+                            taxValue = tax.getTaxName() + " - (" + getString(R.string.currency_symbol) + tax.getTaxRate() + ")";
+                        if (product.getProductTax() != null) {
+                            if (tax.getTaxId() == product.getProductTax().getTaxId()) {
+                                selection = counter;
+                            }
+                        }
+                        taxStringList.add(taxValue);
+                        counter++;
+                    }
+                    ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, taxStringList);
+                    binding.taxSpinner.setAdapter(adapter);
+                    if (selection != -1) {
+                        binding.taxSpinner.setSelection(selection);
+                    }
+                    binding.taxSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                            product.setProductTax(taxList.get(i));
+                        }
 
-                List<String> taxStringList = new ArrayList<>();
-                for (Tax tax : taxList) {
-                    String taxValue;
-                    if (tax.getType().contains("%"))
-                        taxValue = tax.getTaxName() + " - (" + tax.getTaxRate() + "%)";
-                    else
-                        taxValue = tax.getTaxName() + " - (" + getString(R.string.currency_symbol) + tax.getTaxRate() + ")";
-                    Log.d(TAG, "onSuccess: " + taxValue);
-                    taxStringList.add(taxValue);
+                        @Override
+                        public void onNothingSelected(AdapterView<?> adapterView) {
+                        }
+                    });
+                } else {
+                    binding.taxSpinner.setVisibility(View.GONE);
+                    binding.taxHeading.setVisibility(View.GONE);
                 }
-                ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, taxStringList);
-                binding.taxSpinner.setAdapter(adapter);
-                binding.taxSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                    @Override
-                    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                        product.setProductTax(taxList.get(i));
-                    }
-
-                    @Override
-                    public void onNothingSelected(AdapterView<?> adapterView) {
-
-                    }
-                });
             }
 
             @Override
@@ -157,7 +169,6 @@ public class AddProductFragment extends Fragment {
 
     public void generateBarcode(Product product) {
         String text = createRandomInteger(); // Whatever you need to encode in the QR code
-        Log.d(TAG, "generateBarcode: " + text);
         product.setBarCode(text);
         MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
         try {

@@ -206,7 +206,7 @@
                             android:layout_weight="1"
                             android:drawableLeft="@drawable/ic_email_wrapper"
                             android:drawableStart="@drawable/ic_email_wrapper"
-                            android:enabled="false"
+                            android:enabled="true"
                             android:onClick="@{()->handler.mailInvoice(orderData)}"
                             android:text="@string/email_invoice"
                             android:textSize="@dimen/text_size_medium"

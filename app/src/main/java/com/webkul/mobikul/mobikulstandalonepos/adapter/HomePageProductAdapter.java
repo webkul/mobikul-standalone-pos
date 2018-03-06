@@ -45,11 +45,12 @@ public class HomePageProductAdapter extends RecyclerView.Adapter<HomePageProduct
     @Override
     public void onBindViewHolder(HomePageProductAdapter.ViewHolder holder, int position) {
         holder.binding.setData(products.get(position));
-        holder.binding.setHandler(new HomeFragmentHandler(context));
         if (isLowStock)
             holder.binding.lowTag.setVisibility(View.VISIBLE);
-        else
+        else {
             holder.binding.lowTag.setVisibility(View.GONE);
+            holder.binding.setHandler(new HomeFragmentHandler(context));
+        }
     }
 
     @Override

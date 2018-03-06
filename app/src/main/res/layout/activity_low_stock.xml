@@ -50,7 +50,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="@dimen/spacing_generic"
-                    app:page="@{BundleConstants.EmptyLayoutType.PRODUCT}"
+                    app:page="@{BundleConstants.EmptyLayoutType.LOW_STOCK}"
                     app:visibility="@{visibility}" />
 
                 <android.support.v7.widget.RecyclerView
