@@ -20,8 +20,8 @@ android {
         applicationId "com.webkul.mobikul.mobikulstandalonepos"
         minSdkVersion 17
         targetSdkVersion 27
-        versionCode 7
-        versionName "1.6"
+        versionCode 8
+        versionName "1.7"
         vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         signingConfig signingConfigs.config
@@ -31,13 +31,13 @@ android {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
-        debug {
-            resValue("string", "PORT_NUMBER", "8081")
-        }
+//        debug {
+//            resValue("string", "PORT_NUMBER", "8081")
+//        }
     }
-    lintOptions {
-        checkReleaseBuilds false
-    }
+//    lintOptions {
+//        checkReleaseBuilds false
+//    }
 
     productFlavors {
     }
@@ -75,7 +75,7 @@ dependencies {
     //jsoup
     compile 'org.jsoup:jsoup:1.10.2'
     //see database
-    debugCompile 'com.amitshekhar.android:debug-db:1.0.3'
+//    debugCompile 'com.amitshekhar.android:debug-db:1.0.3'
 
     implementation 'com.google.firebase:firebase-crash:11.8.0'
 //

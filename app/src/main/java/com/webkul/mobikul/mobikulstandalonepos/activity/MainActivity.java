@@ -60,7 +60,6 @@ public class MainActivity extends BaseActivity implements LocationListener {
     private long backPressedTime = 0;
     long networkTS = 0;
     private long storedTime;
-    private LocationManager locMan;
     private SweetAlertDialog sweetAlert;
 
     @Override
@@ -72,7 +71,7 @@ public class MainActivity extends BaseActivity implements LocationListener {
         loadHomeFragment();
         openingBalance();
         reminderMsg();
-//        getCurrentTime();
+        getCurrentTime();
     }
 
     @Override
@@ -364,16 +363,6 @@ public class MainActivity extends BaseActivity implements LocationListener {
                 HomeFragment homeFragment = (HomeFragment) mSupportFragmentManager.findFragmentByTag(HomeFragment.class.getSimpleName());
                 homeFragment.onActivityResult(requestCode, resultCode, data);
                 break;
-            case 7:
-                if (resultCode == RESULT_OK) {
-                    if (data.getData() != null) {
-                        String PathHolder = data.getData().getEncodedPath();
-                        MoreFragment moreFragment = (MoreFragment) mSupportFragmentManager.findFragmentByTag(MoreFragment.class.getSimpleName());
-                        moreFragment.binding.getHandler().onActivityResultCustom(PathHolder);
-                    }
-                }
-                break;
-
         }
     }
 }

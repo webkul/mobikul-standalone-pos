@@ -109,14 +109,15 @@ public class DataBindingAdapters {
             case TAX:
                 textview.setText(textview.getContext().getString(R.string.you_do_not_have_any_taxes_yet));
                 break;
+            case LOW_STOCK:
+                textview.setText(textview.getContext().getString(R.string.no_low_stock_subtitle));
+                break;
 //            case NOTIFICATION:
 //                textview.setText(textview.getContext().getString(R.string.no_recent_notifications));
 //                break;
 //            default:
 //                break;
-
         }
-
     }
 
     @BindingAdapter({"emptyTextHeading"})
@@ -152,13 +153,15 @@ public class DataBindingAdapters {
             case TAX:
                 textview.setText(textview.getContext().getString(R.string.no_tax));
                 break;
+            case LOW_STOCK:
+                textview.setText(textview.getContext().getString(R.string.no_low_stock));
+                break;
 //            case NOTIFICATION:
 //                textview.setText(textview.getContext().getString(R.string.no_notification));
 //                break;
 //            default:
 //                break;
         }
-
     }
 
     @BindingAdapter({"emptyIcon"})
@@ -193,6 +196,9 @@ public class DataBindingAdapters {
                 break;
             case TAX:
                 imageview.setImageResource(R.drawable.ic_empty_tax);
+                break;
+            case LOW_STOCK:
+                imageview.setImageResource(R.drawable.ic_empty_low_stock);
                 break;
 //            case NOTIFICATION:
 //                imageview.setImageResource(R.drawable.ic_vector_empty_notification);

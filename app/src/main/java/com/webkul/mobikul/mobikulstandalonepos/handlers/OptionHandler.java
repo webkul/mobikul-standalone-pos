@@ -18,12 +18,16 @@ import com.webkul.mobikul.mobikulstandalonepos.db.DataBaseController;
 import com.webkul.mobikul.mobikulstandalonepos.db.entity.Category;
 import com.webkul.mobikul.mobikulstandalonepos.db.entity.Options;
 import com.webkul.mobikul.mobikulstandalonepos.db.entity.Product;
+import com.webkul.mobikul.mobikulstandalonepos.fragment.AddCategoryFragment;
 import com.webkul.mobikul.mobikulstandalonepos.fragment.AddOptionFragment;
 import com.webkul.mobikul.mobikulstandalonepos.fragment.AddOptionFragment;
 import com.webkul.mobikul.mobikulstandalonepos.db.entity.OptionValues;
 import com.webkul.mobikul.mobikulstandalonepos.fragment.AddProductFragment;
 import com.webkul.mobikul.mobikulstandalonepos.helper.ToastHelper;
 import com.webkul.mobikul.mobikulstandalonepos.interfaces.DataBaseCallBack;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static android.content.ContentValues.TAG;
 
@@ -71,33 +75,39 @@ public class OptionHandler {
     }
 
     public void saveOption(Options options, boolean isEdit) {
-        Log.d(TAG, "saveOption: " + new Gson().toJson(options));
-        if (!isEdit)
-            DataBaseController.getInstanse().addOption(context, options, new DataBaseCallBack() {
-                @Override
-                public void onSuccess(Object responseData, String successMsg) {
-                    ToastHelper.showToast(context, successMsg, Toast.LENGTH_LONG);
-                    ((BaseActivity) context).mSupportFragmentManager.popBackStackImmediate();
-                }
+        List<OptionValues> optionValuesList = new ArrayList<>();
+        for (OptionValues optionValues : options.getOptionValues()) {
+            if (!optionValues.getOptionValueName().isEmpty())
+                optionValuesList.add(optionValues);
+        }
+        options.setOptionValues(optionValuesList);
+        if (isValidated(options))
+            if (!isEdit)
+                DataBaseController.getInstanse().addOption(context, options, new DataBaseCallBack() {
+                    @Override
+                    public void onSuccess(Object responseData, String successMsg) {
+                        ToastHelper.showToast(context, successMsg, Toast.LENGTH_LONG);
+                        ((BaseActivity) context).mSupportFragmentManager.popBackStackImmediate();
+                    }
 
-                @Override
-                public void onFailure(int errorCode, String errorMsg) {
-                    ToastHelper.showToast(context, errorMsg, Toast.LENGTH_LONG);
-                }
-            });
-        else
-            DataBaseController.getInstanse().updateOptions(context, options, new DataBaseCallBack() {
-                @Override
-                public void onSuccess(Object responseData, String successMsg) {
-                    ToastHelper.showToast(context, successMsg, Toast.LENGTH_LONG);
-                    ((BaseActivity) context).mSupportFragmentManager.popBackStackImmediate();
-                }
+                    @Override
+                    public void onFailure(int errorCode, String errorMsg) {
+                        ToastHelper.showToast(context, errorMsg, Toast.LENGTH_LONG);
+                    }
+                });
+            else
+                DataBaseController.getInstanse().updateOptions(context, options, new DataBaseCallBack() {
+                    @Override
+                    public void onSuccess(Object responseData, String successMsg) {
+                        ToastHelper.showToast(context, successMsg, Toast.LENGTH_LONG);
+                        ((BaseActivity) context).mSupportFragmentManager.popBackStackImmediate();
+                    }
 
-                @Override
-                public void onFailure(int errorCode, String errorMsg) {
-                    ToastHelper.showToast(context, errorMsg, Toast.LENGTH_LONG);
-                }
-            });
+                    @Override
+                    public void onFailure(int errorCode, String errorMsg) {
+                        ToastHelper.showToast(context, errorMsg, Toast.LENGTH_LONG);
+                    }
+                });
     }
 
     public void onClickOption(Options options) {
@@ -141,6 +151,22 @@ public class OptionHandler {
                 }
             });
         }
+    }
+
+
+    public boolean isValidated(Options options) {
+        options.setDisplayError(true);
+        Fragment fragment = ((BaseActivity) context).mSupportFragmentManager.findFragmentByTag(AddOptionFragment.class.getSimpleName());
+        if (fragment != null && fragment.isAdded()) {
+            AddOptionFragment categoryFragment = ((AddOptionFragment) fragment);
+            if (!options.getOptionNameError().isEmpty()) {
+                categoryFragment.binding.optionName.requestFocus();
+                return false;
+            }
+            options.setDisplayError(false);
+            return true;
+        }
+        return false;
     }
 
 }

@@ -115,8 +115,6 @@ public class HomeFragmentHandler {
         int position = -1;
         for (Product product1 : cartData.getProducts()) {
             position++;
-            Log.d(TAG, "addToCart: " + product.getOptions().toString().equalsIgnoreCase(product1.getOptions().toString()));
-            Log.d(TAG, "addToCart: " + new Gson().toJson(product.getOptions()) + "----" + new Gson().toJson(product1.getOptions()));
             if (product.getPId() == product1.getPId() && new Gson().toJson(product.getOptions()).equalsIgnoreCase(new Gson().toJson(product1.getOptions()))) {
                 int cartQty = Integer.parseInt(product1.getCartQty());
                 cartQty++;
@@ -134,12 +132,11 @@ public class HomeFragmentHandler {
         }
 
         double taxRate = 0;
-        if (!product.getProductTax().toString().isEmpty()) {
-
+        if (product.isTaxableGoodsApplied() && product.getProductTax() != null && !product.getProductTax().toString().isEmpty()) {
             if (product.getProductTax().getType().contains("%")) {
                 taxRate = (price / 100.0f) * Double.parseDouble(product.getProductTax().getTaxRate());
             } else {
-                taxRate = price + Double.parseDouble(product.getProductTax().getTaxRate());
+                taxRate = Double.parseDouble(product.getProductTax().getTaxRate());
             }
         }
 

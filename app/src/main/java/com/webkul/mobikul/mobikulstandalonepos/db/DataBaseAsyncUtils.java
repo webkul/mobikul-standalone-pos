@@ -460,6 +460,7 @@ public class DataBaseAsyncUtils {
                         , products[0].getWeight()
                         , (new DataConverter()).fromProductCategoriesList(products[0].getProductCategories())
                         , (new DataConverter()).fromOptionList(products[0].getOptions())
+                        , (new DataConverter()).fromTaxModelToString(products[0].getProductTax())
                         , products[0].getPId());
             } catch (Exception e) {
                 e.printStackTrace();
@@ -801,6 +802,7 @@ public class DataBaseAsyncUtils {
             db.holdCartDao().delete();
             db.optionDao().delete();
             db.cashDrawerDao().delete();
+            db.taxDao().delete();
             return null;
         }
     }

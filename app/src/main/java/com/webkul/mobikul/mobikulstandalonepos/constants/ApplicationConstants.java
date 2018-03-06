@@ -9,7 +9,7 @@ import com.webkul.mobikul.mobikulstandalonepos.BuildConfig;
 public interface ApplicationConstants {
 
     int DEFAULT_BACK_PRESSED_TIME_TO_CLOSE = 2000;
-    public static String DB_FILEPATH = "/data/" + BuildConfig.APPLICATION_ID + "/databases/db_pos";
+    String DB_FILEPATH = "/data/" + BuildConfig.APPLICATION_ID + "/databases/db_pos";
 
     //    more fragment option ids
     int MORE_MENU_CASH_DRAWER = 1;
@@ -27,7 +27,13 @@ public interface ApplicationConstants {
     int MORE_MENU_SHIPPING_METHODS = 12;
     int MORE_MENU_POS_USERS = 13;
     int MORE_MENU_USER_ROLES = 14;
+    int MORE_MENU_OTHERS = 17;
     int LOG_OUT = 15;
+
+    // mail credentails
+    String HOST_FOR_MAIL = "zsmtp.hybridzimbra.com";
+    String USERNAME_FOR_SMTP = "test@webkul.com";
+    String PASSWORD_FOR_SMTP = "Twqwwuihpqllgiwzw@1";
 
     //    error messages
     String ERROR_MSG = "Something went wrong";

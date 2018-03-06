@@ -166,6 +166,8 @@
     <string name="no_tax">No Options</string>
     <string name="you_do_not_have_any_taxes_yet">You do not have any taxes yet.</string>
     <string name="no_tax_subtitle">First create tax to use.</string>
+    <string name="no_low_stock">No Low Stocks</string>
+    <string name="no_low_stock_subtitle">All products are in stock.</string>
 
     <!--customer info-->
     <string name="title_activity_customer">Customers</string>
@@ -284,5 +286,9 @@
     <string name="edit_tax_title">Edit Tax Rate</string>
     <string name="tax_rate">Tax Rate</string>
     <string name="remove">Remove</string>
+
+    <!--low stock product-->
     <string name="low_stocks">Low Stock Products</string>
+    <string name="low_stock_products">Low stock products</string>
+    <string name="title_activity_other">Others</string>
 </resources>

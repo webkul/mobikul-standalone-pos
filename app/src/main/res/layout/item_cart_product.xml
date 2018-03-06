@@ -60,6 +60,7 @@
             android:layout_marginTop="@dimen/spacing_generic"
             android:layout_toEndOf="@+id/product_image"
             android:layout_toRightOf="@+id/product_image"
+            android:visibility="@{data.options.size() > 0 ? View.VISIBLE : View.GONE}"
             app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
 
         <LinearLayout

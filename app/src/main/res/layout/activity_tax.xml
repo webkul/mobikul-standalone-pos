@@ -94,12 +94,14 @@
 
                 <Button
                     android:id="@+id/add_tax"
-                    style="@style/DefaultButtonStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
-                    android:onClick="@{()->handler.addTax(data)}"
+                    android:gravity="center"
+                    android:onClick="@{()->handler.addTax()}"
+                    android:padding="@dimen/spacing_normal"
                     android:text="@string/add_new_tax_rate"
+                    android:textColor="@android:color/white"
                     android:textSize="@dimen/text_size_medium" />
 
                 <android.support.v7.widget.RecyclerView
