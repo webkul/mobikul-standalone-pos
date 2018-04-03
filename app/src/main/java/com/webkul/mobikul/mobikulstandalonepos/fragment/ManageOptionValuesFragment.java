@@ -17,6 +17,8 @@ import com.webkul.mobikul.mobikulstandalonepos.databinding.FragmentManageOptionV
 import com.webkul.mobikul.mobikulstandalonepos.databinding.FragmentManageOptionsBinding;
 import com.webkul.mobikul.mobikulstandalonepos.db.entity.Options;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
+
 public class ManageOptionValuesFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     private static final String ARG_PARAM1 = "options";
@@ -26,6 +28,7 @@ public class ManageOptionValuesFragment extends Fragment {
     private Options options;
     private String mParam2;
     private FragmentManageOptionValuesBinding binding;
+    private SweetAlertDialog sweetAlert;
 
     public ManageOptionValuesFragment() {
     }
@@ -50,8 +53,24 @@ public class ManageOptionValuesFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        ManageOptionValuesAdapter manageOptionValuesAdapter = new ManageOptionValuesAdapter(getActivity(), options.getOptionValues());
-        binding.manageOptionValuesRv.setAdapter(manageOptionValuesAdapter);
+        if (options.getOptionValues().size() > 0) {
+            ManageOptionValuesAdapter manageOptionValuesAdapter = new ManageOptionValuesAdapter(getActivity(), options.getOptionValues());
+            binding.manageOptionValuesRv.setAdapter(manageOptionValuesAdapter);
+        } else {
+            sweetAlert = new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE);
+            sweetAlert.setTitleText(getString(R.string.no_options_values))
+                    .setContentText(getResources().getString(R.string.no_options_values_subtitle))
+                    .setConfirmText(getResources().getString(R.string.dialog_ok))
+                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sDialog) {
+                            sDialog.dismissWithAnimation();
+                            getActivity().onBackPressed();
+                        }
+                    })
+                    .show();
+            sweetAlert.setCancelable(false);
+        }
         ((ProductActivity) getActivity()).binding.saveSelectedOptios.setVisibility(View.VISIBLE);
     }
 

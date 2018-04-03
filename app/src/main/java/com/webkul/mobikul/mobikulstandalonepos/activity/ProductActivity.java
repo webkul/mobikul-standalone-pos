@@ -5,6 +5,7 @@ import android.databinding.DataBindingUtil;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -39,6 +40,7 @@ public class ProductActivity extends BaseActivity {
         binding.setHandler(new ProductHandler(this));
         products = new ArrayList<>();
         binding.setData(product);
+        binding.setVisibility(true);
         setProduct();
     }
 
@@ -77,11 +79,9 @@ public class ProductActivity extends BaseActivity {
         if (requestCode == CAMERA_REQUEST) {
             if (data != null && data.getExtras() != null) {
                 Bitmap photo = (Bitmap) data.getExtras().get("data");
-                Log.d(TAG, "onActivityResult: " + binding.getData().getPId() + "");
                 Uri uri = Helper.saveToInternalStorage(ProductActivity.this, photo, binding.getData().getPId() + "");
-                android.support.v4.app.Fragment fragment = mSupportFragmentManager.findFragmentByTag(AddProductFragment.class.getSimpleName());
+                Fragment fragment = mSupportFragmentManager.findFragmentByTag(AddProductFragment.class.getSimpleName());
                 ((AddProductFragment) fragment).binding.getData().setImage(uri.toString());
-//            binding.getData().setImage(path.toString());
                 synchronized (binding.getData()) {
                     binding.getData().notifyAll();
                 }

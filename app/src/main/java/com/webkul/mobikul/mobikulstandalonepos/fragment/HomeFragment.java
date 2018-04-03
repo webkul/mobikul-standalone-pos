@@ -96,8 +96,7 @@ public class HomeFragment extends Fragment {
             cartData = new CartModel();
         else
             cartData = Helper.fromStringToCartModel(AppSharedPref.getCartData(getActivity()));
-        if (cartData.getTotals().getFormatedSubTotal().equalsIgnoreCase("0.00"))
-            cartData.getTotals().setFormatedSubTotal(getString(R.string.currency_symbol) + cartData.getTotals().getFormatedSubTotal());
+        cartData.getTotals().setFormatedSubTotal(Helper.currencyFormater(Helper.currencyConverter(Double.parseDouble(cartData.getTotals().getSubTotal()), getActivity()), getActivity()));
         binding.setCartData(cartData);
     }
 
@@ -110,6 +109,7 @@ public class HomeFragment extends Fragment {
                         if (products.size() > 0)
                             products.clear();
                         products.addAll((List<Product>) responseData);
+                        Log.d(TAG, "onSuccess: " + products.get(0).getQuantity());
                         if (productAdapter == null) {
                             productAdapter = new HomePageProductAdapter(getActivity(), products);
                             binding.productRv.setAdapter(productAdapter);

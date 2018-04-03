@@ -20,8 +20,11 @@ public interface CashDrawerDao {
     @Query("SELECT * FROM CashDrawerModel WHERE date IN (:date)")
     CashDrawerModel loadAllByDate(String date);
 
-    @Query("UPDATE CashDrawerModel SET closing_balance = :closingBalance, net_revenue = :netRevenue, in_amount = :inAmount, out_amount = :outAmount, cash_drawer_items = :cashDrawerItemList WHERE date = :date")
-    void updateCashDrawerModelByDate(String closingBalance, String netRevenue, String inAmount, String outAmount, String cashDrawerItemList, String date);
+    @Query("UPDATE CashDrawerModel SET closing_balance = :closingBalance, net_revenue = :netRevenue, in_amount = :inAmount, out_amount = :outAmount" +
+            ", cash_drawer_items = :cashDrawerItemList, formatted_closing_balance = :formattedClosingBalance, formatted_net_revenue = :formattedNetRevenue" +
+            ", formatted_in_amount = :formattedInAmount, formatted_out_amount = :formattedOutAmount WHERE date = :date")
+    void updateCashDrawerModelByDate(String closingBalance, String netRevenue, String inAmount, String outAmount, String cashDrawerItemList, String formattedClosingBalance
+            , String formattedNetRevenue, String formattedInAmount, String formattedOutAmount, String date);
 
     @Insert
     void insertAll(CashDrawerModel... CashDrawerModels);

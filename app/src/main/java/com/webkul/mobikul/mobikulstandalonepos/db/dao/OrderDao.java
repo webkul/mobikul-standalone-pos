@@ -18,11 +18,14 @@ public interface OrderDao {
     @Query("SELECT * FROM OrderEntity")
     List<OrderEntity> getAll();
 
-    @Query("SELECT * FROM OrderEntity WHERE orderId IN (:OrderIds)")
-    List<OrderEntity> loadAllByIds(int[] OrderIds);
+    @Query("SELECT * FROM OrderEntity WHERE orderId IN (:OrderId)")
+    OrderEntity loadByIds(int OrderId);
 
     @Query("SELECT * FROM OrderEntity WHERE orderId LIKE (:searchText)")
     List<OrderEntity> getSearchOrders(String searchText);
+
+    @Query("UPDATE OrderEntity SET refunded_order_id = :currentOrderId WHERE orderId = :returnedOrderId")
+    void updateRefundedOrderId(String currentOrderId, int returnedOrderId);
 
     @Insert
     long[] insertAll(OrderEntity... orderEntities);

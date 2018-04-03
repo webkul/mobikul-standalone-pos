@@ -11,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CheckBox;
 
 import com.webkul.mobikul.mobikulstandalonepos.R;
 import com.webkul.mobikul.mobikulstandalonepos.databinding.ActivityCheckoutBinding;
@@ -39,6 +40,7 @@ public class Checkout extends BaseActivity {
         }
         checkoutBinding.setVisibility(AppSharedPref.isCashEnabled(this, true));
         checkoutBinding.setHandler(new CheckoutHandler(this));
+        checkoutBinding.setHasReturn(AppSharedPref.isReturnCart(this));
     }
 
     @Override

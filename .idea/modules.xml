@@ -4,10 +4,8 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Mobikul-Stand-Alone-POS.iml" filepath="$PROJECT_DIR$/Mobikul-Stand-Alone-POS.iml" />
       <module fileurl="file://$PROJECT_DIR$/MobikulAutoScrollableView-release/MobikulAutoScrollableView-release.iml" filepath="$PROJECT_DIR$/MobikulAutoScrollableView-release/MobikulAutoScrollableView-release.iml" />
-      <module fileurl="file://$PROJECT_DIR$/activation/activation.iml" filepath="$PROJECT_DIR$/activation/activation.iml" />
-      <module fileurl="file://$PROJECT_DIR$/additionnal/additionnal.iml" filepath="$PROJECT_DIR$/additionnal/additionnal.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/mail/mail.iml" filepath="$PROJECT_DIR$/mail/mail.iml" />
+      <module fileurl="file://$PROJECT_DIR$/currencypicker/currencypicker.iml" filepath="$PROJECT_DIR$/currencypicker/currencypicker.iml" />
       <module fileurl="file://$PROJECT_DIR$/mobikuldialoglibrary-release/mobikuldialoglibrary-release.iml" filepath="$PROJECT_DIR$/mobikuldialoglibrary-release/mobikuldialoglibrary-release.iml" />
     </modules>
   </component>

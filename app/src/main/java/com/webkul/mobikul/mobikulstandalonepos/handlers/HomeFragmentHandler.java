@@ -31,6 +31,7 @@ import com.webkul.mobikul.mobikulstandalonepos.customviews.CustomDialogClass;
 import com.webkul.mobikul.mobikulstandalonepos.databinding.CustomOptionsBinding;
 import com.webkul.mobikul.mobikulstandalonepos.db.DataBaseController;
 import com.webkul.mobikul.mobikulstandalonepos.db.entity.CashDrawerModel;
+import com.webkul.mobikul.mobikulstandalonepos.db.entity.Currency;
 import com.webkul.mobikul.mobikulstandalonepos.db.entity.OptionValues;
 import com.webkul.mobikul.mobikulstandalonepos.db.entity.Options;
 import com.webkul.mobikul.mobikulstandalonepos.db.entity.Product;
@@ -74,55 +75,79 @@ public class HomeFragmentHandler {
     }
 
     public void onClickProduct(Product product) {
-        Log.d(TAG, "onClickProduct: " + new Gson().toJson(product.getOptions()));
-        CartModel cartData = Helper.fromStringToCartModel(AppSharedPref.getCartData(context));
-        if (cartData == null) {
-            cartData = new CartModel();
-        }
-        subTotal = Double.parseDouble(cartData.getTotals().getSubTotal());
-        counter = Integer.parseInt(cartData.getTotals().getQty());
-
-        if (product.isStock() && Integer.parseInt(product.getQuantity()) > Integer.parseInt(product.getCartQty())) {
-
-            if (product.getOptions().size() > 0) {
-                CustomOptionsDialogClass customOptionsDialogClass = new CustomOptionsDialogClass(context, product, cartData);
-                customOptionsDialogClass.show();
-            } else
-                addToCart(product, cartData);
+        if (!AppSharedPref.isReturnCart(context)) {
+            Log.d(TAG, "onClickProduct: " + new Gson().toJson(product.getOptions()));
+            CartModel cartData = Helper.fromStringToCartModel(AppSharedPref.getCartData(context));
+            if (cartData == null) {
+                cartData = new CartModel();
+            }
+            subTotal = Double.parseDouble(cartData.getTotals().getSubTotal());
+            counter = Integer.parseInt(cartData.getTotals().getQty());
+            Log.d(TAG, "onClickProduct: " + product.getCartQty());
+            if (product.isStock() && (Integer.parseInt(product.getQuantity()) > Integer.parseInt(product.getCartQty()))) {
+                if (product.getOptions().size() > 0) {
+                    CustomOptionsDialogClass customOptionsDialogClass = new CustomOptionsDialogClass(context, product, cartData);
+                    customOptionsDialogClass.show();
+                } else
+                    addToCart(product, cartData);
+            } else {
+                ToastHelper.showToast(context, "The quantity for " + product.getProductName() + " is not available", Toast.LENGTH_LONG);
+            }
         } else {
-            ToastHelper.showToast(context, "The quantity for " + product.getProductName() + " is not available", Toast.LENGTH_LONG);
+            ToastHelper.showToast(context, "First complete Return Order!", 1000);
         }
     }
 
     void addToCart(Product product, CartModel cartData) {
         double price;
+        double basePrice;
         if (product.getSpecialPrice().isEmpty()) {
             subTotal = subTotal + Double.parseDouble(product.getPrice());
-            price = Double.parseDouble(product.getPrice());
+            price = Helper.currencyConverter(Double.parseDouble(product.getPrice()), context);
+            basePrice = Double.parseDouble(product.getPrice());
+
         } else {
             subTotal = subTotal + Double.parseDouble(product.getSpecialPrice());
-            price = Double.parseDouble(product.getSpecialPrice());
+            price = Helper.currencyConverter(Double.parseDouble(product.getSpecialPrice()), context);
+            product.setFormattedSpecialPrice(Helper.currencyFormater(price, context) + "");
+            basePrice = Double.parseDouble(product.getSpecialPrice());
         }
         for (int i = 0; i < product.getOptions().size(); i++) {
-            if (!product.getOptions().get(i).getType().equalsIgnoreCase("text"))
+            if (!product.getOptions().get(i).getType().equalsIgnoreCase("text") && !product.getOptions().get(i).getType().equalsIgnoreCase("textarea"))
                 for (OptionValues optionValues : product.getOptions().get(i).getOptionValues()) {
-                    if (optionValues.isAddToCart())
-                        subTotal = subTotal + Integer.parseInt(optionValues.getOptionValuePrice());
+                    if (optionValues.isAddToCart()) {
+                        if (!optionValues.getOptionValuePrice().isEmpty()) {
+                            subTotal = subTotal + Integer.parseInt(optionValues.getOptionValuePrice());
+                            price = price + Integer.parseInt(optionValues.getOptionValuePrice());
+                            basePrice = basePrice + Integer.parseInt(optionValues.getOptionValuePrice());
+                        }
+                    }
                 }
         }
+
+        product.setFormattedPrice(Helper.currencyFormater(Helper.currencyConverter(Double.parseDouble(product.getPrice()), context), context) + "");
         counter++;
         boolean isProductAlreadyInCart = false;
         int position = -1;
+        if (cartData.getProducts().size() == 0) {
+            product.setCartProductSubtotal(basePrice + "");
+        }
+        if (product.getCartQty().equalsIgnoreCase("0"))
+            product.setCartQty("1");
         for (Product product1 : cartData.getProducts()) {
             position++;
             if (product.getPId() == product1.getPId() && new Gson().toJson(product.getOptions()).equalsIgnoreCase(new Gson().toJson(product1.getOptions()))) {
                 int cartQty = Integer.parseInt(product1.getCartQty());
                 cartQty++;
                 product.setCartQty(cartQty + "");
+                product.setCartProductSubtotal(Double.parseDouble(product1.getCartProductSubtotal()) + basePrice + "");
                 isProductAlreadyInCart = true;
                 break;
+            } else {
+                product.setCartProductSubtotal(basePrice + "");
             }
         }
+        product.setFormattedCartProductSubtotal(Helper.currencyFormater(Helper.currencyConverter(Double.parseDouble(product.getCartProductSubtotal()), context), context));
 
         if (!isProductAlreadyInCart)
             cartData.getProducts().add(product);
@@ -145,14 +170,13 @@ public class HomeFragmentHandler {
         grandTotal = subTotal + Double.parseDouble(cartData.getTotals().getTax());
         cartData.getTotals().setSubTotal(df.format(subTotal) + "");
         cartData.getTotals().setQty(counter + "");
-        cartData.getTotals().setTax(cartData.getTotals().getTax());
         cartData.getTotals().setGrandTotal(df.format(grandTotal) + "");
         cartData.getTotals().setRoundTotal(Math.ceil(grandTotal) + "");
         // set formated values
-        cartData.getTotals().setFormatedSubTotal(currencySymbol + df.format(subTotal) + "");
-        cartData.getTotals().setFormatedTax(currencySymbol + "" + cartData.getTotals().getTax());
-        cartData.getTotals().setFormatedGrandTotal(currencySymbol + df.format(grandTotal) + "");
-        cartData.getTotals().setFormatedRoundTotal(currencySymbol + Math.ceil(grandTotal) + "");
+        cartData.getTotals().setFormatedSubTotal(Helper.currencyFormater(Double.parseDouble(df.format(subTotal)), context));
+        cartData.getTotals().setFormatedTax(Helper.currencyFormater(Double.parseDouble(cartData.getTotals().getTax()), context));
+        cartData.getTotals().setFormatedGrandTotal(Helper.currencyFormater(Double.parseDouble(df.format(grandTotal)), context));
+        cartData.getTotals().setFormatedRoundTotal(Helper.currencyFormater((Math.ceil(grandTotal)), context));
         AppSharedPref.setCartData(context, Helper.fromCartModelToString(cartData));
         Fragment fragment = ((BaseActivity) context).mSupportFragmentManager.findFragmentByTag(HomeFragment.class.getSimpleName());
         ((HomeFragment) fragment).binding.setCartData(cartData);

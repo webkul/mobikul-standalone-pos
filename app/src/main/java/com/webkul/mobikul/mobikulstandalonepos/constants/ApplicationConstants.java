@@ -30,6 +30,10 @@ public interface ApplicationConstants {
     int MORE_MENU_OTHERS = 17;
     int LOG_OUT = 15;
 
+    // pdf alignment
+    int PDF_ALIGNMENT_LEFT = 0;
+    int PDF_ALIGNMENT_CENTER = 1;
+    int PDF_ALIGNMENT_RIGHT = 2;
     // mail credentails
     String HOST_FOR_MAIL = "zsmtp.hybridzimbra.com";
     String USERNAME_FOR_SMTP = "test@webkul.com";
@@ -50,10 +54,13 @@ public interface ApplicationConstants {
     String SUCCESS_MSG_6_ADD_PRODUCT = "Product has been added successfully!";
     String SUCCESS_MSG_7_DELETE_PRODUCT = "This Product has been deleted successfully!";
     String SUCCESS_MSG_8_UPDATE_PRODUCT = "Product Updated.";
+    String SUCCESS_MSG_10_SKU_ALLREADY_EXIST = "SKU ALREADY EXIST.";
+
     //customer msg
     String SUCCESS_MSG_6_ADD_CUSTOMER = "Customer has been registered successfully!";
     String SUCCESS_MSG_7_DELETE_CUSTOMER = "This Customer has been deleted successfully!";
     String SUCCESS_MSG_8_UPDATE_CUSTOMER = "Customer details Updated.";
+    String SUCCESS_MSG_9_CUSTOMER_ALL_READY_EXIST = "CUSTOMER ALREADY EXIST.";
     //orderplace
     String SUCCESS_MSG_9_ORDER_PLACED = "Order placed successfully.";
     String SUCCESS_MSG_7 = "Wrong Credentials";

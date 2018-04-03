@@ -49,7 +49,7 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
  * Created by aman.gupta on 27/12/17. @Webkul Software Private limited
  */
 
-public class MainActivity extends BaseActivity implements LocationListener {
+public class MainActivity extends BaseActivity {
 
     public ActivityMainBinding mMainBinding;
     private ActionBarDrawerToggle mDrawerToggle;
@@ -333,26 +333,6 @@ public class MainActivity extends BaseActivity implements LocationListener {
 
     public void hideLoader() {
         mMainBinding.loader.setVisibility(View.GONE);
-    }
-
-    @Override
-    public void onLocationChanged(Location location) {
-        networkTS = location.getTime();
-    }
-
-    @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-
-    }
-
-    @Override
-    public void onProviderEnabled(String provider) {
-
-    }
-
-    @Override
-    public void onProviderDisabled(String provider) {
-
     }
 
     @Override

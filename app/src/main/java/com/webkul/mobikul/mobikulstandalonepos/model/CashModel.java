@@ -18,7 +18,9 @@ public class CashModel extends BaseObservable implements Serializable {
     private String total;
     private String formatedTotal;
     private String collectedCash;
+    private String formattedCollectedCash;
     private String note;
+    private String formattedChangeDue;
     private String changeDue;
     private boolean changeDueVisibility;
     private boolean displayError;
@@ -119,5 +121,29 @@ public class CashModel extends BaseObservable implements Serializable {
 
     public void setFormatedTotal(String formatedTotal) {
         this.formatedTotal = formatedTotal;
+    }
+
+    @Bindable
+    public String getFormattedCollectedCash() {
+        if (formattedCollectedCash == null)
+            return "";
+        return formattedCollectedCash;
+    }
+
+    public void setFormattedCollectedCash(String formattedCollectedCash) {
+        this.formattedCollectedCash = formattedCollectedCash;
+        notifyPropertyChanged(BR.formattedCollectedCash);
+    }
+
+    @Bindable
+    public String getFormattedChangeDue() {
+        if (formattedChangeDue == null)
+            return "";
+        return formattedChangeDue;
+    }
+
+    public void setFormattedChangeDue(String formattedChangeDue) {
+        this.formattedChangeDue = formattedChangeDue;
+        notifyPropertyChanged(BR.formattedChangeDue);
     }
 }

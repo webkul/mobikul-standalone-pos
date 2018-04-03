@@ -76,7 +76,7 @@ public class MoreFragment extends Fragment {
         menus = new int[]{MORE_MENU_CASH_DRAWER,
                 MORE_MENU_SALES_AND_REPORTING,
                 MORE_MENU_MY_ACCOUNT_INFO};
-        boolean enabled[] = {true, false, true};
+        boolean enabled[] = {true, true, true};
 
         List<MoreData> moreData = new ArrayList<>();
         for (int i = 0; i < label.length; i++) {

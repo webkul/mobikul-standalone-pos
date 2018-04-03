@@ -21,8 +21,14 @@ public interface CustomerDao {
     @Query("SELECT * FROM Customer WHERE customerId IN (:CustomerIds)")
     List<Customer> loadAllByIds(int[] CustomerIds);
 
-    @Query("UPDATE Customer SET customer_first_name = :firstName, customer_last_name = :lastName, email = :email, contact_number = :contactNumber WHERE customerId = :customerId")
-    void updateCustomerById(String firstName, String lastName, String email, String contactNumber, int customerId);
+    @Query("SELECT * FROM Customer WHERE email IN (:email)")
+    Customer checkEmailExist(String email);
+
+    @Query("SELECT * FROM Customer WHERE contact_number IN (:contactNumber)")
+    Customer checkNumberExist(String contactNumber);
+
+    @Query("UPDATE Customer SET customer_first_name = :firstName, customer_last_name = :lastName, email = :email, contact_number = :contactNumber, address_line = :addressLine, city = :city, postal_code = :postalCode, state = :state, country = :country WHERE customerId = :customerId")
+    void updateCustomerById(String firstName, String lastName, String email, String contactNumber, String addressLine, String city, String postalCode, String state, String country, int customerId);
 
     @Insert
     void insertAll(Customer... Customers);

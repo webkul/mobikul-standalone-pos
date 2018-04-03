@@ -9,14 +9,23 @@
             name="data"
             type="com.webkul.mobikul.mobikulstandalonepos.db.entity.Product" />
 
+        <variable
+            name="handler"
+            type="com.webkul.mobikul.mobikulstandalonepos.handlers.CartHandler" />
+
+        <!--<variable-->
+        <!--name="bindingAdapter"-->
+        <!--type="com.webkul.mobikul.mobikulstandalonepos.helper.DataBindingAdapters" />-->
     </data>
 
     <RelativeLayout xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/cart_product_item_rl"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/spacing_generic"
-        android:layout_marginStart="@dimen/spacing_generic">
+        android:layout_marginStart="@dimen/spacing_generic"
+        android:clickable="true">
 
         <LinearLayout
             android:id="@+id/product_image"
@@ -64,6 +73,7 @@
             app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
 
         <LinearLayout
+            android:id="@+id/price_ll"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/option_rv"
@@ -96,17 +106,106 @@
                 tools:text="$324.00 (10% OFF)" />
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/qty"
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_toEndOf="@+id/product_image"
+            android:layout_toRightOf="@+id/product_image"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/spacing_generic"
+                android:text="SubTotal: "
+                android:textColor="@color/textColor"
+                android:textSize="@dimen/text_size_small"
+                tools:text="Subtotal: " />
+
+            <TextView
+                android:id="@+id/product_subtotal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/spacing_generic"
+                android:text="@={data.formattedCartProductSubtotal}"
+                android:textColor="@color/colorAccent"
+                android:textSize="@dimen/text_size_small"
+                tools:text="$200" />
+        </LinearLayout>
+        <!--<TextView-->
+        <!--android:id="@+id/product_subtotal"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignParentBottom="true"-->
+        <!--android:layout_toEndOf="@+id/product_image"-->
+        <!--android:layout_toRightOf="@+id/product_image"-->
+        <!--android:paddingBottom="@dimen/spacing_generic"-->
+        <!--android:text="@={bindingAdapter.toStringFormat(@string/product_sub_total, data.formattedCartProductSubtotal)}"-->
+        <!--android:textColor="@color/colorAccent"-->
+        <!--android:textSize="@dimen/text_size_small"-->
+        <!--tools:text="Subtotal: $200" />-->
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:padding="@dimen/spacing_normal"
-            android:text="@{String.format(@string/qty, data.cartQty)}"
-            android:textSize="@dimen/text_size_tiny"
-            tools:text="QTY - 2" />
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="@dimen/spacing_generic">
+
+            <TextView
+                android:id="@+id/plus"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:background="@color/colorAccent"
+                android:gravity="center"
+                android:onClick="@{()->handler.increaseQuantity(data)}"
+                android:text="+"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_large" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="@dimen/spacing_generic">
+
+                <TextView
+                    android:id="@+id/qty_heading"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="@dimen/spacing_generic"
+                    android:paddingTop="@dimen/spacing_generic"
+                    android:text="QTY - "
+                    android:textSize="@dimen/text_size_tiny"
+                    tools:text="QTY - " />
+
+                <TextView
+                    android:id="@+id/qty"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="@dimen/spacing_generic"
+                    android:paddingTop="@dimen/spacing_generic"
+                    android:text="@={data.cartQty}"
+                    android:textSize="@dimen/text_size_tiny"
+                    tools:text="2" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/minus"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:background="@color/colorAccent"
+                android:gravity="center"
+                android:onClick="@{()->handler.decreaseQuantity(data)}"
+                android:text="-"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_large" />
+
+        </LinearLayout>
 
         <View
             android:layout_width="match_parent"

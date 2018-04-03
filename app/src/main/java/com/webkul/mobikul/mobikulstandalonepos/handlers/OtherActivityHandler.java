@@ -6,15 +6,27 @@ import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.webkul.mobikul.mobikulstandalonepos.R;
+import com.webkul.mobikul.mobikulstandalonepos.activity.BaseActivity;
+import com.webkul.mobikul.mobikulstandalonepos.activity.CurrencyActivity;
 import com.webkul.mobikul.mobikulstandalonepos.activity.LowStockActivity;
 import com.webkul.mobikul.mobikulstandalonepos.activity.OtherActivity;
+import com.webkul.mobikul.mobikulstandalonepos.activity.ProductActivity;
 import com.webkul.mobikul.mobikulstandalonepos.constants.ApplicationConstants;
+import com.webkul.mobikul.mobikulstandalonepos.db.entity.Currency;
+import com.webkul.mobikul.mobikulstandalonepos.db.entity.Product;
+import com.webkul.mobikul.mobikulstandalonepos.fragment.AddProductFragment;
+import com.webkul.mobikul.mobikulstandalonepos.fragment.CurrencyPreferenceFragment;
 import com.webkul.mobikul.mobikulstandalonepos.helper.SweetAlertBox;
 import com.webkul.mobikul.mobikulstandalonepos.helper.ToastHelper;
 import com.webkul.mobikul.mobikulstandalonepos.helper.ZipManager;
@@ -49,6 +61,17 @@ public class OtherActivityHandler {
 
     public void lowStockProducts() {
         Intent i = new Intent(context, LowStockActivity.class);
+        context.startActivity(i);
+    }
+
+    public void selectCurrency() {
+        Intent i = new Intent(context, CurrencyActivity.class);
+        context.startActivity(i);
+    }
+
+    public void currencyConfig() {
+        Intent i = new Intent(context, CurrencyActivity.class);
+        i.putExtra("currency_config", "");
         context.startActivity(i);
     }
 

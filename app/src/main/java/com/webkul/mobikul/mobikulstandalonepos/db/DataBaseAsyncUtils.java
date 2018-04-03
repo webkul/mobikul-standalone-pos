@@ -1,5 +1,6 @@
 package com.webkul.mobikul.mobikulstandalonepos.db;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
@@ -15,6 +16,7 @@ import com.webkul.mobikul.mobikulstandalonepos.db.entity.Options;
 import com.webkul.mobikul.mobikulstandalonepos.db.entity.OrderEntity;
 import com.webkul.mobikul.mobikulstandalonepos.db.entity.Product;
 import com.webkul.mobikul.mobikulstandalonepos.db.entity.Tax;
+import com.webkul.mobikul.mobikulstandalonepos.helper.AppSharedPref;
 import com.webkul.mobikul.mobikulstandalonepos.interfaces.DataBaseCallBack;
 
 import java.util.List;
@@ -325,6 +327,11 @@ public class DataBaseAsyncUtils {
         private AppDatabase db;
         private final DataBaseCallBack dataBaseCallBack;
 
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
         public AddProductAsyncTask(AppDatabase userDatabase, DataBaseCallBack dataBaseCallBack) {
             db = userDatabase;
             this.dataBaseCallBack = dataBaseCallBack;
@@ -349,6 +356,43 @@ public class DataBaseAsyncUtils {
                 dataBaseCallBack.onSuccess(id, SUCCESS_MSG_6_ADD_PRODUCT);
             } else
                 dataBaseCallBack.onFailure(ERROR_CODE, ERROR_MSG);
+        }
+    }
+
+    public class UpdateProductImages extends AsyncTask<Void, Void,
+            Boolean> {
+
+        private AppDatabase db;
+        private String imagePath;
+        private Long pId;
+        private DataBaseCallBack callBack;
+
+        public UpdateProductImages(AppDatabase userDatabase, String imagePath, Long pId, DataBaseCallBack callBack) {
+            db = userDatabase;
+            this.imagePath = imagePath;
+            this.pId = pId;
+            this.callBack = callBack;
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... voids) {
+            long[] id;
+            try {
+                db.productDao().updateProductImages(imagePath, pId);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
+            return true;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean success) {
+            super.onPostExecute(success);
+            if (success)
+                callBack.onSuccess(success, SUCCESS_MSG_6_ADD_PRODUCT);
+            else
+                callBack.onFailure(ERROR_CODE, ERROR_MSG);
         }
     }
 
@@ -483,17 +527,24 @@ public class DataBaseAsyncUtils {
     public class UpdateProductQty extends AsyncTask<Product, Void,
             Boolean> {
 
+        private Context context;
         private AppDatabase db;
 
-        public UpdateProductQty(AppDatabase userDatabase) {
+        public UpdateProductQty(Context context, AppDatabase userDatabase) {
+            this.context = context;
             db = userDatabase;
         }
 
         @Override
         protected Boolean doInBackground(Product... products) {
             try {
+//                Log.d(TAG, "doInBackground: qty" + Integer.parseInt(products[0].getQuantity()) + "---" + Integer.parseInt(products[0].getCartQty()));
+//                if (!AppSharedPref.isReturnCart(context))
                 db.productDao().updateProductQty(Integer.parseInt(products[0].getQuantity()) - Integer.parseInt(products[0].getCartQty()) + ""
                         , products[0].getPId());
+//                else
+//                    db.productDao().updateProductQty(Integer.parseInt(products[0].getQuantity()) + Integer.parseInt(products[0].getCartQty()) + ""
+//                            , products[0].getPId());
             } catch (Exception e) {
                 e.printStackTrace();
                 return false;
@@ -534,6 +585,39 @@ public class DataBaseAsyncUtils {
             super.onPostExecute(aBoolean);
             if (aBoolean) {
                 dataBaseCallBack.onSuccess(aBoolean, SUCCESS_MSG_7_DELETE_PRODUCT);
+            } else {
+                dataBaseCallBack.onFailure(ERROR_CODE, ERROR_MSG);
+            }
+        }
+    }
+
+    public class CheckSkuExist extends AsyncTask<String, Void,
+            Product> {
+
+        private AppDatabase db;
+        private final DataBaseCallBack dataBaseCallBack;
+
+        public CheckSkuExist(AppDatabase userDatabase, DataBaseCallBack dataBaseCallBack) {
+            db = userDatabase;
+            this.dataBaseCallBack = dataBaseCallBack;
+        }
+
+        @Override
+        protected Product doInBackground(String... sku) {
+            Product product = null;
+            try {
+                product = db.productDao().checkSkuExist(sku[0]);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return product;
+        }
+
+        @Override
+        protected void onPostExecute(Product product) {
+            super.onPostExecute(product);
+            if (product != null) {
+                dataBaseCallBack.onSuccess(product, SUCCESS_MSG_10_SKU_ALLREADY_EXIST);
             } else {
                 dataBaseCallBack.onFailure(ERROR_CODE, ERROR_MSG);
             }
@@ -620,6 +704,11 @@ public class DataBaseAsyncUtils {
                         , customers[0].getLastName()
                         , customers[0].getEmail()
                         , customers[0].getContactNumber()
+                        , customers[0].getAddressLine()
+                        , customers[0].getCity()
+                        , customers[0].getPostalCode()
+                        , customers[0].getState()
+                        , customers[0].getCountry()
                         , customers[0].getCustomerId());
             } catch (Exception e) {
                 e.printStackTrace();
@@ -671,6 +760,73 @@ public class DataBaseAsyncUtils {
         }
     }
 
+    public class CheckEmailExist extends AsyncTask<String, Void,
+            Customer> {
+
+        private AppDatabase db;
+        private final DataBaseCallBack dataBaseCallBack;
+
+        public CheckEmailExist(AppDatabase userDatabase, DataBaseCallBack dataBaseCallBack) {
+            db = userDatabase;
+            this.dataBaseCallBack = dataBaseCallBack;
+        }
+
+        @Override
+        protected Customer doInBackground(String... email) {
+            Customer customer;
+            try {
+                customer = db.customerDao().checkEmailExist(email[0]);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
+            return customer;
+        }
+
+        @Override
+        protected void onPostExecute(Customer customer) {
+            super.onPostExecute(customer);
+            if (customer != null) {
+                dataBaseCallBack.onSuccess(customer, SUCCESS_MSG_9_CUSTOMER_ALL_READY_EXIST);
+            } else {
+                dataBaseCallBack.onFailure(ERROR_CODE, ERROR_MSG);
+            }
+        }
+    }
+
+    public class CheckNumberExist extends AsyncTask<String, Void,
+            Customer> {
+
+        private AppDatabase db;
+        private final DataBaseCallBack dataBaseCallBack;
+
+        public CheckNumberExist(AppDatabase userDatabase, DataBaseCallBack dataBaseCallBack) {
+            db = userDatabase;
+            this.dataBaseCallBack = dataBaseCallBack;
+        }
+
+        @Override
+        protected Customer doInBackground(String... number) {
+            Customer customer = null;
+            try {
+                customer = db.customerDao().checkNumberExist(number[0]);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return customer;
+        }
+
+        @Override
+        protected void onPostExecute(Customer customer) {
+            super.onPostExecute(customer);
+            if (customer != null) {
+                dataBaseCallBack.onSuccess(customer, SUCCESS_MSG_9_CUSTOMER_ALL_READY_EXIST);
+            } else {
+                dataBaseCallBack.onFailure(ERROR_CODE, ERROR_MSG);
+            }
+        }
+    }
+
     public class GenerateOrderAsyncTask extends AsyncTask<OrderEntity, Void,
             Long> {
 
@@ -705,6 +861,45 @@ public class DataBaseAsyncUtils {
         }
     }
 
+    public class UpdateRefundedOrderId extends AsyncTask<Void, Void,
+            Boolean> {
+
+        private AppDatabase db;
+        private final DataBaseCallBack dataBaseCallBack;
+        private String returnedOrderId;
+        private String currentOrderId;
+
+        public UpdateRefundedOrderId(AppDatabase userDatabase, DataBaseCallBack dataBaseCallBack, String returnedOrderId, String currentOrderId) {
+            db = userDatabase;
+            this.dataBaseCallBack = dataBaseCallBack;
+            this.returnedOrderId = returnedOrderId;
+            this.currentOrderId = currentOrderId;
+            this.returnedOrderId = returnedOrderId;
+            this.currentOrderId = currentOrderId;
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... voids) {
+            long[] id;
+            try {
+                db.orderDao().updateRefundedOrderId(currentOrderId, Integer.parseInt(returnedOrderId) - 10000);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
+            return true;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean success) {
+            super.onPostExecute(success);
+            if (success) {
+                dataBaseCallBack.onSuccess(success, SUCCESS_MSG_9_ORDER_PLACED);
+            } else
+                dataBaseCallBack.onFailure(ERROR_CODE, ERROR_MSG);
+        }
+    }
+
     public class GetOrders extends AsyncTask<Void, Void,
             List<OrderEntity>> {
 
@@ -727,6 +922,33 @@ public class DataBaseAsyncUtils {
             super.onPostExecute(orders);
             if (orders != null) {
                 dataBaseCallBack.onSuccess(orders, SUCCESS_MSG);
+            } else
+                dataBaseCallBack.onFailure(ERROR_CODE, ERROR_MSG);
+        }
+    }
+
+    public class GetOrdersById extends AsyncTask<String, Void,
+            OrderEntity> {
+
+        private AppDatabase db;
+        private final DataBaseCallBack dataBaseCallBack;
+
+        public GetOrdersById(AppDatabase userDatabase, DataBaseCallBack dataBaseCallBack) {
+            db = userDatabase;
+            this.dataBaseCallBack = dataBaseCallBack;
+        }
+
+        @Override
+        protected OrderEntity doInBackground(String... orderIds) {
+            OrderEntity orders = db.orderDao().loadByIds(Integer.parseInt(orderIds[0]));
+            return orders;
+        }
+
+        @Override
+        protected void onPostExecute(OrderEntity order) {
+            super.onPostExecute(order);
+            if (order != null) {
+                dataBaseCallBack.onSuccess(order, SUCCESS_MSG);
             } else
                 dataBaseCallBack.onFailure(ERROR_CODE, ERROR_MSG);
         }
@@ -956,6 +1178,10 @@ public class DataBaseAsyncUtils {
                         , cashDrawerModel[0].getInAmount()
                         , cashDrawerModel[0].getOutAmount()
                         , converter.fromCashDrawerItemToString(cashDrawerModel[0].getCashDrawerItems())
+                        , cashDrawerModel[0].getFormattedClosingBalance()
+                        , cashDrawerModel[0].getFormattedNetRevenue()
+                        , cashDrawerModel[0].getFormattedInAmount()
+                        , cashDrawerModel[0].getFormattedOutAmount()
                         , cashDrawerModel[0].getDate());
             } catch (Exception e) {
                 e.printStackTrace();

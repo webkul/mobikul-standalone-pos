@@ -71,6 +71,10 @@ public class DataBaseController {
         DataBaseAsyncUtils.getInstanse().new AddProductAsyncTask(((BaseActivity) context).getDb(), dataBaseCallBack).execute(data);
     }
 
+    public void updateProductImages(Context context, String imagePath, Long pId, DataBaseCallBack callBack) {
+        DataBaseAsyncUtils.getInstanse().new UpdateProductImages(((BaseActivity) context).getDb(), imagePath, pId, callBack).execute();
+    }
+
     public void getProducts(Context context, DataBaseCallBack dataBaseCallBack) {
         DataBaseAsyncUtils.getInstanse().new GetAllProducts(((BaseActivity) context).getDb(), dataBaseCallBack).execute();
     }
@@ -88,7 +92,7 @@ public class DataBaseController {
     }
 
     public void updateProductQty(Context context, Product data) {
-        DataBaseAsyncUtils.getInstanse().new UpdateProductQty(((BaseActivity) context).getDb()).execute(data);
+        DataBaseAsyncUtils.getInstanse().new UpdateProductQty(context, ((BaseActivity) context).getDb()).execute(data);
     }
 
     public void deleteProduct(Context context, Product data, DataBaseCallBack dataBaseCallBack) {
@@ -111,12 +115,32 @@ public class DataBaseController {
         DataBaseAsyncUtils.getInstanse().new DeleteCustomer(((BaseActivity) context).getDb(), callBack).execute(customer);
     }
 
+    public void checkEmailExist(Context context, String email, DataBaseCallBack callBack) {
+        DataBaseAsyncUtils.getInstanse().new CheckEmailExist(((BaseActivity) context).getDb(), callBack).execute(email);
+    }
+
+    public void checkNumberExist(Context context, String email, DataBaseCallBack callBack) {
+        DataBaseAsyncUtils.getInstanse().new CheckNumberExist(((BaseActivity) context).getDb(), callBack).execute(email);
+    }
+
+    public void checkSkuExist(Context context, String sku, DataBaseCallBack callBack) {
+        DataBaseAsyncUtils.getInstanse().new CheckSkuExist(((BaseActivity) context).getDb(), callBack).execute(sku);
+    }
+
     public void generateOrder(Context context, OrderEntity data, DataBaseCallBack dataBaseCallBack) {
         DataBaseAsyncUtils.getInstanse().new GenerateOrderAsyncTask(((BaseActivity) context).getDb(), dataBaseCallBack).execute(data);
     }
 
+    public void updateRefundedOrderId(Context context, String returnOrderId, String currentOrderId, DataBaseCallBack dataBaseCallBack) {
+        DataBaseAsyncUtils.getInstanse().new UpdateRefundedOrderId(((BaseActivity) context).getDb(), dataBaseCallBack, returnOrderId, currentOrderId).execute();
+    }
+
     public void getOrders(Context context, DataBaseCallBack dataBaseCallBack) {
         DataBaseAsyncUtils.getInstanse().new GetOrders(((BaseActivity) context).getDb(), dataBaseCallBack).execute();
+    }
+
+    public void getOrderById(Context context, String orderId, DataBaseCallBack dataBaseCallBack) {
+        DataBaseAsyncUtils.getInstanse().new GetOrdersById(((BaseActivity) context).getDb(), dataBaseCallBack).execute(orderId);
     }
 
     public void getSearchData(Context context, String searchText, DataBaseCallBack dataBaseCallBack) {

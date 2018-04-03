@@ -24,11 +24,19 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.ViewHo
 
     private Context context;
     private List<Customer> customers;
+    private Customer selectedCustomer;
     private boolean isChooseCustomer;
 
     public CustomerAdapter(Context context, List<Customer> customers, boolean isChooseCustomer) {
         this.context = context;
         this.customers = customers;
+        this.isChooseCustomer = isChooseCustomer;
+    }
+
+    public CustomerAdapter(Context context, List<Customer> customers, Customer selectedCustomer, boolean isChooseCustomer) {
+        this.context = context;
+        this.customers = customers;
+        this.selectedCustomer = selectedCustomer;
         this.isChooseCustomer = isChooseCustomer;
     }
 
@@ -44,6 +52,10 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.ViewHo
         holder.binding.setData(customers.get(position));
         holder.binding.setHandler(new CustomerHandler(context));
         holder.binding.setChooseCustomer(isChooseCustomer);
+        if (selectedCustomer != null && selectedCustomer.getCustomerId() == customers.get(position).getCustomerId()) {
+            holder.binding.selected.setVisibility(View.VISIBLE);
+        } else
+            holder.binding.selected.setVisibility(View.GONE);
     }
 
     @Override

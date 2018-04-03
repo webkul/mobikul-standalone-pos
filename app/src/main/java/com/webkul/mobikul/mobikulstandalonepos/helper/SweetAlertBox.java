@@ -32,6 +32,18 @@ public class SweetAlertBox {
         sweetAlertDialog.show();
     }
 
+    public void showProgressDialog(Context context) {
+        sweetAlertDialog = new SweetAlertDialog(context, SweetAlertDialog.PROGRESS_TYPE);
+        sweetAlertDialog.setTitleText(context.getResources().getString(R.string.loading));
+        sweetAlertDialog.setContentText(context.getResources().getString(R.string.wait_for_a_moment));
+        sweetAlertDialog.setCancelable(false);
+        try {
+            sweetAlertDialog.show();
+        } catch (Exception e) {
+            sweetAlertDialog.dismiss();
+        }
+    }
+
     public void showSuccessPopUp(final Context context, String title, String message) {
         sweetAlertDialog = new SweetAlertDialog(context);
         sweetAlertDialog.setTitleText(title);

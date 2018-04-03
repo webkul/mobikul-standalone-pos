@@ -43,9 +43,9 @@ class CartOptionAdapter extends RecyclerView.Adapter<CartOptionAdapter.ViewHolde
         for (int i = 0; i < options.get(position).getOptionValues().size(); i++) {
             if (options.get(position).getOptionValues().get(i).isAddToCart()) {
                 TextView tv = new TextView(context);
-                if (!options.get(position).getType().equalsIgnoreCase("text"))
+                if (!options.get(position).getType().equalsIgnoreCase("text") && !options.get(position).getOptionValues().get(i).getOptionValuePrice().equalsIgnoreCase("")) {
                     tv.setText(options.get(position).getOptionValues().get(i).getOptionValueName() + " (" + context.getString(R.string.currency_symbol) + options.get(position).getOptionValues().get(i).getOptionValuePrice() + ")");
-                else
+                } else
                     tv.setText(options.get(position).getOptionValues().get(i).getOptionValueName());
                 tv.setGravity(Gravity.CENTER);
                 tv.setTextColor(ContextCompat.getColor(context, R.color.colorAccent));

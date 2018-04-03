@@ -6,10 +6,13 @@ import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
+import android.util.Log;
 
 import com.webkul.mobikul.mobikulstandalonepos.BR;
 
 import java.io.Serializable;
+
+import static android.content.ContentValues.TAG;
 
 /**
  * Created by aman.gupta on 15/2/18. @Webkul Software Private limited
@@ -24,6 +27,8 @@ public class OptionValues extends BaseObservable implements Serializable {
     private String optionValueName;
     @ColumnInfo(name = "option_value_price")
     private String optionValuePrice;
+//    @ColumnInfo(name = "formatted_option_value_price")
+//    private String formattedOptionValuePrice;
     @ColumnInfo(name = "option_value_sort_order")
     private int sortOrder;
     @Ignore
@@ -35,6 +40,7 @@ public class OptionValues extends BaseObservable implements Serializable {
     public String getOptionValueName() {
         if (optionValueName == null)
             return "";
+        Log.d(TAG, "getOptionValueName: " + optionValueName);
         return optionValueName;
     }
 
@@ -95,4 +101,12 @@ public class OptionValues extends BaseObservable implements Serializable {
     public void setAddToCart(boolean addToCart) {
         isAddToCart = addToCart;
     }
+
+//    public String getFormattedOptionValuePrice() {
+//        return formattedOptionValuePrice;
+//    }
+//
+//    public void setFormattedOptionValuePrice(String formattedOptionValuePrice) {
+//        this.formattedOptionValuePrice = formattedOptionValuePrice;
+//    }
 }

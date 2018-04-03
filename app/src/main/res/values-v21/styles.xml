@@ -13,8 +13,12 @@
 
         <item name="android:windowDisablePreview">false</item>
         <item name="actionBarTheme">@style/AppTheme.AppBarOverlay</item>
+        <item name="windowActionModeOverlay">true</item>
         <!--<item name="android:actionBarWidgetTheme">@style/MyActionBarWidgetTheme</item>-->
         <!--<item name="actionBarWidgetTheme">@style/MyActionBarWidgetTheme</item>-->
+        <item name="android:timePickerDialogTheme">@style/AlertDialogCustom</item>
+        <item name="android:datePickerDialogTheme">@style/AlertDialogCustom</item>
+        <item name="android:alertDialogTheme">@style/AlertDialogCustom</item>
 
     </style>
 
@@ -24,4 +28,8 @@
         <item name="android:windowBackground">@drawable/application_opening_bg</item>
     </style>
 
+    <style name="AlertDialogCustom" parent="android:Theme.Material.Light.Dialog.Alert">
+        <item name="android:colorPrimary">@color/colorPrimary</item>
+        <item name="android:colorAccent">@color/colorAccent</item>
+    </style>
 </resources>

@@ -56,7 +56,7 @@
                         android:id="@+id/amt_collected"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@{'+'+@string/currency_symbol+data.collectedCash}"
+                        android:text="@{` +`+data.formattedCollectedCash}"
                         android:textColor="@color/textColorGreen"
                         android:textSize="@dimen/text_size_small"
                         tools:text="+$350.00" />
@@ -78,7 +78,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@{'-'+@string/currency_symbol+data.changeDue}"
+                        android:text="@{` -`+data.formattedChangeDue}"
                         android:textColor="@color/textColorRed"
                         android:textSize="@dimen/text_size_small"
                         tools:text="-$40.00" />
@@ -101,7 +101,7 @@
                         android:id="@+id/net_amount"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@{@string/currency_symbol + data.total}"
+                        android:text="@{data.formattedTotal}"
                         android:textColor="@color/colorAccent"
                         android:textSize="@dimen/text_size_small"
                         tools:text="$310.00" />

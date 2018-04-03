@@ -9,6 +9,7 @@ import android.arch.persistence.room.TypeConverters;
 import android.arch.persistence.room.Update;
 
 import com.webkul.mobikul.mobikulstandalonepos.db.converters.DataConverter;
+import com.webkul.mobikul.mobikulstandalonepos.db.entity.Customer;
 import com.webkul.mobikul.mobikulstandalonepos.db.entity.Product;
 import com.webkul.mobikul.mobikulstandalonepos.model.ProductCategoryModel;
 
@@ -31,6 +32,9 @@ public interface ProductDao {
     @Query("SELECT * FROM Product WHERE is_enabled = :isEnabled")
     List<Product> getEnabledProduct(boolean isEnabled);
 
+    @Query("SELECT * FROM Product WHERE sku IN (:sku)")
+    Product checkSkuExist(String sku);
+
     @Query("SELECT * FROM Product WHERE CAST(quantity as decimal)<= :quantity")
     List<Product> getLowStockProducts(int quantity);
 
@@ -39,6 +43,9 @@ public interface ProductDao {
 
     @Query("UPDATE Product SET quantity = :qty WHERE pId = :pId")
     void updateProductQty(String qty, int pId);
+
+    @Query("UPDATE Product SET image = :path WHERE pId = :pId")
+    void updateProductImages(String path, long pId);
 
     @Query("UPDATE Product SET image = :imagePath, is_enabled = :isEnabled, product_name = :ProductName, sku = :sku, price = :price" +
             ", special_price = :specialPrice, is_taxable_goods_applied = :isTaxableGoodsApplied, track_inventory= :trackInventory" +

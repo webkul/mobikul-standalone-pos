@@ -2,6 +2,7 @@ package com.webkul.mobikul.mobikulstandalonepos.handlers;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -57,7 +58,9 @@ public class AddProductFragmentHandler {
     }
 
     public void addNEditProfile() {
-        ActivityCompat.requestPermissions((ProductActivity) context, new String[]{Manifest.permission.CAMERA}, 666);
+        if (ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA)
+                == PackageManager.PERMISSION_DENIED)
+            ActivityCompat.requestPermissions((ProductActivity) context, new String[]{Manifest.permission.CAMERA}, 666);
         try {
             Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
             ((ProductActivity) context).startActivityForResult(cameraIntent, ((ProductActivity) context).CAMERA_REQUEST);
@@ -66,27 +69,60 @@ public class AddProductFragmentHandler {
         }
     }
 
+    private boolean rename(File from, File to) {
+        return from.getParentFile().exists() && from.exists() && from.renameTo(to);
+    }
+
     public void saveProduct(final Product product, boolean isEdit) {
         if (isValidated(product)) {
             if (!isEdit) {
-
                 DataBaseController.getInstanse().addProduct(context, product, new DataBaseCallBack() {
                     @Override
                     public void onSuccess(Object responseData, String successMsg) {
-                        ToastHelper.showToast(context, successMsg, Toast.LENGTH_LONG);
-                        String image = product.getImage();
-                        product.setImage(image.replace("0.jpg", responseData + ".jpg"));
-                        Fragment fragment = ((BaseActivity) context).mSupportFragmentManager.findFragmentByTag(AddProductFragment.class.getSimpleName());
-                        FragmentTransaction ft = ((BaseActivity) context).mSupportFragmentManager.beginTransaction();
-                        ft.detach(fragment);
-                        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE);
-                        ft.commit();
-                        ((BaseActivity) context).mSupportFragmentManager.popBackStackImmediate();
+                        if (!product.getImage().isEmpty()) {
+                            SweetAlertBox.getInstance().showProgressDialog(BaseActivity.getContext());
+                            String image = product.getImage().replace("0.jpg", responseData + ".jpg");
+                            Log.d(TAG, "onSuccess: " + image + "--" + product.getImage());
+                            ContextWrapper cw = new ContextWrapper(context);
+                            File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
+                            File from = new File(directory, "0.jpg");
+                            File to = new File(directory, responseData + ".jpg");
+                            if (rename(from, to)) {
+                                DataBaseController.getInstanse().updateProductImages(context, image, (Long) responseData, new
+
+                                        DataBaseCallBack() {
+                                            @Override
+                                            public void onSuccess(Object responseData, String successMsg) {
+                                                ToastHelper.showToast(context, successMsg, Toast.LENGTH_LONG);
+                                                Fragment fragment = ((BaseActivity) context).mSupportFragmentManager.findFragmentByTag(AddProductFragment.class.getSimpleName());
+                                                FragmentTransaction ft = ((BaseActivity) context).mSupportFragmentManager.beginTransaction();
+                                                ft.detach(fragment);
+                                                ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE);
+                                                ft.commit();
+                                                ((BaseActivity) context).mSupportFragmentManager.popBackStackImmediate();
+                                            }
+
+                                            @Override
+                                            public void onFailure(int errorCode, String errorMsg) {
+                                                SweetAlertBox.getInstance().dissmissSweetAlert();
+                                            }
+                                        });
+                            }
+                        } else {
+                            ToastHelper.showToast(context, successMsg, Toast.LENGTH_LONG);
+                            Fragment fragment = ((BaseActivity) context).mSupportFragmentManager.findFragmentByTag(AddProductFragment.class.getSimpleName());
+                            FragmentTransaction ft = ((BaseActivity) context).mSupportFragmentManager.beginTransaction();
+                            ft.detach(fragment);
+                            ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE);
+                            ft.commit();
+                            ((BaseActivity) context).mSupportFragmentManager.popBackStackImmediate();
+                        }
                     }
 
                     @Override
                     public void onFailure(int errorCode, String errorMsg) {
                         ToastHelper.showToast(context, errorMsg, Toast.LENGTH_LONG);
+                        SweetAlertBox.getInstance().dissmissSweetAlert();
                     }
                 });
             } else {
@@ -108,9 +144,12 @@ public class AddProductFragmentHandler {
                     }
                 });
             }
-        } else {
+        } else
+
+        {
             Toast.makeText(context, "Please check the form carefully!", Toast.LENGTH_SHORT).show();
         }
+
     }
 
     private FragmentAddProductBinding getAddProductBinding() {
@@ -157,9 +196,6 @@ public class AddProductFragmentHandler {
         String root = Environment.getExternalStorageDirectory().toString();
         File myDir = new File(root + "/pos-barcodes");
         myDir.mkdirs();
-//        Random generator = new Random();
-//        int n = 10000;
-//        n = generator.nextInt(n);
         String text = "noName";
         if (!product.getProductName().isEmpty())
             text = product.getProductName();

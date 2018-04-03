@@ -32,6 +32,7 @@ import com.webkul.mobikul.mobikulstandalonepos.db.entity.Options;
 import com.webkul.mobikul.mobikulstandalonepos.db.entity.Product;
 import com.webkul.mobikul.mobikulstandalonepos.db.entity.Tax;
 import com.webkul.mobikul.mobikulstandalonepos.handlers.AddProductFragmentHandler;
+import com.webkul.mobikul.mobikulstandalonepos.helper.SweetAlertBox;
 import com.webkul.mobikul.mobikulstandalonepos.interfaces.DataBaseCallBack;
 
 import java.util.ArrayList;
@@ -109,7 +110,6 @@ public class AddProductFragment extends Fragment {
         setProductCategory();
         setProductOptions();
         binding.setEdit(isEdit);
-        final DataConverter dataConverter = new DataConverter();
         DataBaseController.getInstanse().getAllEnabledTaxes(getActivity(), new DataBaseCallBack() {
             @Override
             public void onSuccess(Object responseData, String successMsg) {
@@ -220,6 +220,13 @@ public class AddProductFragment extends Fragment {
             binding.categoryRv.setAdapter(productCategoryAdapter);
             binding.setData(binding.getData());
         }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (SweetAlertBox.getInstance() != null)
+            SweetAlertBox.getInstance().dissmissSweetAlert();
     }
 
     @Override

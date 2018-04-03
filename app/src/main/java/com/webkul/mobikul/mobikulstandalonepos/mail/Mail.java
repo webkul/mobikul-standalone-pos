@@ -6,8 +6,9 @@ import java.util.Date;
 import java.util.Properties;
 
 import javax.activation.CommandMap;
+import javax.activation.DataHandler;
+import javax.activation.FileDataSource;
 import javax.activation.MailcapCommandMap;
-import javax.mail.Authenticator;
 import javax.mail.BodyPart;
 import javax.mail.Multipart;
 import javax.mail.PasswordAuthentication;
@@ -17,6 +18,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
+import javax.sql.DataSource;
 
 /**
  * Created by anchit.makkar on 19/12/17.
@@ -45,7 +47,7 @@ public class Mail extends javax.mail.Authenticator {
 
     public Mail() {
         _host = ApplicationConstants.HOST_FOR_MAIL; // default smtp server
-        _port = "587"; // default smtp port
+        _port = "465"; // default smtp port
         _sport = "587"; // default socketfactory port
 
         _user = ""; // username
@@ -80,12 +82,12 @@ public class Mail extends javax.mail.Authenticator {
     public boolean send() throws Exception {
         Properties props = _setProperties();
 
-        if(!_user.equals("") && !_pass.equals("") && _to.length > 0 && !_from.equals("") &&
+        if (!_user.equals("") && !_pass.equals("") && _to.length > 0 && !_from.equals("") &&
                 !_subject.equals("") && !_body.equals("")) {
 
             Session session = Session.getInstance(props, new javax.mail.Authenticator() {
                 protected PasswordAuthentication getPasswordAuthentication() {
-                    return new PasswordAuthentication(ApplicationConstants.USERNAME_FOR_SMTP,ApplicationConstants.PASSWORD_FOR_SMTP);
+                    return new PasswordAuthentication(ApplicationConstants.USERNAME_FOR_SMTP, ApplicationConstants.PASSWORD_FOR_SMTP);
                 }
             });
             SMTPAuthenticator authentication = new SMTPAuthenticator();
@@ -115,7 +117,7 @@ public class Mail extends javax.mail.Authenticator {
             props.put("mail." + protocol + ".auth", "true");
             Transport t = session.getTransport(protocol);
             try {
-                t.connect(ApplicationConstants.HOST_FOR_MAIL,ApplicationConstants.USERNAME_FOR_SMTP,ApplicationConstants.PASSWORD_FOR_SMTP);
+                t.connect(ApplicationConstants.HOST_FOR_MAIL, ApplicationConstants.USERNAME_FOR_SMTP, ApplicationConstants.PASSWORD_FOR_SMTP);
                 t.sendMessage(msg, msg.getAllRecipients());
             } finally {
                 t.close();
@@ -127,6 +129,15 @@ public class Mail extends javax.mail.Authenticator {
         }
     }
 
+    public void addAttachment(String filename) throws Exception {
+        BodyPart messageBodyPart = new MimeBodyPart();
+        javax.activation.DataSource source = new FileDataSource(filename);
+        messageBodyPart.setDataHandler(new DataHandler(source));
+        messageBodyPart.setFileName(filename);
+
+        _multipart.addBodyPart(messageBodyPart);
+    }
+
     @Override
     public PasswordAuthentication getPasswordAuthentication() {
         return new PasswordAuthentication(_user, _pass);
@@ -136,19 +147,16 @@ public class Mail extends javax.mail.Authenticator {
         Properties props = new Properties();
 
         props.put("mail.smtp.host", _host);
-
-        if(_debuggable) {
+        if (_debuggable) {
             props.put("mail.debug", "true");
         }
-
-        if(_auth) {
+        if (_auth) {
             props.put("mail.smtp.auth", "true");
         }
-
         props.put("mail.smtp.port", _port);
         props.put("mail.smtp.starttls.enable", "true");
         props.put("mail.smtp.host", ApplicationConstants.HOST_FOR_MAIL);
-        props.put("mail.smtp.ssl.enable",true);
+        props.put("mail.smtp.ssl.enable", true);
 
         return props;
     }
@@ -161,12 +169,15 @@ public class Mail extends javax.mail.Authenticator {
     public void setBody(String _body) {
         this._body = _body;
     }
+
     public void setTo(String[] to) {
         this._to = to;
     }
+
     public void setFrom(String from) {
         this._from = from;
     }
+
     public void setSubject(String subject) {
         this._subject = subject;
     }

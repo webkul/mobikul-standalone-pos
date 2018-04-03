@@ -16,6 +16,10 @@
             type="com.webkul.mobikul.mobikulstandalonepos.model.CartModel" />
 
         <variable
+            name="hasReturn"
+            type="boolean" />
+
+        <variable
             name="handler"
             type="com.webkul.mobikul.mobikulstandalonepos.handlers.CheckoutHandler" />
     </data>
@@ -45,7 +49,7 @@
                 android:background="@color/colorAccent"
                 android:paddingLeft="@dimen/spacing_normal"
                 android:paddingTop="@dimen/spacing_normal"
-                android:text="@string/total_to_be_paid"
+                android:text="@{hasReturn ? @string/total_to_be_refunded : @string/total_to_be_paid}"
                 android:textColor="@color/white"
                 android:textSize="24sp"
                 android:textStyle="bold"

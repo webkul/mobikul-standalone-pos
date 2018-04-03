@@ -6,6 +6,14 @@
         <variable
             name="data"
             type="com.webkul.mobikul.mobikulstandalonepos.db.entity.OrderEntity" />
+
+        <variable
+            name="view"
+            type="android.view.View" />
+
+        <variable
+            name="handler"
+            type="com.webkul.mobikul.mobikulstandalonepos.handlers.OrderFragmentHandler" />
     </data>
 
     <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -51,7 +59,7 @@
                         android:background="@color/white">
 
                         <LinearLayout
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
                             android:padding="@dimen/spacing_normal">
@@ -86,6 +94,51 @@
                                 android:textSize="@dimen/text_size_medium"
                                 tools:text="+14 8745874512" />
 
+
+                        </LinearLayout>
+                    </android.support.v7.widget.CardView>
+
+                    <android.support.v7.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/spacing_generic"
+                        android:background="@color/white">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:padding="@dimen/spacing_normal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Shipping Address"
+                                android:textSize="@dimen/text_size_large" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@{data.cartData.customer.addressLine}"
+                                android:textColor="@color/secondaryTextColor"
+                                android:textSize="@dimen/text_size_medium"
+                                tools:text="310-B, Shipra Suncity, 201301" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@{data.cartData.customer.city+`, ` +data.cartData.customer.postalCode}"
+                                android:textColor="@color/secondaryTextColor"
+                                android:textSize="@dimen/text_size_medium"
+                                tools:text="Ghaziabad, 201301" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@{data.cartData.customer.state+`, `+ data.cartData.customer.country}"
+                                android:textColor="@color/secondaryTextColor"
+                                android:textSize="@dimen/text_size_medium"
+                                tools:text="UP, India" />
 
                         </LinearLayout>
                     </android.support.v7.widget.CardView>
@@ -290,7 +343,7 @@
                                     <TextView
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:text="@string/cash_collected_"
+                                        android:text="@{data.isReturn ? @string/cash_refunded_ : @string/cash_collected_}"
                                         android:textSize="@dimen/text_size_small"
                                         tools:text="Cash Collected" />
 
@@ -299,7 +352,7 @@
                                         android:layout_height="wrap_content"
                                         android:layout_alignParentEnd="true"
                                         android:layout_alignParentRight="true"
-                                        android:text="@{@string/currency_symbol+data.cashData.collectedCash}"
+                                        android:text="@{data.cashData.formattedCollectedCash}"
                                         android:textSize="@dimen/text_size_small"
                                         tools:text="$75.90" />
                                 </RelativeLayout>
@@ -345,18 +398,69 @@
                                         android:layout_height="wrap_content"
                                         android:layout_alignParentEnd="true"
                                         android:layout_alignParentRight="true"
-                                        android:text="@{@string/currency_symbol+data.cashData.changeDue}"
+                                        android:text="@{data.cashData.formattedChangeDue}"
                                         android:textColor="@color/colorAccent"
                                         android:textSize="@dimen/text_size_small"
                                         android:textStyle="bold"
                                         tools:text="$75.90" />
                                 </RelativeLayout>
+
+
                             </LinearLayout>
 
                         </LinearLayout>
 
                     </android.support.v7.widget.CardView>
 
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="@dimen/spacing_normal"
+                        android:layout_marginTop="@dimen/spacing_generic"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/return_items"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentStart="true"
+                            android:layout_marginLeft="@dimen/spacing_generic"
+                            android:layout_marginRight="@dimen/spacing_generic"
+                            android:background="@{data.refundedOrderId.isEmpty() ? @drawable/selector_rect_rounded_corner_accent_bg_accent_stroke: @drawable/selector_rect_rounded_corner_green_bg_green_stroke}"
+                            android:onClick="@{()->handler.returnItems(data, data.refundedOrderId)}"
+                            android:padding="@dimen/spacing_generic"
+                            android:text="@{data.refundedOrderId.isEmpty() ? @string/return_items : `Order Returned`}"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/text_size_small"
+                            android:visibility="@{!data.isReturn ? view.VISIBLE : view.GONE}" />
+
+                        <TextView
+                            android:id="@+id/send_invoice"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginLeft="@dimen/spacing_generic"
+                            android:layout_marginRight="@dimen/spacing_generic"
+                            android:background="@drawable/selector_rect_rounded_corner_accent_bg_accent_stroke"
+                            android:onClick="@{()->handler.sendInvoice(data)}"
+                            android:padding="@dimen/spacing_generic"
+                            android:text="@string/send_invoice"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/text_size_small" />
+
+                        <TextView
+                            android:id="@+id/generate_invoice"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_toLeftOf="@+id/send_invoice"
+                            android:background="@drawable/selector_rect_rounded_corner_accent_bg_accent_stroke"
+                            android:onClick="@{()->handler.generateInvoice(data)}"
+                            android:padding="@dimen/spacing_generic"
+                            android:text="@string/view_invoice"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/text_size_small" />
+
+                    </RelativeLayout>
 
                 </LinearLayout>
             </android.support.v4.widget.NestedScrollView>

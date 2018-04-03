@@ -4,14 +4,22 @@ import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
+import android.content.Context;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
+import android.util.Log;
 import android.util.Patterns;
 
 import com.webkul.mobikul.mobikulstandalonepos.BR;
 import com.webkul.mobikul.mobikulstandalonepos.R;
+import com.webkul.mobikul.mobikulstandalonepos.db.DataBaseController;
+import com.webkul.mobikul.mobikulstandalonepos.interfaces.DataBaseCallBack;
 
 import java.io.Serializable;
+
+import static com.webkul.mobikul.mobikulstandalonepos.activity.BaseActivity.TAG;
+import static com.webkul.mobikul.mobikulstandalonepos.activity.BaseActivity.getContext;
+import static com.webkul.mobikul.mobikulstandalonepos.constants.ApplicationConstants.SUCCESS_MSG_9_CUSTOMER_ALL_READY_EXIST;
 
 /**
  * Created by aman.gupta on 23/1/18. @Webkul Software Private limited
@@ -35,8 +43,28 @@ public class Customer extends BaseObservable implements Serializable {
     @ColumnInfo(name = "contact_number")
     private String contactNumber;
 
+    @ColumnInfo(name = "address_line")
+    private String addressLine;
+
+    @ColumnInfo(name = "city")
+    private String city;
+
+    @ColumnInfo(name = "postal_code")
+    private String postalCode;
+
+    @ColumnInfo(name = "state")
+    private String state;
+
+    @ColumnInfo(name = "country")
+    private String country;
+
     @Ignore
     private boolean displayError;
+
+    @Ignore
+    private boolean isEmailExist;
+    @Ignore
+    private boolean isNumberExist;
 
     public int getCustomerId() {
         return customerId;
@@ -71,8 +99,27 @@ public class Customer extends BaseObservable implements Serializable {
 
     @Bindable
     public String getEmail() {
-        if (email == null)
+        if (email == null) {
             return "";
+        } else if (Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            Log.d(TAG, "getEmail: " + getCustomerId());
+            DataBaseController.getInstanse().checkEmailExist(getContext(), email, new DataBaseCallBack() {
+                @Override
+                public void onSuccess(Object responseData, String successMsg) {
+                    if (((Customer) responseData) != null && ((Customer) responseData).getCustomerId() != getCustomerId()) {
+                        isEmailExist = true;
+                    } else {
+                        isEmailExist = false;
+                    }
+                    Log.d(TAG, "onSuccess: " + responseData);
+                }
+
+                @Override
+                public void onFailure(int errorCode, String errorMsg) {
+                    isEmailExist = false;
+                }
+            });
+        }
         return email;
     }
 
@@ -87,6 +134,8 @@ public class Customer extends BaseObservable implements Serializable {
         if (!Patterns.EMAIL_ADDRESS.matcher(getEmail()).matches()) {
             return "PLEASE ENTER A VALID EMAIL!";
         }
+        if (isEmailExist)
+            return SUCCESS_MSG_9_CUSTOMER_ALL_READY_EXIST;
         return "";
     }
 
@@ -99,6 +148,24 @@ public class Customer extends BaseObservable implements Serializable {
     public String getContactNumber() {
         if (contactNumber == null)
             return "";
+        else if (!contactNumber.isEmpty()) {
+            Log.d(TAG, "getContactNumber: " + contactNumber);
+            DataBaseController.getInstanse().checkNumberExist(getContext(), contactNumber, new DataBaseCallBack() {
+                @Override
+                public void onSuccess(Object responseData, String successMsg) {
+                    if (responseData != null && ((Customer) responseData).getCustomerId() != getCustomerId()) {
+                        isNumberExist = true;
+                    } else {
+                        isNumberExist = false;
+                    }
+                }
+
+                @Override
+                public void onFailure(int errorCode, String errorMsg) {
+                    isNumberExist = false;
+                }
+            });
+        }
         return contactNumber;
     }
 
@@ -109,6 +176,9 @@ public class Customer extends BaseObservable implements Serializable {
         }
         if (getContactNumber().isEmpty()) {
             return "CONTACT NUMBER IS EMPTY!";
+        }
+        if (isNumberExist) {
+            return SUCCESS_MSG_9_CUSTOMER_ALL_READY_EXIST;
         }
         return "";
     }
@@ -151,4 +221,58 @@ public class Customer extends BaseObservable implements Serializable {
         notifyPropertyChanged(BR.displayError);
     }
 
+    @Bindable
+    public String getAddressLine() {
+        if (addressLine == null)
+            return "";
+        return addressLine;
+    }
+
+    public void setAddressLine(String addressLine) {
+        this.addressLine = addressLine;
+    }
+
+    @Bindable
+    public String getCity() {
+        if (city == null)
+            return "";
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    @Bindable
+    public String getPostalCode() {
+        if (postalCode == null)
+            return "";
+        return postalCode;
+    }
+
+    public void setPostalCode(String postalCode) {
+        this.postalCode = postalCode;
+    }
+
+    @Bindable
+    public String getState() {
+        if (state == null)
+            return "";
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    @Bindable
+    public String getCountry() {
+        if (country == null)
+            return "";
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
 }
