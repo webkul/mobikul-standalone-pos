@@ -9,8 +9,11 @@ import java.io.Serializable;
 public class CashDrawerItems implements Serializable {
     private String orderId;
     private String total;
+    private String formattedTotal;
     private String collectedCash;
+    private String formattedCollectedCash;
     private String changeDue;
+    private String formattedChangeDue;
 
     public String getTotal() {
         return total;
@@ -42,5 +45,29 @@ public class CashDrawerItems implements Serializable {
 
     public void setOrderId(String orderId) {
         this.orderId = orderId;
+    }
+
+    public String getFormattedTotal() {
+        return formattedTotal;
+    }
+
+    public void setFormattedTotal(String formattedTotal) {
+        this.formattedTotal = formattedTotal;
+    }
+
+    public String getFormattedCollectedCash() {
+        return formattedCollectedCash;
+    }
+
+    public void setFormattedCollectedCash(String formattedCollectedCash) {
+        this.formattedCollectedCash = formattedCollectedCash;
+    }
+
+    public String getFormattedChangeDue() {
+        return formattedChangeDue;
+    }
+
+    public void setFormattedChangeDue(String formattedChangeDue) {
+        this.formattedChangeDue = formattedChangeDue;
     }
 }

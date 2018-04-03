@@ -2,6 +2,7 @@ package com.webkul.mobikul.mobikulstandalonepos.activity;
 
 import android.annotation.SuppressLint;
 import android.arch.persistence.room.Room;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
@@ -17,7 +18,6 @@ import com.webkul.mobikul.mobikulstandalonepos.helper.AppSharedPref;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
-import static com.webkul.mobikul.mobikulstandalonepos.db.AppDatabase.MIGRATION_1_2;
 import static com.webkul.mobikul.mobikulstandalonepos.db.AppDatabase.destroyDbInstance;
 import static com.webkul.mobikul.mobikulstandalonepos.db.AppDatabase.getAppDatabase;
 
@@ -31,6 +31,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     public SweetAlertDialog mSweetAlertDialog;
     public FragmentManager mSupportFragmentManager;
     public AppDatabase db;
+    public static Context context;
 
     @SuppressLint("CommitPrefEdits")
     @Override
@@ -38,11 +39,16 @@ public abstract class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         mSupportFragmentManager = getSupportFragmentManager();
         db = getDb();
+        context = this;
         showBackButton(true);
     }
 
     public AppDatabase getDb() {
         return getAppDatabase(this);
+    }
+
+    public static Context getContext() {
+        return context;
     }
 
     static {
@@ -98,10 +104,11 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         FragmentManager fragmentManager = getSupportFragmentManager();
-        if (fragmentManager.getBackStackEntryCount() == 0)
+        if (fragmentManager.getBackStackEntryCount() == 0) {
             finish();
-        else
+        } else {
             super.onBackPressed();
+        }
     }
 
 //    @Override

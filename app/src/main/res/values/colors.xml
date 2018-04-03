@@ -20,6 +20,7 @@
     <color name="secondaryTextColor">#80000000</color>
     <color name="textColorLight">#80626262</color>
     <color name="textColorGreen">#10c203</color>
+    <color name="darkColorGreen">#0d9902</color>
     <color name="textColorRed">#f94f4f</color>
     <!--stock colors-->
     <color name="inStockColor">#70000000</color>

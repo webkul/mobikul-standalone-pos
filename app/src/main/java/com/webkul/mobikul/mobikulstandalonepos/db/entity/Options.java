@@ -83,6 +83,7 @@ public class Options extends BaseObservable implements Serializable {
         notifyPropertyChanged(BR.type);
     }
 
+    @Bindable
     public List<OptionValues> getOptionValues() {
         if (optionValues == null) {
             optionValues = new ArrayList<>();
@@ -93,6 +94,7 @@ public class Options extends BaseObservable implements Serializable {
 
     public void setOptionValues(List<OptionValues> optionValues) {
         this.optionValues = optionValues;
+        notifyPropertyChanged(BR.optionValues);
     }
 
     public int getSortOrder() {

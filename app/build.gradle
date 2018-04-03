@@ -20,11 +20,16 @@ android {
         applicationId "com.webkul.mobikul.mobikulstandalonepos"
         minSdkVersion 17
         targetSdkVersion 27
-        versionCode 8
-        versionName "1.7"
+        versionCode 12
+        versionName "2.1"
         vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         signingConfig signingConfigs.config
+        multiDexEnabled true
+
+    }
+    packagingOptions {
+        pickFirst 'META-INF/LICENSE.txt' // picks the JavaMail license file
     }
     buildTypes {
         release {
@@ -35,9 +40,12 @@ android {
 //            resValue("string", "PORT_NUMBER", "8081")
 //        }
     }
-//    lintOptions {
-//        checkReleaseBuilds false
-//    }
+    lintOptions {
+        checkReleaseBuilds false
+        // Or, if you prefer, you can continue to check for errors in release builds,
+        // but continue the build even when errors are found:
+        abortOnError false
+    }
 
     productFlavors {
     }
@@ -47,23 +55,21 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
     implementation "com.android.support:appcompat-v7:$support_version"
-    implementation project(':activation')
-    implementation project(':additionnal')
-    implementation project(':mail')
+
     implementation project(':mobikuldialoglibrary-release')
     implementation project(':MobikulAutoScrollableView-release')
     //noinspection GradleCompatible
     implementation "com.android.support:support-v4:$support_version"
     /*SWEET ALERT DIALOG*/
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
-    implementation 'com.android.support:support-v4:27.0.2'
+    implementation 'com.android.support:support-v4:27.1.0'
     compile "cn.pedant.sweetalert:library:$sweetalert_version"
     implementation "com.android.support:design:$support_version"
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
     // ViewModel and LiveData
-    implementation 'android.arch.lifecycle:extensions:1.0.0'
-    annotationProcessor "android.arch.lifecycle:compiler:1.0.0"
+    implementation 'android.arch.lifecycle:extensions:1.1.0'
+    annotationProcessor "android.arch.lifecycle:compiler:1.1.0"
     // Room
     implementation 'android.arch.persistence.room:runtime:1.0.0'
     annotationProcessor "android.arch.persistence.room:compiler:1.0.0"
@@ -76,17 +82,29 @@ dependencies {
     compile 'org.jsoup:jsoup:1.10.2'
     //see database
 //    debugCompile 'com.amitshekhar.android:debug-db:1.0.3'
-
     implementation 'com.google.firebase:firebase-crash:11.8.0'
-//
-//    compile files('libs/picasso-2.5.2.jar')
-//
-//    compile 'com.android.volley:volley:1.0.0'
-//current time
+    //java mail apis
+    compile 'com.sun.mail:android-mail:1.6.0'
+    compile 'com.sun.mail:android-activation:1.6.0'
+    //current time
     compile 'commons-net:commons-net:3.3'
-
+    //pdf
+//    compile 'com.itextpdf:itextg:5.5.11'
+    compile 'com.itextpdf:itextpdf:5.0.6'
+    //barcode generation
     compile 'com.google.zxing:core:3.2.1'
     compile 'com.journeyapps:zxing-android-embedded:3.2.0@aar'
     implementation 'com.google.android.gms:play-services-vision:11.8.0'
+    // barcode scanner
     implementation 'info.androidhive:barcode-reader:1.1.5'
+
+    compile project(':currencypicker')
+    //chart
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
+    // Retrofit
+    compile 'com.squareup.retrofit2:retrofit:2.1.0'
+    compile 'com.squareup:android-times-square:1.6.5@aar'
+
+// JSON Parsing
+    compile 'com.squareup.retrofit2:converter-gson:2.1.0'
 }

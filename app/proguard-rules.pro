@@ -21,6 +21,7 @@
 #-renamesourcefileattribute SourceFile
 -keep class android.support.v7.widget.SearchView { *; }
 -dontwarn java.awt.**
+-keep class java.awt.FontMetrics {*;}
 -dontwarn java.beans.Beans
 -dontwarn javax.security.**
 -keep class javamail.** {*;}
@@ -49,3 +50,28 @@
 -dontwarn com.squareup.okhttp.**
 
 -dontwarn com.squareup.picasso.**
+#-keep class org.spongycastle.** { *; }
+#-dontwarn org.spongycastle.**
+#for itext library
+-dontwarn com.itextpdf.text.pdf.**
+-dontwarn org.bouncycastle.**
+-dontwarn com.sun.mail.**
+
+#retrofit
+-dontwarn retrofit2.**
+-keep class retrofit2.** { *; }
+-keepclasseswithmembers class * {
+@retrofit2.http.* <methods>;
+}
+
+
+-dontwarn okhttp3.**
+-keep class okhttp3.** {*;}
+
+### OKIO
+
+# java.nio.file.* usage which cannot be used at runtime. Animal sniffer annotation.
+-dontwarn okio.Okio
+# JDK 7-only method which is @hide on Android. Animal sniffer annotation.
+-dontwarn okio.DeflaterSink
+

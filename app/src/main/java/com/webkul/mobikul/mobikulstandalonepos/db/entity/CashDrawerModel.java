@@ -34,21 +34,35 @@ public class CashDrawerModel implements Serializable {
     @ColumnInfo(name = "opening_balance")
     private String openingBalance;
 
+    @ColumnInfo(name = "formatted_opening_balance")
+    private String formattedOpeningBalance;
+
     @ColumnInfo(name = "closing_balance")
     private String closingBalance;
+
+    @ColumnInfo(name = "formatted_closing_balance")
+    private String formattedClosingBalance;
 
     @ColumnInfo(name = "net_revenue")
     private String netRevenue;
 
+    @ColumnInfo(name = "formatted_net_revenue")
+    private String formattedNetRevenue;
+
     @ColumnInfo(name = "in_amount")
     private String inAmount;
+
+    @ColumnInfo(name = "formatted_in_amount")
+    private String formattedInAmount;
 
     @ColumnInfo(name = "out_amount")
     private String outAmount;
 
+    @ColumnInfo(name = "formatted_out_amount")
+    private String formattedOutAmount;
+
     @ColumnInfo(name = "is_synced")
     private String isSynced;
-
 
     public String getOpeningBalance() {
         return openingBalance;
@@ -118,5 +132,45 @@ public class CashDrawerModel implements Serializable {
 
     public void setCashDrawerItems(List<CashDrawerItems> cashDrawerItems) {
         this.cashDrawerItems = cashDrawerItems;
+    }
+
+    public String getFormattedOpeningBalance() {
+        return formattedOpeningBalance;
+    }
+
+    public void setFormattedOpeningBalance(String formattedOpeningBalance) {
+        this.formattedOpeningBalance = formattedOpeningBalance;
+    }
+
+    public String getFormattedClosingBalance() {
+        return formattedClosingBalance;
+    }
+
+    public void setFormattedClosingBalance(String formattedClosingBalance) {
+        this.formattedClosingBalance = formattedClosingBalance;
+    }
+
+    public String getFormattedNetRevenue() {
+        return formattedNetRevenue;
+    }
+
+    public void setFormattedNetRevenue(String formattedNetRevenue) {
+        this.formattedNetRevenue = formattedNetRevenue;
+    }
+
+    public String getFormattedInAmount() {
+        return formattedInAmount;
+    }
+
+    public void setFormattedInAmount(String formattedInAmount) {
+        this.formattedInAmount = formattedInAmount;
+    }
+
+    public String getFormattedOutAmount() {
+        return formattedOutAmount;
+    }
+
+    public void setFormattedOutAmount(String formattedOutAmount) {
+        this.formattedOutAmount = formattedOutAmount;
     }
 }

@@ -10,15 +10,23 @@ import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
 import com.webkul.mobikul.mobikulstandalonepos.BR;
 import com.webkul.mobikul.mobikulstandalonepos.R;
+import com.webkul.mobikul.mobikulstandalonepos.db.DataBaseController;
 import com.webkul.mobikul.mobikulstandalonepos.db.converters.DataConverter;
+import com.webkul.mobikul.mobikulstandalonepos.interfaces.DataBaseCallBack;
 import com.webkul.mobikul.mobikulstandalonepos.model.ProductCategoryModel;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.webkul.mobikul.mobikulstandalonepos.activity.BaseActivity.TAG;
+import static com.webkul.mobikul.mobikulstandalonepos.activity.BaseActivity.getContext;
+import static com.webkul.mobikul.mobikulstandalonepos.constants.ApplicationConstants.SUCCESS_MSG_10_SKU_ALLREADY_EXIST;
+import static com.webkul.mobikul.mobikulstandalonepos.constants.ApplicationConstants.SUCCESS_MSG_9_CUSTOMER_ALL_READY_EXIST;
 
 /**
  * Created by aman.gupta on 9/1/18.
@@ -28,6 +36,8 @@ import java.util.List;
 public class Product extends BaseObservable implements Serializable, Parcelable {
     @Ignore
     private Context context;
+    @Ignore
+    private boolean isSkuExist;
 
     public Product() {
     }
@@ -99,6 +109,8 @@ public class Product extends BaseObservable implements Serializable, Parcelable 
     private String cartQty;
     @Ignore
     private String cartProductSubtotal;
+    @Ignore
+    private String formattedCartProductSubtotal;
     @Ignore
     private boolean displayError;
 
@@ -180,6 +192,24 @@ public class Product extends BaseObservable implements Serializable, Parcelable 
     public String getSku() {
         if (sku == null)
             return "";
+        else if (!sku.isEmpty()) {
+            Log.d(TAG, "getsku: " + sku);
+            DataBaseController.getInstanse().checkSkuExist(getContext(), sku, new DataBaseCallBack() {
+                @Override
+                public void onSuccess(Object responseData, String successMsg) {
+                    if (responseData != null && ((Product) responseData).getPId() != getPId()) {
+                        isSkuExist = true;
+                    } else {
+                        isSkuExist = false;
+                    }
+                }
+
+                @Override
+                public void onFailure(int errorCode, String errorMsg) {
+                    isSkuExist = false;
+                }
+            });
+        }
         return sku;
     }
 
@@ -190,6 +220,9 @@ public class Product extends BaseObservable implements Serializable, Parcelable 
         }
         if (getSku().isEmpty()) {
             return "SKU IS EMPTY!";
+        }
+        if (isSkuExist) {
+            return SUCCESS_MSG_10_SKU_ALLREADY_EXIST;
         }
         return "";
     }
@@ -354,7 +387,7 @@ public class Product extends BaseObservable implements Serializable, Parcelable 
     @Bindable
     public String getCartQty() {
         if (cartQty == null)
-            return "1";
+            return "0";
         return cartQty;
     }
 
@@ -405,12 +438,14 @@ public class Product extends BaseObservable implements Serializable, Parcelable 
         this.options = options;
     }
 
+    @Bindable
     public String getCartProductSubtotal() {
         return cartProductSubtotal;
     }
 
     public void setCartProductSubtotal(String cartProductSubtotal) {
         this.cartProductSubtotal = cartProductSubtotal;
+        notifyPropertyChanged(BR.cartProductSubtotal);
     }
 
     @Bindable
@@ -450,5 +485,15 @@ public class Product extends BaseObservable implements Serializable, Parcelable 
         parcel.writeString(cartQty);
         parcel.writeString(cartProductSubtotal);
         parcel.writeByte((byte) (displayError ? 1 : 0));
+    }
+
+    @Bindable
+    public String getFormattedCartProductSubtotal() {
+        return formattedCartProductSubtotal;
+    }
+
+    public void setFormattedCartProductSubtotal(String formattedCartProductSubtotal) {
+        this.formattedCartProductSubtotal = formattedCartProductSubtotal;
+        notifyPropertyChanged(BR.formattedCartProductSubtotal);
     }
 }

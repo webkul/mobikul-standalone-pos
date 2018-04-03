@@ -10,7 +10,7 @@
 
         <variable
             name="edit"
-            type="Boolean" />
+            type="boolean" />
 
         <variable
             name="handler"

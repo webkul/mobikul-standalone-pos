@@ -51,9 +51,14 @@ public class CustomDialogClass extends Dialog implements
                     CashDrawerModel cashDrawerModel = new CashDrawerModel();
                     cashDrawerModel.setOpeningBalance(((EditText) findViewById(R.id.opening_balance)).getText().toString());
                     cashDrawerModel.setClosingBalance(((EditText) findViewById(R.id.opening_balance)).getText().toString());
+                    cashDrawerModel.setFormattedOpeningBalance(Helper.currencyFormater(Double.parseDouble(cashDrawerModel.getOpeningBalance()), context));
+                    cashDrawerModel.setFormattedClosingBalance(Helper.currencyFormater(Double.parseDouble(cashDrawerModel.getClosingBalance()), context));
                     cashDrawerModel.setInAmount("0.00");
                     cashDrawerModel.setOutAmount("0.00");
                     cashDrawerModel.setNetRevenue("0.00");
+                    cashDrawerModel.setFormattedInAmount(Helper.currencyFormater(0.00, context));
+                    cashDrawerModel.setFormattedOutAmount(Helper.currencyFormater(0.00, context));
+                    cashDrawerModel.setFormattedNetRevenue(Helper.currencyFormater(0.00, context));
                     List<CashDrawerItems> cashDrawerItemsList = new ArrayList<>();
                     cashDrawerModel.setCashDrawerItems(cashDrawerItemsList);
                     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MMMM-yy");

@@ -37,10 +37,13 @@ public class CustomerActivity extends BaseActivity {
         if (getIntent().getExtras() != null && getIntent().getExtras().containsKey("choose_customer")) {
             isChooseCustomer = true;
         }
-        setCustomers();
+        if (getIntent().getExtras() != null && getIntent().getExtras().containsKey("customer")) {
+            customer = (Customer) getIntent().getExtras().getSerializable("customer");
+        }
+        setCustomers(customer);
     }
 
-    private void setCustomers() {
+    private void setCustomers(final Customer customer) {
         DataBaseController.getInstanse().getCustomer(this, new DataBaseCallBack() {
             @Override
             public void onSuccess(Object responseData, String successMsg) {
@@ -50,7 +53,7 @@ public class CustomerActivity extends BaseActivity {
                             customers.clear();
                         customers.addAll((List<Customer>) responseData);
                         if (customerAdapter == null) {
-                            customerAdapter = new CustomerAdapter(CustomerActivity.this, customers, isChooseCustomer);
+                            customerAdapter = new CustomerAdapter(CustomerActivity.this, customers, customer, isChooseCustomer);
                             binding.customerRv.setAdapter(customerAdapter);
                         } else {
                             customerAdapter.notifyDataSetChanged();

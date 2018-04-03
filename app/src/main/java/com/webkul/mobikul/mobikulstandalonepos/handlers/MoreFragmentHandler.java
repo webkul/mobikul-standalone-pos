@@ -27,10 +27,8 @@ public class MoreFragmentHandler {
 
     private Context context;
 
-
     public MoreFragmentHandler(Context context) {
         this.context = context;
-
     }
 
     public void performAction(MoreData moreData) {
@@ -38,6 +36,10 @@ public class MoreFragmentHandler {
         switch (moreData.getId()) {
             case MORE_MENU_CASH_DRAWER:
                 i = new Intent(context, CashDrawerActivity.class);
+                context.startActivity(i);
+                break;
+            case MORE_MENU_SALES_AND_REPORTING:
+                i = new Intent(context, SalesAndReportingActivity.class);
                 context.startActivity(i);
                 break;
             case MORE_MENU_CUSTOMERS:

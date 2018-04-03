@@ -3,6 +3,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="data"
             type="com.webkul.mobikul.mobikulstandalonepos.db.entity.HoldCart" />
@@ -21,13 +23,27 @@
         android:paddingBottom="@dimen/spacing_generic"
         android:paddingLeft="@dimen/spacing_normal"
         android:paddingStart="@dimen/spacing_normal"
-        android:paddingTop="@dimen/spacing_normal">
+        android:paddingTop="@dimen/spacing_generic">
+
+        <TextView
+            android:id="@+id/customer_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="@{data.cartData.customer.firstName +' '+data.cartData.customer.lastName}"
+            android:textAllCaps="true"
+            android:textColor="@color/colorAccent"
+            android:textSize="@dimen/text_size_medium"
+            android:textStyle="bold"
+            android:visibility="@{!data.cartData.customer.firstName.equalsIgnoreCase(``)? View.VISIBLE : View.GONE}"
+            tools:text="John Doe" />
 
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/spacing_normal"
-            android:layout_marginRight="@dimen/spacing_normal">
+            android:layout_marginRight="@dimen/spacing_normal"
+            android:layout_marginTop="@dimen/spacing_tiny">
 
             <TextView
                 android:id="@+id/order_id"
@@ -58,8 +74,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/spacing_normal"
-            android:layout_marginRight="@dimen/spacing_normal"
-            android:layout_marginTop="@dimen/spacing_tiny">
+            android:layout_marginRight="@dimen/spacing_normal">
 
             <TextView
                 android:id="@+id/time"
@@ -89,7 +104,7 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_alignParentBottom="true"
-            android:layout_marginTop="@dimen/spacing_normal"
+            android:layout_marginTop="@dimen/spacing_generic"
             android:background="@color/divider_color" />
     </LinearLayout>
 </layout>

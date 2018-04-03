@@ -135,12 +135,14 @@
     <string name="qty">QTY - %s</string>
     <string name="currency_symbol">$</string>
     <string name="sub_total">Sub-Total:</string>
+    <string name="product_sub_total">Subtotal: %s</string>
     <string name="tax">Tax:</string>
     <string name="text_tax">Tax</string>
     <string name="grand_total">Grand Total:</string>
     <string name="confirm_and_accept_payment">Confirm and Accept Payment</string>
     <string name="title_activity_checkout">Checkout</string>
     <string name="total_to_be_paid">Total To Be Paid</string>
+    <string name="total_to_be_refunded">Total To Be refunded</string>
 
     <!--empty layout string-->
     <string name="no_customer">No Customer Found</string>
@@ -161,8 +163,10 @@
     <string name="empty_cash_drawer">No Cash History</string>
     <string name="empty_subtitle_cash_drawer">There are no cash history found in your cash drawer.</string>
     <string name="no_options">No Options</string>
+    <string name="no_options_values">No Options Values</string>
     <string name="you_do_not_have_any_option_yet">You do not have any option yet.</string>
     <string name="no_options_subtitle">First create product options to use.</string>
+    <string name="no_options_values_subtitle">First add options values to use.</string>
     <string name="no_tax">No Options</string>
     <string name="you_do_not_have_any_taxes_yet">You do not have any taxes yet.</string>
     <string name="no_tax_subtitle">First create tax to use.</string>
@@ -178,7 +182,9 @@
     <string name="title_activity_choose_customer">ChooseCustomer</string>
     <string name="round_off">(Round Off)</string>
     <string name="cash_collected">Cash Collected (%s)</string>
+    <string name="cash_refunded">Cash Refunded (%s)</string>
     <string name="cash_collected_">Cash Collected</string>
+    <string name="cash_refunded_">Cash Refunded</string>
     <string name="add_custom_order_notes">Add Custom OrderEntity Notes</string>
     <string name="cash_fragment_title">Collect Cash</string>
     <string name="done">Done</string>
@@ -189,6 +195,7 @@
     <string name="email_invoice">Email Invoice</string>
     <string name="back_to_home">Back to Home</string>
     <string name="order_id">Order #%s</string>
+    <string name="return_order_id">Return Order #%s</string>
     <string name="title_activity_view_order_details">ViewOrderDetails</string>
     <string name="payment_information">Payment Information</string>
     <string name="sign_out">Sign Out</string>
@@ -291,4 +298,36 @@
     <string name="low_stocks">Low Stock Products</string>
     <string name="low_stock_products">Low stock products</string>
     <string name="title_activity_other">Others</string>
+    <string name="generate_invoice">Generate Invoice</string>
+    <string name="view_invoice">View Invoice</string>
+    <string name="send_invoice">Send Invoice</string>
+    <string name="country">Country</string>
+    <string name="state">State</string>
+    <string name="postal_code">Postal Code</string>
+    <string name="address">Address</string>
+    <string name="address_line">Address Line</string>
+    <string name="city">City</string>
+    <string name="title_activity_currency">Select Currency</string>
+
+    <!--currency-->
+    <string name="pick_currency">Pick Currency</string>
+    <string name="default_currency">EUR</string>
+    <string name="selected_currencies">Selected Currencies</string>
+
+    <string-array name="empty_array"></string-array>
+
+    <string-array name="selectedCurrencies">
+        <item>IDR</item>
+        <item>USD</item>
+        <item>EUR</item>
+        <item>GBP</item>
+        <item>AUD</item>
+        <item>CAD</item>
+        <item>INR</item>
+    </string-array>
+    <string name="title_activity_sales_report">Sales and Reporting</string>
+    <string name="return_items">Return Items</string>
+    <string name="low">Low</string>
+
+
 </resources>

@@ -75,13 +75,15 @@ public class OptionHandler {
     }
 
     public void saveOption(Options options, boolean isEdit) {
+        AddOptionFragment fragment = (AddOptionFragment) ((BaseActivity) context).mSupportFragmentManager.findFragmentByTag(AddOptionFragment.class.getSimpleName());
+        options.setOptionValues(fragment.optionValues);
         List<OptionValues> optionValuesList = new ArrayList<>();
         for (OptionValues optionValues : options.getOptionValues()) {
             if (!optionValues.getOptionValueName().isEmpty())
                 optionValuesList.add(optionValues);
         }
         options.setOptionValues(optionValuesList);
-        if (isValidated(options))
+        if (isValidated(options)) {
             if (!isEdit)
                 DataBaseController.getInstanse().addOption(context, options, new DataBaseCallBack() {
                     @Override
@@ -95,7 +97,7 @@ public class OptionHandler {
                         ToastHelper.showToast(context, errorMsg, Toast.LENGTH_LONG);
                     }
                 });
-            else
+            else {
                 DataBaseController.getInstanse().updateOptions(context, options, new DataBaseCallBack() {
                     @Override
                     public void onSuccess(Object responseData, String successMsg) {
@@ -108,6 +110,8 @@ public class OptionHandler {
                         ToastHelper.showToast(context, errorMsg, Toast.LENGTH_LONG);
                     }
                 });
+            }
+        }
     }
 
     public void onClickOption(Options options) {
@@ -147,12 +151,10 @@ public class OptionHandler {
                 @Override
                 public void onFailure(int errorCode, String errorMsg) {
                     ToastHelper.showToast(context, errorMsg, Toast.LENGTH_LONG);
-
                 }
             });
         }
     }
-
 
     public boolean isValidated(Options options) {
         options.setDisplayError(true);
@@ -168,5 +170,4 @@ public class OptionHandler {
         }
         return false;
     }
-
 }

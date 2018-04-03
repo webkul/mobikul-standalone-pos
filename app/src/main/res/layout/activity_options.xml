@@ -9,7 +9,7 @@
 
         <variable
             name="edit"
-            type="Boolean" />
+            type="boolean" />
 
         <import type="com.webkul.mobikul.mobikulstandalonepos.constants.BundleConstants" />
 

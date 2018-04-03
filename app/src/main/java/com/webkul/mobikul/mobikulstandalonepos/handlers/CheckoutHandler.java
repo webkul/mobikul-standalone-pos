@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.animation.AnimationUtils;
 import android.widget.Toast;
 
@@ -23,6 +24,8 @@ import com.webkul.mobikul.mobikulstandalonepos.helper.AppSharedPref;
 import com.webkul.mobikul.mobikulstandalonepos.helper.Helper;
 import com.webkul.mobikul.mobikulstandalonepos.model.CashModel;
 import com.webkul.mobikul.mobikulstandalonepos.model.TotalModel;
+
+import static android.content.ContentValues.TAG;
 
 /**
  * Created by aman.gupta on 24/1/18. @Webkul Software Private limited
@@ -55,6 +58,8 @@ public class CheckoutHandler {
     public void orderPlaced(CashModel cashData, TotalModel totalData) {
         if (isValidated(cashData)) {
             Intent i = new Intent(context, PlaceOrderActivity.class);
+            cashData.setFormattedCollectedCash(Helper.currencyFormater(Double.parseDouble(cashData.getCollectedCash()), context));
+            cashData.setFormattedChangeDue(Helper.currencyFormater(Double.parseDouble(cashData.getChangeDue()), context));
             i.putExtra("cashData", cashData);
             i.putExtra("totalData", totalData);
             context.startActivity(i);

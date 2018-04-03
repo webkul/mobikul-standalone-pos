@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import com.webkul.mobikul.mobikulstandalonepos.R;
 import com.webkul.mobikul.mobikulstandalonepos.databinding.FragmentCashBinding;
 import com.webkul.mobikul.mobikulstandalonepos.handlers.CheckoutHandler;
+import com.webkul.mobikul.mobikulstandalonepos.helper.AppSharedPref;
 import com.webkul.mobikul.mobikulstandalonepos.model.CashModel;
 import com.webkul.mobikul.mobikulstandalonepos.model.TotalModel;
 
@@ -50,9 +51,14 @@ public class CashFragment extends Fragment {
         cashModel.setTotal(total.getRoundTotal());
         cashModel.setFormatedTotal(total.getFormatedRoundTotal());
         cashBinding.setData(cashModel);
+        cashBinding.setHasReturn(AppSharedPref.isReturnCart(getActivity()));
         cashBinding.setTotal(total);
         cashBinding.setHandler(new CheckoutHandler(getActivity()));
-        cashBinding.cashCollectedTil.setHint(String.format(getString(R.string.cash_collected), getString(R.string.currency_symbol)));
+        if (AppSharedPref.isReturnCart(getActivity())) {
+            cashBinding.cashCollectedTil.setHint(String.format(getString(R.string.cash_refunded), AppSharedPref.getSelectedCurrencySymbol(getActivity())));
+            cashModel.setCollectedCash(cashModel.getTotal());
+        } else
+            cashBinding.cashCollectedTil.setHint(String.format(getString(R.string.cash_collected), AppSharedPref.getSelectedCurrencySymbol(getActivity())));
     }
 
     public void onDetach() {

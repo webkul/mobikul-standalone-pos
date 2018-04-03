@@ -10,11 +10,10 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.Toast;
 
 import com.webkul.mobikul.mobikulstandalonepos.BuildConfig;
 import com.webkul.mobikul.mobikulstandalonepos.R;
-import com.webkul.mobikul.mobikulstandalonepos.VersionChecker;
+import com.webkul.mobikul.mobikulstandalonepos.connections.VersionChecker;
 import com.webkul.mobikul.mobikulstandalonepos.helper.AppSharedPref;
 
 import java.util.concurrent.ExecutionException;
@@ -47,7 +46,6 @@ public class SplashScreenActivity extends AppCompatActivity {
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
-
     }
 
     @Override
@@ -70,6 +68,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                                 Intent i = new Intent(Intent.ACTION_VIEW);
                                 i.setData(Uri.parse("https://play.google.com/store/apps/details?id=" + BuildConfig.APPLICATION_ID + "&hl=en"));
                                 startActivity(i);
+                                AppSharedPref.deleteSignUpdata(SplashScreenActivity.this);
                             }
                         })
                         .setCancelText(getResources().getString(R.string.later))
@@ -123,7 +122,6 @@ public class SplashScreenActivity extends AppCompatActivity {
         }
         return Integer.signum(vals1.length - vals2.length);
     }
-
 
     public void isOnline() {
         ConnectivityManager conMgr = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);

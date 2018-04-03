@@ -2,10 +2,7 @@ package com.webkul.mobikul.mobikulstandalonepos.activity;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,9 +10,10 @@ import android.view.View;
 import com.webkul.mobikul.mobikulstandalonepos.R;
 import com.webkul.mobikul.mobikulstandalonepos.adapter.CartProductAdapter;
 import com.webkul.mobikul.mobikulstandalonepos.databinding.ActivityViewOrderDetailsBinding;
+import com.webkul.mobikul.mobikulstandalonepos.db.DataBaseController;
 import com.webkul.mobikul.mobikulstandalonepos.db.entity.OrderEntity;
-import com.webkul.mobikul.mobikulstandalonepos.helper.AppSharedPref;
-import com.webkul.mobikul.mobikulstandalonepos.helper.Helper;
+import com.webkul.mobikul.mobikulstandalonepos.handlers.OrderFragmentHandler;
+import com.webkul.mobikul.mobikulstandalonepos.interfaces.DataBaseCallBack;
 
 import static com.webkul.mobikul.mobikulstandalonepos.constants.BundleConstants.BUNDLE_ORDER_DATA;
 
@@ -32,10 +30,36 @@ public class ViewOrderDetails extends BaseActivity {
         if (getIntent().getExtras().containsKey(BUNDLE_ORDER_DATA)) {
             orderData = (OrderEntity) getIntent().getExtras().getSerializable(BUNDLE_ORDER_DATA);
             binding.setData(orderData);
+            Log.d(TAG, "onCreate: " + orderData.getIsReturn());
+            if (!orderData.getIsReturn())
+                setTitle(String.format(getString(R.string.order_id), orderData.getOrderId() + ""));
+            else
+                setTitle(String.format(getString(R.string.return_order_id), orderData.getOrderId() + ""));
+            setAdapter(orderData);
+        } else if (getIntent().getExtras().containsKey("order_id")) {
+            DataBaseController.getInstanse().getOrderById(this, getIntent().getExtras().getString("order_id"), new DataBaseCallBack() {
+                @Override
+                public void onSuccess(Object responseData, String successMsg) {
+                    orderData = (OrderEntity) responseData;
+                    binding.setData(orderData);
+                    setTitle(String.format(getString(R.string.return_order_id), orderData.getOrderId() + ""));
+                    setAdapter(orderData);
+                }
+
+                @Override
+                public void onFailure(int errorCode, String errorMsg) {
+
+                }
+            });
         }
-        setTitle(String.format(getString(R.string.order_id), orderData.getOrderId() + ""));
-        CartProductAdapter cartProductAdapter = new CartProductAdapter(this, orderData.getCartData().getProducts());
+
+        binding.setHandler(new OrderFragmentHandler(this));
+    }
+
+    void setAdapter(OrderEntity orderData) {
+        CartProductAdapter cartProductAdapter = new CartProductAdapter(ViewOrderDetails.this, orderData.getCartData().getProducts());
         binding.productRv.setAdapter(cartProductAdapter);
+        binding.productRv.setNestedScrollingEnabled(false);
     }
 
     @Override

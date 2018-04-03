@@ -41,7 +41,6 @@ public class OtherActivity extends BaseActivity {
                     }
                 }
                 break;
-
         }
     }
 

@@ -30,7 +30,14 @@ public class AppSharedPref {
     private static final String KEY_USER_ID = "USER_ID";
     private static final String KEY_USER_EMAIL = "USER_EMAIL";
     private static final String KEY_CART_COUNT = "CART_COUNT";
+    private static final String KEY_CURRENCIES_RATES = "KEY_CURRENCIES_RATES";
+    private static final String KEY_SELECTED_CURRENCY = "KEY_SELECTED_CURRENCY";
+    private static final String KEY_SELECTED_CURRENCY_SYMBOL = "KEY_SELECTED_CURRENCY_SYMBOL";
+    private static final String KEY_SELECTED_CURRENCY_RATE = "KEY_SELECTED_CURRENCY_RATE";
+    private static final String KEY_TEMP_SELECTED_CURRENCY = "KEY_TEMP_SELECTED_CURRENCY";
     private static final String IS_SIGNED_UP = "IS_SIGNED_UP";
+    private static final String IS_RETURN_CART = "IS_RETURN_CART";
+    private static final String RETURN_ORDER_ID = "RETURN_ORDER_ID";
     private static final String IS_LOGGED_IN = "IS_LOGGED_in";
     private static final String IS_SHOW_WALKTHROUGH = "IS_SHOW_WALKTHROUGH";
     private static final String KEY_CART_DATA = "CART_DATA";
@@ -163,5 +170,66 @@ public class AppSharedPref {
     public static void removeAllPref(Context context) {
         getSharedPreferenceEditor(context, APP_PREF).clear();
         getSharedPreferenceEditor(context, USER_PREF).clear();
+    }
+
+
+    public static String getCurrencyRate(Context context, String defaultValue) {
+        return getSharedPreference(context, APP_PREF).getString(KEY_CURRENCIES_RATES, defaultValue);
+    }
+
+    public static void setCurrencyRate(Context context, String currenciesRate) {
+        getSharedPreferenceEditor(context, APP_PREF).putString(KEY_CURRENCIES_RATES, currenciesRate).apply();
+    }
+
+    public static float getSelectedCurrencyRate(Context context) {
+        return getSharedPreference(context, APP_PREF).getFloat(KEY_SELECTED_CURRENCY_RATE, 1.00f);
+    }
+
+    public static void setSelectedCurrencyRate(Context context, float currencyRate) {
+        getSharedPreferenceEditor(context, APP_PREF).putFloat(KEY_SELECTED_CURRENCY_RATE, currencyRate).apply();
+    }
+
+    public static String getSelectedCurrency(Context context) {
+        return getSharedPreference(context, APP_PREF).getString(KEY_SELECTED_CURRENCY, "USD");
+    }
+
+    public static void setSelectedCurrencySymbol(Context context, String currency) {
+        getSharedPreferenceEditor(context, APP_PREF).putString(KEY_SELECTED_CURRENCY_SYMBOL, currency).apply();
+    }
+
+    public static String getSelectedCurrencySymbol(Context context) {
+        return getSharedPreference(context, APP_PREF).getString(KEY_SELECTED_CURRENCY_SYMBOL, "$");
+    }
+
+    public static void setSelectedCurrency(Context context, String currency) {
+        getSharedPreferenceEditor(context, APP_PREF).putString(KEY_SELECTED_CURRENCY, currency).apply();
+    }
+
+    public static String getTempSelectedCurrency(Context context) {
+        return getSharedPreference(context, APP_PREF).getString(KEY_TEMP_SELECTED_CURRENCY, "");
+    }
+
+    public static void setTempSelectedCurrency(Context context, String currency) {
+        getSharedPreferenceEditor(context, APP_PREF).putString(KEY_TEMP_SELECTED_CURRENCY, currency).apply();
+    }
+
+    public static void clearTempSelectedCurrency(Context context) {
+        getSharedPreferenceEditor(context, APP_PREF).remove(KEY_TEMP_SELECTED_CURRENCY).apply();
+    }
+
+    public static boolean isReturnCart(Context context) {
+        return getSharedPreference(context, APP_PREF).getBoolean(IS_RETURN_CART, false);
+    }
+
+    public static void setReturnCart(Context context, Boolean isReturnCart) {
+        getSharedPreferenceEditor(context, APP_PREF).putBoolean(IS_RETURN_CART, isReturnCart).apply();
+    }
+
+    public static String getReturnOrderId(Context context) {
+        return getSharedPreference(context, APP_PREF).getString(RETURN_ORDER_ID, "0");
+    }
+
+    public static void setReturnOrderId(Context context, String orderId) {
+        getSharedPreferenceEditor(context, APP_PREF).putString(RETURN_ORDER_ID, orderId).apply();
     }
 }

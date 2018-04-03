@@ -125,6 +125,7 @@ public class TotalModel extends BaseObservable implements Serializable {
         notifyPropertyChanged(BR.formatedSubTotal);
     }
 
+    @Bindable
     public String getFormatedGrandTotal() {
         if (formatedGrandTotal == null) {
             return "0.00";
@@ -134,8 +135,10 @@ public class TotalModel extends BaseObservable implements Serializable {
 
     public void setFormatedGrandTotal(String formatedGrandTotal) {
         this.formatedGrandTotal = formatedGrandTotal;
+        notifyPropertyChanged(BR.formatedGrandTotal);
     }
 
+    @Bindable
     public String getFormatedRoundTotal() {
         if (formatedRoundTotal == null) {
             return "0.00";
@@ -145,6 +148,7 @@ public class TotalModel extends BaseObservable implements Serializable {
 
     public void setFormatedRoundTotal(String formatedRoundTotal) {
         this.formatedRoundTotal = formatedRoundTotal;
+        notifyPropertyChanged(BR.formatedRoundTotal);
     }
 
     public String getFormatedDiscount() {

@@ -1,6 +1,7 @@
 package com.webkul.mobikul.mobikulstandalonepos;
 
 import android.app.Application;
+import android.content.Context;
 import android.support.v7.app.AppCompatDelegate;
 
 /**
@@ -8,6 +9,7 @@ import android.support.v7.app.AppCompatDelegate;
  */
 
 public class PosApplication extends Application {
+
     @Override
     public void onCreate() {
         super.onCreate();

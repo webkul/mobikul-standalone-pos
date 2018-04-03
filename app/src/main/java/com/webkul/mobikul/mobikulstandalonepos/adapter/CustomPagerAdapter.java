@@ -68,7 +68,6 @@ public class CustomPagerAdapter extends PagerAdapter {
         View itemView = mLayoutInflater.inflate(R.layout.page_item, container, false);
         ImageView imageView = itemView.findViewById(R.id.imageView);
         imageView.setImageResource(mResources[position]);
-        imageView.setImageResource(mResources[position]);
 
         ((TextView) itemView.findViewById(R.id.heading)).setText(context.getString(heading[position]));
         ((TextView) itemView.findViewById(R.id.subheading)).setText(context.getString(subheading[position]));

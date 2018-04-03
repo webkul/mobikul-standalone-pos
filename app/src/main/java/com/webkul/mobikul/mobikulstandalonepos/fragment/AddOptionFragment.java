@@ -25,7 +25,7 @@ public class AddOptionFragment extends Fragment {
     public List<OptionValues> optionValues;
     public FragmentAddOptionBinding binding;
     public OptionValuesAdapter optionValuesAdapter;
-    Options options;
+    public Options options;
     private boolean isEdit;
 
     public AddOptionFragment() {
@@ -67,9 +67,14 @@ public class AddOptionFragment extends Fragment {
         ((OptionsActivity) getActivity()).binding.setData(options);
         ((OptionsActivity) getActivity()).binding.addOption.setVisibility(View.GONE);
         ((OptionsActivity) getActivity()).binding.saveOption.setVisibility(View.VISIBLE);
+        setOptionValueAdapter();
+    }
+
+    public void setOptionValueAdapter() {
         optionValuesAdapter = new OptionValuesAdapter(getActivity(), optionValues);
         binding.optionValuesRv.setAdapter(optionValuesAdapter);
     }
+
 
     @Override
     public void onDetach() {

@@ -78,7 +78,6 @@ public class HoldFragment extends Fragment {
             public void onFailure(int errorCode, String errorMsg) {
             }
         });
-
     }
 
     @Override

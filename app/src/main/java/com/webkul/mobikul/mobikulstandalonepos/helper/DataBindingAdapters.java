@@ -3,6 +3,7 @@ package com.webkul.mobikul.mobikulstandalonepos.helper;
 import android.databinding.BindingAdapter;
 import android.databinding.InverseBindingAdapter;
 import android.databinding.InverseBindingListener;
+import android.databinding.InverseMethod;
 import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.AppCompatSpinner;
@@ -75,6 +76,20 @@ public class DataBindingAdapters {
     public static String captureSelectedValue(AppCompatSpinner pAppCompatSpinner) {
         return (String) pAppCompatSpinner.getSelectedItem();
     }
+
+//
+//    @InverseMethod("toString")
+//    public static String toStringFormat(String string, String data) {
+//        return String.format(string, data);
+//    }
+//
+//    public static String toString(String data) {
+//        return data;
+//    }
+
+//    public static PhoneNumberType toPhoneNumberType(int ordinal) {
+//        return PhoneNumberType.values()[ordinal];
+//    }
 
     @BindingAdapter({"emptyTextSubHeading"})
     public static void setEmptyTextSubHeading(TextView textview, BundleConstants.EmptyLayoutType pageType) {

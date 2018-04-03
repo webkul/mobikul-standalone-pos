@@ -54,7 +54,7 @@
                         android:background="@color/colorAccent"
                         android:paddingBottom="@dimen/spacing_normal"
                         android:paddingLeft="@dimen/spacing_normal"
-                        android:text="@{String.format(@string/net_revenue_, @string/currency_symbol+data.netRevenue)}"
+                        android:text="@{String.format(@string/net_revenue_, data.formattedNetRevenue)}"
                         android:textColor="@color/white"
                         android:textSize="22sp"
                         android:textStyle="bold"
@@ -89,7 +89,7 @@
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="@{@string/currency_symbol+' '+data.openingBalance}"
+                                android:text="@{' '+data.formattedOpeningBalance}"
                                 android:textColor="@color/white"
                                 android:textSize="@dimen/spacing_large"
                                 android:textStyle="bold"
@@ -119,7 +119,7 @@
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="@{@string/currency_symbol+' '+data.closingBalance}"
+                                android:text="@{' '+data.formattedClosingBalance}"
                                 android:textColor="@color/white"
                                 android:textSize="@dimen/spacing_large"
                                 android:textStyle="bold"

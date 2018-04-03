@@ -46,7 +46,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:text="@{'+'+@string/currency_symbol+data.inAmount}"
+                android:text="@{'+'+data.formattedInAmount}"
                 android:textColor="@color/textColorGreen"
                 android:textSize="@dimen/text_size_small"
                 tools:text="+$450.00" />
@@ -86,7 +86,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_toRightOf="@id/title_net_revenue"
-                android:text="@{' '+@string/currency_symbol+data.netRevenue}"
+                android:text="@{' '+data.formattedNetRevenue}"
                 android:textColor="@color/colorAccent"
                 android:textSize="@dimen/text_size_small"
                 tools:text=" - $400.00" />
@@ -98,7 +98,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:text="@{'-'+@string/currency_symbol+data.outAmount}"
+                android:text="@{'-'+data.formattedOutAmount}"
                 android:textColor="@color/textColorRed"
                 android:textSize="@dimen/text_size_small"
                 tools:text="$50.00" />

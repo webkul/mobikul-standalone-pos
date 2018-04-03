@@ -13,7 +13,7 @@
 
         <variable
             name="isEdit"
-            type="Boolean" />
+            type="boolean" />
 
         <variable
             name="data"
