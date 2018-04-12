@@ -64,7 +64,6 @@
 @retrofit2.http.* <methods>;
 }
 
-
 -dontwarn okhttp3.**
 -keep class okhttp3.** {*;}
 
@@ -75,3 +74,7 @@
 # JDK 7-only method which is @hide on Android. Animal sniffer annotation.
 -dontwarn okio.DeflaterSink
 
+-dontwarn javax.annotation.Nullable
+-dontwarn javax.annotation.ParametersAreNonnullByDefault
+-keep class com.webkul.mobikul.mobikulstandalonepos.db.entity.** {*;}
+-keep class com.webkul.mobikul.mobikulstandalonepos.model.** {*;}

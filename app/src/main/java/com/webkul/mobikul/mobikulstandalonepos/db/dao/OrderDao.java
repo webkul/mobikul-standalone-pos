@@ -15,7 +15,7 @@ import java.util.List;
  */
 @Dao
 public interface OrderDao {
-    @Query("SELECT * FROM OrderEntity")
+    @Query("SELECT * FROM OrderEntity ORDER BY orderId DESC")
     List<OrderEntity> getAll();
 
     @Query("SELECT * FROM OrderEntity WHERE orderId IN (:OrderId)")

@@ -15,7 +15,7 @@ import java.io.Serializable;
 /**
  * Created by aman.gupta on 25/1/18. @Webkul Software Private limited
  */
-@Entity
+@Entity(tableName = "OrderEntity")
 public class OrderEntity implements Serializable {
     @PrimaryKey(autoGenerate = true)
     private long orderId;

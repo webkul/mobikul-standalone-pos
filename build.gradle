@@ -13,6 +13,7 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:3.0.0-rc2'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath 'com.google.gms:google-services:3.2.0'
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -27,6 +28,9 @@ allprojects {
             url "https://maven.java.net/content/groups/public/"
         }
         maven { url "https://jitpack.io" }
+        maven {
+            url "https://maven.google.com" // Google's Maven repository
+        }
     }
 }
 

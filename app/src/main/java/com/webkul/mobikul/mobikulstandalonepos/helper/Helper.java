@@ -31,6 +31,7 @@ import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
+import com.webkul.mobikul.mobikulstandalonepos.BuildConfig;
 import com.webkul.mobikul.mobikulstandalonepos.R;
 import com.webkul.mobikul.mobikulstandalonepos.activity.BaseActivity;
 import com.webkul.mobikul.mobikulstandalonepos.activity.OtherActivity;
@@ -46,6 +47,8 @@ import org.apache.commons.net.ntp.TimeInfo;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.lang.reflect.Type;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -71,6 +74,9 @@ public class Helper {
 
     private static Helper helper;
     public static final String FONT1 = "resources/fonts/PlayfairDisplay-Regular.ttf";
+    public static String DB_PATH = "/data/data/" + BuildConfig.APPLICATION_ID + "/databases/";
+    public static String DB_NAME = "db_pos.db";
+    public static String DB_NAME_IMAGES = "db_pos_images.zip";
 
     public static synchronized Helper getInstanse() {
         if (helper == null)
@@ -226,10 +232,49 @@ public class Helper {
                 e.printStackTrace();
             }
         }
-        if (fatchInvoiceList(orderData, file, context)) {
+        if (fatchInvoiceList(orderData, file, context))
             return file;
-        } else
+        else
             return null;
+    }
+
+    public static void setDefaultDataBase(Context context) {
+        try {
+            InputStream myInput = context.getAssets().open(DB_NAME);
+            // Path to the just created empty db
+            String outFileName = DB_PATH + DB_NAME;
+            //Open the empty db as the output stream
+            OutputStream myOutput = new FileOutputStream(outFileName);
+            //transfer bytes from the inputfile to the outputfile
+            byte[] buffer = new byte[1024];
+            int length;
+            while ((length = myInput.read(buffer)) > 0) {
+                myOutput.write(buffer, 0, length);
+            }
+            //Close the streams
+            myOutput.flush();
+            myOutput.close();
+            myInput.close();
+
+            ContextWrapper cw = new ContextWrapper(context);
+            File ImageDirectory = cw.getDir("imageDir", Context.MODE_PRIVATE);
+            //copy the product images
+            imageImport(context.getAssets().open(DB_NAME_IMAGES), ImageDirectory);
+            Log.d(TAG, "setDefaultDataBase: there");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void imageImport(InputStream imageStreamFile, File imageDirectory) {
+        File backupDB = new File(imageDirectory.getAbsolutePath());
+        if (!backupDB.exists())
+            backupDB.mkdirs();
+        try {
+            ZipManager.unzipFolder(imageStreamFile, backupDB.getAbsolutePath().replace("/app_imageDir", ""));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private boolean fatchInvoiceList(OrderEntity orderEntity, File file, Context context) {
@@ -365,6 +410,5 @@ public class Helper {
     Paragraph getParagraph(String name, Font font) {
         return new Paragraph(name, font);
     }
-
 
 }

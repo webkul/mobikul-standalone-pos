@@ -14,7 +14,7 @@ import java.util.List;
  */
 @Dao
 public interface CashDrawerDao {
-    @Query("SELECT * FROM CashDrawerModel")
+    @Query("SELECT * FROM CashDrawerModel ORDER BY date DESC")
     List<CashDrawerModel> getAll();
 
     @Query("SELECT * FROM CashDrawerModel WHERE date IN (:date)")

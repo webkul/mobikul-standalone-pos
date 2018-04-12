@@ -1153,7 +1153,11 @@ public class DataBaseAsyncUtils {
 
         @Override
         protected Void doInBackground(CashDrawerModel... cashDrawerModels) {
-            db.cashDrawerDao().insertAll(cashDrawerModels[0]);
+            try {
+                db.cashDrawerDao().insertAll(cashDrawerModels[0]);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             return null;
         }
     }

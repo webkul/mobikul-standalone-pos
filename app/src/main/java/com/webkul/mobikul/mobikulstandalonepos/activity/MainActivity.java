@@ -39,11 +39,15 @@ import com.webkul.mobikul.mobikulstandalonepos.helper.Helper;
 import com.webkul.mobikul.mobikulstandalonepos.helper.ToastHelper;
 import com.webkul.mobikul.mobikulstandalonepos.interfaces.DataBaseCallBack;
 
+import java.io.File;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
+
+import static com.webkul.mobikul.mobikulstandalonepos.helper.Helper.DB_NAME;
+import static com.webkul.mobikul.mobikulstandalonepos.helper.Helper.DB_PATH;
 
 /**
  * Created by aman.gupta on 27/12/17. @Webkul Software Private limited
@@ -69,7 +73,16 @@ public class MainActivity extends BaseActivity {
         initDrawerToggle();
         initBottomNavView();
         loadHomeFragment();
-        openingBalance();
+        DataBaseController.getInstanse().getCashHistoryByDate(this, Helper.getCurrentDate(), new DataBaseCallBack() {
+            @Override
+            public void onSuccess(Object responseData, String successMsg) {
+            }
+
+            @Override
+            public void onFailure(int errorCode, String errorMsg) {
+                openingBalance();
+            }
+        });
         reminderMsg();
         getCurrentTime();
     }
@@ -145,7 +158,7 @@ public class MainActivity extends BaseActivity {
             super.onPostExecute(l);
             hideLoader();
             storedTime = AppSharedPref.getTime(context, 0);
-            Log.d(TAG, "onCreate: " + networkTS + "----" + storedTime + "---" + (networkTS - storedTime));
+//            Log.d(TAG, "onCreate: " + networkTS + "----" + storedTime + "---" + (networkTS - storedTime));
             if (storedTime == 0) {
                 AppSharedPref.setTime(context, networkTS);
             } else {
@@ -162,17 +175,31 @@ public class MainActivity extends BaseActivity {
     }
 
     private void destoryDbForDemoUser() {
-        DataBaseController.getInstanse().deleteAllTables(MainActivity.this);
+//        DataBaseController.getInstanse().deleteAllTables(MainActivity.this);
         AppSharedPref.deleteCartData(this);
-        AppSharedPref.deleteSignUpdata(this);
+//        AppSharedPref.deleteSignUpdata(this);
 //        AppSharedPref.removeAllPref(this);
         AppSharedPref.setTime(this, 0);
         AppSharedPref.setDate(this, "");
         AppSharedPref.setReminderMsgShown(this, false);
+        deleteDB();
+        Helper.setDefaultDataBase(this);
+    }
+
+    public void deleteDB() {
+        File fdelete = new File(DB_PATH + DB_NAME);
+        if (fdelete.exists()) {
+            if (fdelete.delete()) {
+                Log.d(TAG, "POSDB: Deleted Successful!");
+            } else {
+                Log.d(TAG, "POSDB: Deletion Unsuccessful!");
+            }
+        }
     }
 
     public void loadDrawerData() {
-        categories = new ArrayList<>();
+        if (categories == null)
+            categories = new ArrayList<>();
         setCategories();
     }
 
@@ -198,7 +225,7 @@ public class MainActivity extends BaseActivity {
 
             @Override
             public void onFailure(int errorCode, String errorMsg) {
-                Toast.makeText(MainActivity.this, errorMsg + "", Toast.LENGTH_SHORT).show();
+                ToastHelper.showToast(MainActivity.this, errorMsg + "", Toast.LENGTH_SHORT);
             }
         });
     }

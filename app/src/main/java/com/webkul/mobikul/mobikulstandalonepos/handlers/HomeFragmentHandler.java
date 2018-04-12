@@ -23,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.vision.text.Line;
+import com.google.firebase.crash.FirebaseCrash;
 import com.google.gson.Gson;
 import com.webkul.mobikul.mobikulstandalonepos.R;
 import com.webkul.mobikul.mobikulstandalonepos.activity.BaseActivity;
@@ -85,7 +86,7 @@ public class HomeFragmentHandler {
             counter = Integer.parseInt(cartData.getTotals().getQty());
             Log.d(TAG, "onClickProduct: " + product.getCartQty());
             if (product.isStock() && (Integer.parseInt(product.getQuantity()) > Integer.parseInt(product.getCartQty()))) {
-                if (product.getOptions().size() > 0) {
+                if (isOptionsShow(product)) {
                     CustomOptionsDialogClass customOptionsDialogClass = new CustomOptionsDialogClass(context, product, cartData);
                     customOptionsDialogClass.show();
                 } else
@@ -101,6 +102,8 @@ public class HomeFragmentHandler {
     void addToCart(Product product, CartModel cartData) {
         double price;
         double basePrice;
+//        FirebaseCrash.log(product.getOptions() + "");
+//        Log.d(TAG, "addToCart: " + new Gson().toJson(product.getOptions()));
         if (product.getSpecialPrice().isEmpty()) {
             subTotal = subTotal + Double.parseDouble(product.getPrice());
             price = Helper.currencyConverter(Double.parseDouble(product.getPrice()), context);
@@ -113,6 +116,10 @@ public class HomeFragmentHandler {
             basePrice = Double.parseDouble(product.getSpecialPrice());
         }
         for (int i = 0; i < product.getOptions().size(); i++) {
+//            FirebaseCrash.log(product.getOptions().get(i).getType());
+//            Log.d(TAG, "addToCart: " + product.getOptions().get(i).getType());
+//            FirebaseCrash.log(product.getOptions().get(i).getOptionValues() + "");
+//            Log.d(TAG, "addToCart: " + product.getOptions().get(i).getOptionValues());
             if (!product.getOptions().get(i).getType().equalsIgnoreCase("text") && !product.getOptions().get(i).getType().equalsIgnoreCase("textarea"))
                 for (OptionValues optionValues : product.getOptions().get(i).getOptionValues()) {
                     if (optionValues.isAddToCart()) {
@@ -320,7 +327,6 @@ public class HomeFragmentHandler {
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.btn_yes:
-                    Log.d(TAG, "onClick: " + new Gson().toJson(product.getOptions()));
                     if (isOptionsValidate(product)) {
                         addToCart(product, cartData);
                         findViewById(R.id.error_text).setVisibility(View.GONE);
@@ -335,6 +341,14 @@ public class HomeFragmentHandler {
                     break;
             }
         }
+    }
+
+    boolean isOptionsShow(Product product) {
+        for (int i = 0; i < product.getOptions().size(); i++) {
+            if (product.getOptions().get(i).isSelected())
+                return true;
+        }
+        return false;
     }
 
     boolean isOptionsValidate(Product product) {

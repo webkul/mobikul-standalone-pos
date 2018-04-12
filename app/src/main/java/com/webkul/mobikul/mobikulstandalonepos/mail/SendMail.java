@@ -60,7 +60,7 @@ public class SendMail extends AsyncTask<Void, Integer, Boolean> {
                 "To view your order, open your " + invoiceFile.getName() + ", which is attached here.");
         if (invoiceFile != null)
             try {
-                m.addAttachment(invoiceFile.getAbsolutePath());
+                m.addAttachment(invoiceFile.getAbsolutePath(), invoiceFile.getName());
             } catch (Exception e) {
                 e.printStackTrace();
             }

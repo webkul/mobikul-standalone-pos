@@ -89,6 +89,12 @@ public class Product extends BaseObservable implements Serializable, Parcelable 
     @ColumnInfo(name = "stock_availability")
     private boolean stock;
 
+    @ColumnInfo(name = "discount")
+    private float discount;
+
+    @ColumnInfo(name = "formatted_discount")
+    private String formattedDiscount;
+
     @ColumnInfo(name = "image")
     private String image;
 
@@ -495,5 +501,25 @@ public class Product extends BaseObservable implements Serializable, Parcelable 
     public void setFormattedCartProductSubtotal(String formattedCartProductSubtotal) {
         this.formattedCartProductSubtotal = formattedCartProductSubtotal;
         notifyPropertyChanged(BR.formattedCartProductSubtotal);
+    }
+
+    @Bindable
+    public float getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(float discount) {
+        this.discount = discount;
+        notifyPropertyChanged(BR.discount);
+    }
+
+    public String getFormattedDiscount() {
+        if (formattedDiscount == null)
+            return "";
+        return formattedDiscount;
+    }
+
+    public void setFormattedDiscount(String formattedDiscount) {
+        this.formattedDiscount = formattedDiscount;
     }
 }

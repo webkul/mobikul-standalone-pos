@@ -6,6 +6,10 @@
         <import type="android.view.View" />
 
         <variable
+            name="cartData"
+            type="com.webkul.mobikul.mobikulstandalonepos.model.CartModel" />
+
+        <variable
             name="data"
             type="com.webkul.mobikul.mobikulstandalonepos.db.entity.Product" />
 
@@ -72,66 +76,105 @@
             android:visibility="@{data.options.size() > 0 ? View.VISIBLE : View.GONE}"
             app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
 
-        <LinearLayout
-            android:id="@+id/price_ll"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/option_rv"
-            android:layout_marginBottom="@dimen/spacing_generic"
-            android:layout_toEndOf="@+id/product_image"
-            android:layout_toRightOf="@+id/product_image"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/old_price"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_tiny"
-                android:background="@drawable/line"
-                android:gravity="center"
-                android:text="@{data.formattedPrice}"
-                android:textSize="@dimen/text_size_small"
-                android:visibility="@{data.specialPrice.empty ? View.GONE : View.VISIBLE}"
-                tools:text="$360.00" />
-
-            <TextView
-                android:id="@+id/price"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/spacing_tiny"
-                android:layout_marginTop="@dimen/spacing_tiny"
-                android:text="@{data.specialPrice.empty ? data.formattedPrice : data.formattedSpecialPrice}"
-                android:textColor="@color/colorAccent"
-                android:textSize="@dimen/text_size_small"
-                tools:text="$324.00 (10% OFF)" />
-        </LinearLayout>
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
+            android:layout_below="@+id/option_rv"
             android:layout_toEndOf="@+id/product_image"
             android:layout_toRightOf="@+id/product_image"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
-            <TextView
+            <LinearLayout
+                android:id="@+id/price_ll"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingBottom="@dimen/spacing_generic"
-                android:text="SubTotal: "
-                android:textColor="@color/textColor"
-                android:textSize="@dimen/text_size_small"
-                tools:text="Subtotal: " />
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/spacing_large">
 
-            <TextView
-                android:id="@+id/product_subtotal"
+                <TextView
+                    android:id="@+id/old_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/spacing_tiny"
+                    android:layout_marginRight="@dimen/spacing_tiny"
+                    android:layout_marginTop="@dimen/spacing_tiny"
+                    android:background="@drawable/line"
+                    android:gravity="center"
+                    android:text="@{data.formattedPrice}"
+                    android:textSize="@dimen/text_size_small"
+                    android:visibility="@{data.specialPrice.empty ? View.GONE : View.VISIBLE}"
+                    tools:text="$360.00" />
+
+                <TextView
+                    android:id="@+id/price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_tiny"
+                    android:text="@{data.specialPrice.empty ? data.formattedPrice : data.formattedSpecialPrice}"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="@dimen/text_size_small"
+                    tools:text="$324.00 (10% OFF)" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/discount_ll"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingBottom="@dimen/spacing_generic"
-                android:text="@={data.formattedCartProductSubtotal}"
-                android:textColor="@color/colorAccent"
-                android:textSize="@dimen/text_size_small"
-                tools:text="$200" />
+                android:background="@color/colorAccent"
+                android:onClick="@{()-> handler.applyDiscount(data, cartData)}"
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/spacing_tiny"
+                android:paddingLeft="@dimen/spacing_generic"
+                android:paddingRight="@dimen/spacing_generic"
+                android:paddingTop="@dimen/spacing_tiny">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Discount: "
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_size_small"
+                    tools:text="Discount: " />
+
+                <TextView
+                    android:id="@+id/product_discount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@={data.formattedDiscount}"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_size_small"
+                    tools:text="-$20" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/subtotal_ll"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:gravity="bottom"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="@dimen/spacing_generic"
+                    android:text="SubTotal: "
+                    android:textColor="@color/textColor"
+                    android:textSize="@dimen/text_size_small"
+                    tools:text="Subtotal: " />
+
+                <TextView
+                    android:id="@+id/product_subtotal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="@dimen/spacing_generic"
+                    android:text="@={data.formattedCartProductSubtotal}"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="@dimen/text_size_small"
+                    tools:text="$200" />
+            </LinearLayout>
         </LinearLayout>
         <!--<TextView-->
         <!--android:id="@+id/product_subtotal"-->

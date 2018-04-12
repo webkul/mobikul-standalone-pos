@@ -159,7 +159,7 @@ public class PlaceOrderActivity extends BaseActivity {
 
                     @Override
                     public void onFailure(int errorCode, String errorMsg) {
-                        ToastHelper.showToast(PlaceOrderActivity.this, errorMsg + "", Toast.LENGTH_SHORT);
+//                        ToastHelper.showToast(PlaceOrderActivity.this, errorMsg + "", Toast.LENGTH_SHORT);
                     }
                 });
 
@@ -167,7 +167,7 @@ public class PlaceOrderActivity extends BaseActivity {
 
             @Override
             public void onFailure(int errorCode, String errorMsg) {
-                ToastHelper.showToast(PlaceOrderActivity.this, errorMsg, Toast.LENGTH_SHORT);
+//                ToastHelper.showToast(PlaceOrderActivity.this, errorMsg, Toast.LENGTH_SHORT);
             }
         });
     }

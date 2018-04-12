@@ -80,7 +80,7 @@ public class AddProductFragmentHandler {
                     @Override
                     public void onSuccess(Object responseData, String successMsg) {
                         if (!product.getImage().isEmpty()) {
-                            SweetAlertBox.getInstance().showProgressDialog(BaseActivity.getContext());
+//                            SweetAlertBox.getInstance().showProgressDialog(BaseActivity.getContext());
                             String image = product.getImage().replace("0.jpg", responseData + ".jpg");
                             Log.d(TAG, "onSuccess: " + image + "--" + product.getImage());
                             ContextWrapper cw = new ContextWrapper(context);
@@ -104,7 +104,7 @@ public class AddProductFragmentHandler {
 
                                             @Override
                                             public void onFailure(int errorCode, String errorMsg) {
-                                                SweetAlertBox.getInstance().dissmissSweetAlert();
+//                                                SweetAlertBox.getInstance().dissmissSweetAlert();
                                             }
                                         });
                             }
@@ -122,7 +122,7 @@ public class AddProductFragmentHandler {
                     @Override
                     public void onFailure(int errorCode, String errorMsg) {
                         ToastHelper.showToast(context, errorMsg, Toast.LENGTH_LONG);
-                        SweetAlertBox.getInstance().dissmissSweetAlert();
+//                        SweetAlertBox.getInstance().dissmissSweetAlert();
                     }
                 });
             } else {

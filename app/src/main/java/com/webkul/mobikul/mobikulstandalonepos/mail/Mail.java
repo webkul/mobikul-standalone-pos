@@ -129,12 +129,11 @@ public class Mail extends javax.mail.Authenticator {
         }
     }
 
-    public void addAttachment(String filename) throws Exception {
+    public void addAttachment(String filepath, String filename) throws Exception {
         BodyPart messageBodyPart = new MimeBodyPart();
-        javax.activation.DataSource source = new FileDataSource(filename);
+        javax.activation.DataSource source = new FileDataSource(filepath);
         messageBodyPart.setDataHandler(new DataHandler(source));
         messageBodyPart.setFileName(filename);
-
         _multipart.addBodyPart(messageBodyPart);
     }
 

@@ -15,6 +15,8 @@ import com.webkul.mobikul.mobikulstandalonepos.activity.Checkout;
 import com.webkul.mobikul.mobikulstandalonepos.activity.CartActivity;
 import com.webkul.mobikul.mobikulstandalonepos.activity.CustomerActivity;
 import com.webkul.mobikul.mobikulstandalonepos.activity.MainActivity;
+import com.webkul.mobikul.mobikulstandalonepos.customviews.CustomDialogClass;
+import com.webkul.mobikul.mobikulstandalonepos.customviews.CustomDialogClassForDiscount;
 import com.webkul.mobikul.mobikulstandalonepos.databinding.ActivityCartBinding;
 import com.webkul.mobikul.mobikulstandalonepos.db.DataBaseController;
 import com.webkul.mobikul.mobikulstandalonepos.db.entity.Customer;
@@ -149,6 +151,11 @@ public class CartHandler {
         }
     }
 
+    public void applyDiscount(Product product, CartModel cartData) {
+        CustomDialogClassForDiscount customDialogClass = new CustomDialogClassForDiscount(context, product, cartData);
+        customDialogClass.show();
+    }
+
     private void updateCart(Product product, boolean isIncrease) {
         int qty = Integer.parseInt(product.getCartQty());
         double price;
@@ -230,7 +237,8 @@ public class CartHandler {
             if (Double.parseDouble(customDiscount) <= Double.parseDouble(cartData.getTotals().getSubTotal())) {
                 DecimalFormat df = new DecimalFormat("####0.00");
                 double newGrandTotal = Double.parseDouble(cartData.getTotals().getGrandTotal()) - Double.parseDouble(customDiscount);
-                cartData.getTotals().setFormatedDiscount("-" + Helper.currencyFormater(Double.parseDouble(df.format(Double.parseDouble(customDiscount))), context) + "");
+                double totalDiscount = Double.parseDouble(customDiscount) + cartData.getTotals().getTotalDiscountByProduct();
+                cartData.getTotals().setFormatedDiscount("-" + Helper.currencyFormater(Double.parseDouble(df.format(totalDiscount)), context) + "");
                 cartData.getTotals().setGrandTotal(df.format(newGrandTotal) + "");
                 cartData.getTotals().setRoundTotal(Math.ceil(newGrandTotal) + "");
                 cartData.getTotals().setFormatedGrandTotal(Helper.currencyFormater(Double.parseDouble(df.format(newGrandTotal)), context) + "");
@@ -254,7 +262,7 @@ public class CartHandler {
         if (!cartData.getTotals().getDiscount().isEmpty()) {
             DecimalFormat df = new DecimalFormat("####0.00");
             double newGrandTotal = Double.parseDouble(cartData.getTotals().getGrandTotal()) + Double.parseDouble(cartData.getTotals().getDiscount());
-            cartData.getTotals().setFormatedDiscount("0.00");
+            cartData.getTotals().setFormatedDiscount(Helper.currencyFormater(cartData.getTotals().getTotalDiscountByProduct(), context));
             cartData.getTotals().setDiscount("");
             cartData.getTotals().setGrandTotal(df.format(newGrandTotal) + "");
             cartData.getTotals().setRoundTotal(Math.ceil(newGrandTotal) + "");

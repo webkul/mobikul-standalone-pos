@@ -14,7 +14,7 @@ import java.util.List;
  */
 @Dao
 public interface HoldCartDao {
-    @Query("SELECT * FROM HoldCart")
+    @Query("SELECT * FROM HoldCart ORDER BY holdCartId DESC")
     List<HoldCart> getAll();
 
     @Query("SELECT * FROM HoldCart WHERE holdCartId IN (:holdCartIds)")

@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.webkul.mobikul.mobikulstandalonepos.R;
 import com.webkul.mobikul.mobikulstandalonepos.db.DataBaseController;
@@ -47,7 +48,8 @@ public class CustomDialogClass extends Dialog implements
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_yes:
-                if (!((EditText) findViewById(R.id.opening_balance)).getText().toString().isEmpty()) {
+                String openingAmount = ((EditText) findViewById(R.id.opening_balance)).getText().toString();
+                if (!openingAmount.isEmpty() && Double.parseDouble(openingAmount) != 0) {
                     CashDrawerModel cashDrawerModel = new CashDrawerModel();
                     cashDrawerModel.setOpeningBalance(((EditText) findViewById(R.id.opening_balance)).getText().toString());
                     cashDrawerModel.setClosingBalance(((EditText) findViewById(R.id.opening_balance)).getText().toString());
@@ -71,6 +73,10 @@ public class CustomDialogClass extends Dialog implements
                 } else {
                     Helper.shake(context, findViewById(R.id.dialog_ll));
                     findViewById(R.id.error_text).setVisibility(View.VISIBLE);
+                    if (!openingAmount.isEmpty()) {
+                        ((TextView) findViewById(R.id.error_text)).setText("Opening Amount should not be zero (0).");
+
+                    }
                 }
                 break;
             default:

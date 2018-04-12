@@ -225,8 +225,8 @@ public class AddProductFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        if (SweetAlertBox.getInstance() != null)
-            SweetAlertBox.getInstance().dissmissSweetAlert();
+//        if (SweetAlertBox.getInstance() != null)
+//            SweetAlertBox.getInstance().dissmissSweetAlert();
     }
 
     @Override
