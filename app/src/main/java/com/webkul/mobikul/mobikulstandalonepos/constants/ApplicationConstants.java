@@ -9,7 +9,7 @@ import com.webkul.mobikul.mobikulstandalonepos.BuildConfig;
 public interface ApplicationConstants {
 
     int DEFAULT_BACK_PRESSED_TIME_TO_CLOSE = 2000;
-    String DB_FILEPATH = "/data/" + BuildConfig.APPLICATION_ID + "/databases/db_pos";
+    String DB_FILEPATH = "/data/" + BuildConfig.APPLICATION_ID + "/databases/db_pos.db";
 
     //    more fragment option ids
     int MORE_MENU_CASH_DRAWER = 1;

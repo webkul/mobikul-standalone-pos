@@ -29,6 +29,8 @@ import com.webkul.mobikul.mobikulstandalonepos.adapter.HomePageProductAdapter;
 import com.webkul.mobikul.mobikulstandalonepos.barcode.BarcodeCaptureActivity;
 import com.webkul.mobikul.mobikulstandalonepos.databinding.FragmentHomeBinding;
 import com.webkul.mobikul.mobikulstandalonepos.db.DataBaseController;
+import com.webkul.mobikul.mobikulstandalonepos.db.entity.OptionValues;
+import com.webkul.mobikul.mobikulstandalonepos.db.entity.Options;
 import com.webkul.mobikul.mobikulstandalonepos.db.entity.Product;
 import com.webkul.mobikul.mobikulstandalonepos.handlers.HomeFragmentHandler;
 import com.webkul.mobikul.mobikulstandalonepos.helper.AppSharedPref;
@@ -58,8 +60,6 @@ public class HomeFragment extends Fragment {
     public static HomeFragment newInstance(/*String param1, String param2*/) {
         HomeFragment fragment = new HomeFragment();
         Bundle args = new Bundle();
-//        args.putString(ARG_PARAM1, param1);
-//        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -76,7 +76,6 @@ public class HomeFragment extends Fragment {
     public void loadHomeProduct() {
         products = new ArrayList<>();
         setProduct();
-
     }
 
     @Override
@@ -144,12 +143,16 @@ public class HomeFragment extends Fragment {
                     }
                 }
             }
-            if (productAdapterForSelectedCategory == null) {
-                productAdapterForSelectedCategory = new HomePageProductAdapter(getActivity(), selectedProductsByCategory);
-                binding.productRv.setAdapter(productAdapterForSelectedCategory);
-            } else {
-                productAdapterForSelectedCategory.notifyDataSetChanged();
-            }
+            if (selectedProductsByCategory.size() > 0) {
+                if (productAdapterForSelectedCategory == null) {
+                    productAdapterForSelectedCategory = new HomePageProductAdapter(getActivity(), selectedProductsByCategory);
+                    binding.productRv.setAdapter(productAdapterForSelectedCategory);
+                } else {
+                    productAdapterForSelectedCategory.notifyDataSetChanged();
+                }
+                binding.setVisibility(true);
+            } else
+                binding.setVisibility(false);
         }
     }
 

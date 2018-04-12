@@ -42,7 +42,7 @@ public class AddNEditCategoryHandler {
                         ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE);
                         ft.commit();
                         ((BaseActivity) context).mSupportFragmentManager.popBackStackImmediate();
-                        Toast.makeText(context, successMsg, Toast.LENGTH_SHORT).show();
+                        ToastHelper.showToast(context, successMsg, Toast.LENGTH_SHORT);
                     }
 
                     @Override

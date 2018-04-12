@@ -50,6 +50,11 @@ public class SalesAndReportingActivity extends BaseActivity {
         return true;
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
+
     public class ViewPagerAdapter extends FragmentStatePagerAdapter {
         public ViewPagerAdapter(FragmentManager fm) {
             super(fm);
@@ -62,7 +67,6 @@ public class SalesAndReportingActivity extends BaseActivity {
                 fragment = new RevenueReportFragment();
             } else
                 fragment = new InventoryReportFragment();
-
             return fragment;
         }
 

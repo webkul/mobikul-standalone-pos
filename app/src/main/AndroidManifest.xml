@@ -14,6 +14,7 @@
     <application
         android:name=".PosApplication"
         android:allowBackup="true"
+        android:backupAgent="com.webkul.mobikul.mobikulstandalonepos.backup.MyBackupAgent"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:largeHeap="true"
@@ -21,11 +22,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:icon">
-        <!-- android:debuggable="true" -->
 
         <meta-data
             android:name="android.app.default_searchable"
             android:value=".MainActivity" />
+        <meta-data
+            android:name="com.google.android.backup.api_key"
+            android:value="AEdPqrEAAAAIyKJSnP5hyP0DVFfe1gkuJcywqxiFEbiyLW4D3A" />
 
         <activity
             android:name=".activity.SplashScreenActivity"
@@ -63,67 +66,83 @@
         <activity
             android:name=".activity.CartActivity"
             android:label="@string/title_activity_cart"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".activity.Checkout"
             android:label="@string/title_activity_checkout"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.CustomerActivity"
             android:label="@string/title_activity_customer"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.PlaceOrderActivity"
             android:label="@string/title_activity_place_order"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.ViewOrderDetails"
             android:label="@string/title_activity_view_order_details"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.MyAccountInfo"
             android:label="@string/title_activity_my_account_info"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.WalkthroughActivity"
             android:label="@string/title_activity_walkthrough"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.PaymentMethodActivity"
             android:label="@string/title_activity_payment_method"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".barcode.BarcodeCaptureActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
             android:name=".activity.OptionsActivity"
             android:label="@string/title_activity_options"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.CashDrawerActivity"
             android:label="@string/title_activity_cash_drawer"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.TaxActivity"
             android:label="@string/title_activity_tax"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.LowStockActivity"
             android:label="@string/low_stocks"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.OtherActivity"
             android:label="@string/title_activity_other"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.CurrencyActivity"
             android:label="@string/title_activity_currency"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.SalesAndReportingActivity"
             android:label="@string/title_activity_sales_report"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

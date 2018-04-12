@@ -33,7 +33,6 @@
         android:textStyle="normal"
         android:visibility="gone" />
 
-
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -44,6 +43,7 @@
             android:id="@+id/opening_balance"
             android:layout_width="100dp"
             android:layout_height="match_parent"
+            android:text="1000"
             android:inputType="numberDecimal" />
 
         <Button

@@ -24,6 +24,8 @@ import com.webkul.mobikul.mobikulstandalonepos.helper.AppSharedPref;
 import com.webkul.mobikul.mobikulstandalonepos.helper.ToastHelper;
 import com.webkul.mobikul.mobikulstandalonepos.interfaces.DataBaseCallBack;
 
+import static android.content.ContentValues.TAG;
+
 /**
  * Created by aman.gupta on 2/1/18.
  */
@@ -79,11 +81,18 @@ public class SignUpSignInHandler {
             DataBaseController.getInstanse().getAdminDataByEmail(context, data, new DataBaseCallBack() {
                 @Override
                 public void onSuccess(Object responseData, String successMsg) {
-                    Administrator administrator = (Administrator) responseData;
-                    Intent i = new Intent(context, MainActivity.class);
-                    context.startActivity(i);
-                    ToastHelper.showToast(context, "You have Successfully loggedIn!!"
-                            , Toast.LENGTH_SHORT);
+                    administrator = (Administrator) responseData;
+                    Log.d(TAG, "onSuccess: " + AppSharedPref.isShowWalkThrough(context, false));
+                    if (!AppSharedPref.isShowWalkThrough(context, false)) {
+                        Intent i = new Intent(context, WalkthroughActivity.class);
+                        context.startActivity(i);
+                        Log.d(TAG, "onSuccess: " + AppSharedPref.isShowWalkThrough(context, false));
+                    } else {
+                        Intent i = new Intent(context, MainActivity.class);
+                        context.startActivity(i);
+                        ToastHelper.showToast(context, "You have Successfully loggedIn!!"
+                                , Toast.LENGTH_SHORT);
+                    }
                     AppSharedPref.setLoggedIn(context, true);
                     AppSharedPref.setUserId(context, administrator.getUid());
                 }

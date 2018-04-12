@@ -61,7 +61,8 @@ public class CartActivity extends BaseActivity {
         List<Product> list = new ArrayList<>();
         for (Product product : cartData.getProducts()) {
             product.setFormattedPrice(Helper.currencyFormater(Helper.currencyConverter(Double.parseDouble(product.getPrice()), this), this));
-            product.setFormattedSpecialPrice(Helper.currencyFormater(Helper.currencyConverter(Double.parseDouble(product.getSpecialPrice()), this), this));
+            if (!product.getSpecialPrice().isEmpty())
+                product.setFormattedSpecialPrice(Helper.currencyFormater(Helper.currencyConverter(Double.parseDouble(product.getSpecialPrice()), this), this));
             Log.d(TAG, "currencyConverter: " + Helper.currencyConverter(Double.parseDouble(product.getCartProductSubtotal()), this));
             product.setFormattedCartProductSubtotal(Helper.currencyFormater(Helper.currencyConverter(Double.parseDouble(product.getCartProductSubtotal()), this), this));
 
@@ -190,8 +191,9 @@ public class CartActivity extends BaseActivity {
             if (cartProductList.size() > 0)
                 cartProductList.clear();
             cartProductList.addAll(cartData.getProducts());
-            adapter = new CartProductAdapter(this, cartProductList, true);
+            adapter = new CartProductAdapter(this, cartProductList, true, cartData);
             binding.cartProductRv.setAdapter(adapter);
+            binding.cartProductRv.setNestedScrollingEnabled(false);
             binding.setVisibility(true);
             if (AppSharedPref.isReturnCart(this)) {
                 if (!cartData.getTotals().getFormatedSubTotal().contains("-")) {

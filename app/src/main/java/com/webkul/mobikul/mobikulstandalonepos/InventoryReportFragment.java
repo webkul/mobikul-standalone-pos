@@ -110,7 +110,7 @@ public class InventoryReportFragment extends Fragment {
     private void setSalesProductChart(List<SalesProductReportModel> soldProducts) {
         binding.productChart.setUsePercentValues(true);
         binding.productChart.getDescription().setEnabled(false);
-        binding.productChart.setExtraOffsets(5, 10, 50, 5);
+//        binding.productChart.setExtraOffsets(5, 10, 10, 5);
 //        holder.chart.setExtraOffsets(5, 10, 50, 10);
 
         binding.productChart.setDragDecelerationFrictionCoef(0.95f);

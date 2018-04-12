@@ -1,79 +1,27 @@
 {
   "project_info": {
-    "project_number": "839657233055",
-    "firebase_url": "https://webkul-store-application.firebaseio.com",
-    "project_id": "webkul-store-application",
-    "storage_bucket": "webkul-store-application.appspot.com"
+    "project_number": "189762203011",
+    "firebase_url": "https://standalone-pos-mobikul.firebaseio.com",
+    "project_id": "standalone-pos-mobikul",
+    "storage_bucket": "standalone-pos-mobikul.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:839657233055:android:e090436c40e387b2",
-        "android_client_info": {
-          "package_name": "com.webkul.store"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "839657233055-hqavhn276vld0ld572qfabgf1ljpc4uq.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.webkul.store",
-            "certificate_hash": "5f73b3fe57c4771798ee1e1b5184d41937570940"
-          }
-        },
-        {
-          "client_id": "839657233055-jb1etoacbl7t7fmeo2edj6naird3hoc5.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.webkul.store",
-            "certificate_hash": "a67963a64603ac02270864b6a54eb739d4b019af"
-          }
-        },
-        {
-          "client_id": "839657233055-d56vqucaippiancnkigbs136hfrvj7ks.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyBUx5NP0AmyLUNis6VPpxlrVL-u9vGQCU0"
-        }
-      ],
-      "services": {
-        "analytics_service": {
-          "status": 1
-        },
-        "appinvite_service": {
-          "status": 2,
-          "other_platform_oauth_client": [
-            {
-              "client_id": "839657233055-d56vqucaippiancnkigbs136hfrvj7ks.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        },
-        "ads_service": {
-          "status": 2
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:839657233055:android:ad0bcb24746bf091",
+        "mobilesdk_app_id": "1:189762203011:android:ad0bcb24746bf091",
         "android_client_info": {
           "package_name": "com.webkul.mobikul.mobikulstandalonepos"
         }
       },
       "oauth_client": [
         {
-          "client_id": "839657233055-d56vqucaippiancnkigbs136hfrvj7ks.apps.googleusercontent.com",
+          "client_id": "189762203011-3n2o6dsd9p4i0u09hp5jg9m144k2gp6s.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBUx5NP0AmyLUNis6VPpxlrVL-u9vGQCU0"
+          "current_key": "AIzaSyD56yjx-4PhlFwQnzOKskjmGdJK7-1yBGI"
         }
       ],
       "services": {

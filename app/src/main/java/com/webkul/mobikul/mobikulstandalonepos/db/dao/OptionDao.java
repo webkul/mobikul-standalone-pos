@@ -15,7 +15,7 @@ import java.util.List;
 @Dao
 public interface OptionDao {
 
-    @Query("SELECT * FROM Options")
+    @Query("SELECT * FROM Options ORDER BY option_id DESC")
     List<Options> getAll();
 
     @Query("SELECT * FROM Options WHERE option_id IN (:optionsIds)")

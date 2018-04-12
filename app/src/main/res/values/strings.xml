@@ -328,6 +328,8 @@
     <string name="title_activity_sales_report">Sales and Reporting</string>
     <string name="return_items">Return Items</string>
     <string name="low">Low</string>
+    <string name="discount_can_t_be_empty">Discount can\'t be empty!</string>
+    <string name="enter_fixed_discount">Enter fixed discount</string>
 
 
 </resources>

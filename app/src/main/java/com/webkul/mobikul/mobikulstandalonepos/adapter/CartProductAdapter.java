@@ -10,10 +10,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.webkul.mobikul.mobikulstandalonepos.R;
+import com.webkul.mobikul.mobikulstandalonepos.activity.CartActivity;
 import com.webkul.mobikul.mobikulstandalonepos.databinding.ItemCartProductBinding;
 import com.webkul.mobikul.mobikulstandalonepos.db.entity.Options;
 import com.webkul.mobikul.mobikulstandalonepos.db.entity.Product;
 import com.webkul.mobikul.mobikulstandalonepos.handlers.CartHandler;
+import com.webkul.mobikul.mobikulstandalonepos.helper.Helper;
+import com.webkul.mobikul.mobikulstandalonepos.model.CartModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +31,7 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
     private Context context;
     public List<Product> products;
     private boolean fromCart = false;
+    private CartModel cartData;
     private SparseBooleanArray mSelectedItemsIds;
 
     public CartProductAdapter(Context context, List<Product> products) {
@@ -43,17 +47,27 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
         mSelectedItemsIds = new SparseBooleanArray();
     }
 
+    public CartProductAdapter(Context context, List<Product> products, boolean fromCart, CartModel cartData) {
+        this.context = context;
+        this.products = products;
+        this.fromCart = fromCart;
+        this.cartData = cartData;
+        mSelectedItemsIds = new SparseBooleanArray();
+    }
+
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(context);
         View rootView = inflater.inflate(R.layout.item_cart_product, null, false);
-
         return new CartProductAdapter.ViewHolder(rootView);
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
+        if (products.get(position).getFormattedDiscount().isEmpty())
+            products.get(position).setFormattedDiscount(Helper.currencyFormater(0, context));
         holder.binding.setData(products.get(position));
+        holder.binding.setCartData(cartData);
         List<Options> optionList = new ArrayList<>();
         for (Options options : products.get(position).getOptions()) {
             if (options.isSelected()) {
@@ -70,9 +84,11 @@ public class CartProductAdapter extends RecyclerView.Adapter<CartProductAdapter.
         if (fromCart) {
             holder.binding.plus.setVisibility(View.VISIBLE);
             holder.binding.minus.setVisibility(View.VISIBLE);
+            holder.binding.discountLl.setEnabled(true);
         } else {
             holder.binding.plus.setVisibility(View.GONE);
             holder.binding.minus.setVisibility(View.GONE);
+            holder.binding.discountLl.setEnabled(false);
         }
     }
 

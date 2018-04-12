@@ -19,6 +19,7 @@ public class TotalModel extends BaseObservable implements Serializable {
     private String tax;
     private String formatedTax;
     private String discount;
+    private float totalDiscountByProduct;
     private String formatedDiscount;
     private String grandTotal;
     private String formatedGrandTotal;
@@ -184,4 +185,11 @@ public class TotalModel extends BaseObservable implements Serializable {
         notifyPropertyChanged(BR.displayError);
     }
 
+    public float getTotalDiscountByProduct() {
+        return totalDiscountByProduct;
+    }
+
+    public void setTotalDiscountByProduct(float totalDiscountByProduct) {
+        this.totalDiscountByProduct = totalDiscountByProduct;
+    }
 }

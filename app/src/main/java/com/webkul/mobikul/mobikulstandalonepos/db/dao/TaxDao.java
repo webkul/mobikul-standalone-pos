@@ -14,7 +14,7 @@ import java.util.List;
  */
 @Dao
 public interface TaxDao {
-    @Query("SELECT * FROM Tax")
+    @Query("SELECT * FROM Tax ORDER BY taxId DESC")
     List<Tax> getAll();
 
     @Query("SELECT * FROM Tax WHERE taxId IN (:TaxIds)")
