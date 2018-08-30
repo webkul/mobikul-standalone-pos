@@ -102,31 +102,26 @@ public class HomeFragmentHandler {
     void addToCart(Product product, CartModel cartData) {
         double price;
         double basePrice;
-//        FirebaseCrash.log(product.getOptions() + "");
-//        Log.d(TAG, "addToCart: " + new Gson().toJson(product.getOptions()));
         if (product.getSpecialPrice().isEmpty()) {
-            subTotal = subTotal + Double.parseDouble(product.getPrice());
             price = Helper.currencyConverter(Double.parseDouble(product.getPrice()), context);
+            subTotal = subTotal + Double.parseDouble(product.getPrice());
             basePrice = Double.parseDouble(product.getPrice());
 
         } else {
-            subTotal = subTotal + Double.parseDouble(product.getSpecialPrice());
             price = Helper.currencyConverter(Double.parseDouble(product.getSpecialPrice()), context);
+            subTotal = subTotal + Double.parseDouble(product.getSpecialPrice());
             product.setFormattedSpecialPrice(Helper.currencyFormater(price, context) + "");
             basePrice = Double.parseDouble(product.getSpecialPrice());
         }
+
         for (int i = 0; i < product.getOptions().size(); i++) {
-//            FirebaseCrash.log(product.getOptions().get(i).getType());
-//            Log.d(TAG, "addToCart: " + product.getOptions().get(i).getType());
-//            FirebaseCrash.log(product.getOptions().get(i).getOptionValues() + "");
-//            Log.d(TAG, "addToCart: " + product.getOptions().get(i).getOptionValues());
             if (!product.getOptions().get(i).getType().equalsIgnoreCase("text") && !product.getOptions().get(i).getType().equalsIgnoreCase("textarea"))
                 for (OptionValues optionValues : product.getOptions().get(i).getOptionValues()) {
                     if (optionValues.isAddToCart()) {
                         if (!optionValues.getOptionValuePrice().isEmpty()) {
-                            subTotal = subTotal + Integer.parseInt(optionValues.getOptionValuePrice());
-                            price = price + Integer.parseInt(optionValues.getOptionValuePrice());
-                            basePrice = basePrice + Integer.parseInt(optionValues.getOptionValuePrice());
+                            subTotal = subTotal + Double.parseDouble(optionValues.getOptionValuePrice());
+                            price = price + Helper.currencyConverter(Double.parseDouble(optionValues.getOptionValuePrice()), context);
+                            basePrice = basePrice + Double.parseDouble(optionValues.getOptionValuePrice());
                         }
                     }
                 }
@@ -175,12 +170,12 @@ public class HomeFragmentHandler {
         cartData.getTotals().setTax(df.format(Double.parseDouble(cartData.getTotals().getTax()) + taxRate) + "");
 
         grandTotal = subTotal + Double.parseDouble(cartData.getTotals().getTax());
-        cartData.getTotals().setSubTotal(df.format(subTotal) + "");
+        cartData.getTotals().setSubTotal(subTotal + "");
         cartData.getTotals().setQty(counter + "");
         cartData.getTotals().setGrandTotal(df.format(grandTotal) + "");
         cartData.getTotals().setRoundTotal(Math.ceil(grandTotal) + "");
         // set formated values
-        cartData.getTotals().setFormatedSubTotal(Helper.currencyFormater(Double.parseDouble(df.format(subTotal)), context));
+        cartData.getTotals().setFormatedSubTotal(Helper.currencyFormater(Helper.currencyConverter(Double.parseDouble(df.format(subTotal)), context), context));
         cartData.getTotals().setFormatedTax(Helper.currencyFormater(Double.parseDouble(cartData.getTotals().getTax()), context));
         cartData.getTotals().setFormatedGrandTotal(Helper.currencyFormater(Double.parseDouble(df.format(grandTotal)), context));
         cartData.getTotals().setFormatedRoundTotal(Helper.currencyFormater((Math.ceil(grandTotal)), context));
@@ -233,7 +228,7 @@ public class HomeFragmentHandler {
                                     RadioButton optionValuesRadio = new RadioButton(context);
 
                                     if (!optionValues.getOptionValuePrice().isEmpty())
-                                        optionValuesRadio.setText(optionValues.getOptionValueName() + "(" + currencySymbol + optionValues.getOptionValuePrice() + ")");
+                                        optionValuesRadio.setText(optionValues.getOptionValueName() + "(" + Helper.currencyFormater(Helper.currencyConverter(Double.parseDouble(optionValues.getOptionValuePrice()), context), context) + ")");
                                     else
                                         optionValuesRadio.setText(optionValues.getOptionValueName());
                                     optionValuesRadio.setTag(optionValues);
@@ -252,8 +247,6 @@ public class HomeFragmentHandler {
                                     OptionValues optionValues = (OptionValues) findViewById(checkedId).getTag();
                                     if (((RadioButton) findViewById(checkedId)).isChecked())
                                         optionValues.setAddToCart(true);
-
-//                                    optionValuesHashMap.put(options.getOptionId() + "", optionValues);
                                 }
                             });
                             ((LinearLayout) findViewById(R.id.options)).addView(rg);
@@ -267,7 +260,7 @@ public class HomeFragmentHandler {
                                         optionValuesCheckBox.setChecked(true);
                                     }
                                     if (!optionValues.getOptionValuePrice().isEmpty())
-                                        optionValuesCheckBox.setText(optionValues.getOptionValueName() + "(" + currencySymbol + optionValues.getOptionValuePrice() + ")");
+                                        optionValuesCheckBox.setText(optionValues.getOptionValueName() + "(" + Helper.currencyFormater(Helper.currencyConverter(Double.parseDouble(optionValues.getOptionValuePrice()), context), context) + ")");
                                     else
                                         optionValuesCheckBox.setText(optionValues.getOptionValueName());
                                     optionValuesCheckBox.setTag(optionValues);
@@ -279,7 +272,6 @@ public class HomeFragmentHandler {
                                                 optionValues.setAddToCart(true);
                                             else
                                                 optionValues.setAddToCart(false);
-//                                            optionValuesHashMap.put(options.getOptionId() + "", optionValues);
                                         }
 
 

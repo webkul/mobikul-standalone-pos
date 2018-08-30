@@ -151,7 +151,6 @@ public class DataBaseController {
         DataBaseAsyncUtils.getInstanse().new GetSearchOrders(((BaseActivity) context).getDb(), dataBaseCallBack).execute(searchText);
     }
 
-
     // -------------------- delete all tables -------------------------
     public void deleteAllTables(Context context) {
         DataBaseAsyncUtils.getInstanse().new DeleteAllTables(((BaseActivity) context).getDb()).execute();
@@ -225,5 +224,4 @@ public class DataBaseController {
     public void deleteTax(Context context, Tax data, DataBaseCallBack dataBaseCallBack) {
         DataBaseAsyncUtils.getInstanse().new DeleteTax(((BaseActivity) context).getDb(), dataBaseCallBack).execute(data);
     }
-
 }

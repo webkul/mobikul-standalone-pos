@@ -1,4 +1,4 @@
-package com.webkul.mobikul.mobikulstandalonepos;
+package com.webkul.mobikul.mobikulstandalonepos.MPAndroidChart;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
@@ -35,6 +35,7 @@ import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.MPPointF;
 import com.squareup.timessquare.CalendarPickerView;
+import com.webkul.mobikul.mobikulstandalonepos.R;
 import com.webkul.mobikul.mobikulstandalonepos.activity.SalesAndReportingActivity;
 import com.webkul.mobikul.mobikulstandalonepos.activity.SalesReportProductAdapter;
 import com.webkul.mobikul.mobikulstandalonepos.databinding.FragmentInventoryReportBinding;

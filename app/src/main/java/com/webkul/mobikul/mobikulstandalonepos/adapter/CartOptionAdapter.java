@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.webkul.mobikul.mobikulstandalonepos.R;
 import com.webkul.mobikul.mobikulstandalonepos.databinding.ProductOptionsLayoutBinding;
 import com.webkul.mobikul.mobikulstandalonepos.db.entity.Options;
+import com.webkul.mobikul.mobikulstandalonepos.helper.Helper;
 
 import java.util.List;
 
@@ -44,7 +45,7 @@ class CartOptionAdapter extends RecyclerView.Adapter<CartOptionAdapter.ViewHolde
             if (options.get(position).getOptionValues().get(i).isAddToCart()) {
                 TextView tv = new TextView(context);
                 if (!options.get(position).getType().equalsIgnoreCase("text") && !options.get(position).getOptionValues().get(i).getOptionValuePrice().equalsIgnoreCase("")) {
-                    tv.setText(options.get(position).getOptionValues().get(i).getOptionValueName() + " (" + context.getString(R.string.currency_symbol) + options.get(position).getOptionValues().get(i).getOptionValuePrice() + ")");
+                    tv.setText(options.get(position).getOptionValues().get(i).getOptionValueName() + " (" + Helper.currencyFormater(Helper.currencyConverter(Double.parseDouble(options.get(position).getOptionValues().get(i).getOptionValuePrice()), context), context)+ ")");
                 } else
                     tv.setText(options.get(position).getOptionValues().get(i).getOptionValueName());
                 tv.setGravity(Gravity.CENTER);

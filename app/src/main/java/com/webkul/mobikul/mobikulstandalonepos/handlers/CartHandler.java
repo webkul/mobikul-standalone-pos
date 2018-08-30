@@ -159,10 +159,13 @@ public class CartHandler {
     private void updateCart(Product product, boolean isIncrease) {
         int qty = Integer.parseInt(product.getCartQty());
         double price;
+        double basePrice;
         if (product.getSpecialPrice().isEmpty()) {
             price = Helper.currencyConverter(Double.parseDouble(product.getPrice()), context);
+            basePrice = Double.parseDouble(product.getPrice());
         } else {
             price = Helper.currencyConverter(Double.parseDouble(product.getSpecialPrice()), context);
+            basePrice = Double.parseDouble(product.getSpecialPrice());
         }
 
         for (int i = 0; i < product.getOptions().size(); i++) {
@@ -171,12 +174,13 @@ public class CartHandler {
                     if (optionValues.isAddToCart()) {
                         if (!optionValues.getOptionValuePrice().isEmpty()) {
                             price = price + Integer.parseInt(optionValues.getOptionValuePrice());
+                            basePrice = basePrice + Integer.parseInt(optionValues.getOptionValuePrice());
                         }
                     }
                 }
         }
-        product.setCartProductSubtotal(qty * price + "");
-        product.setFormattedCartProductSubtotal(Helper.currencyFormater(Double.parseDouble(product.getCartProductSubtotal()), context));
+        product.setCartProductSubtotal(qty * basePrice + "");
+        product.setFormattedCartProductSubtotal(Helper.currencyFormater(Helper.currencyConverter(Double.parseDouble(product.getCartProductSubtotal()), context), context));
         Log.d(TAG, "updateCart: " + product.getCartQty());
         Log.d(TAG, "updateCart: " + product.getFormattedCartProductSubtotal());
 
@@ -191,14 +195,18 @@ public class CartHandler {
         }
         cartData.getProducts().remove(position);
         cartData.getProducts().add(position, product);
-        if (isIncrease)
-            cartData.getTotals().setSubTotal(Double.parseDouble(cartData.getTotals().getSubTotal()) + price + "");
-        else
-            cartData.getTotals().setSubTotal(Double.parseDouble(cartData.getTotals().getSubTotal()) - price + "");
+        int totalQty = Integer.parseInt(cartData.getTotals().getQty());
+        if (isIncrease) {
+            cartData.getTotals().setSubTotal(Double.parseDouble(cartData.getTotals().getSubTotal()) + basePrice + "");
+            cartData.getTotals().setQty(++totalQty + "");
+        } else {
+            cartData.getTotals().setSubTotal(Double.parseDouble(cartData.getTotals().getSubTotal()) - basePrice + "");
+            cartData.getTotals().setQty(--totalQty + "");
+        }
         DecimalFormat df;
         df = new DecimalFormat("####0.00");
         cartData.getTotals().setTax(calculateTax(product, Double.parseDouble(product.getCartProductSubtotal())));
-        double grandTotal = Double.parseDouble(cartData.getTotals().getSubTotal()) + Double.parseDouble(cartData.getTotals().getTax());
+        double grandTotal = Helper.currencyConverter(Double.parseDouble(cartData.getTotals().getSubTotal()), context) + Double.parseDouble(cartData.getTotals().getTax());
         cartData.getTotals().setGrandTotal(df.format(grandTotal) + "");
         cartData.getTotals().setRoundTotal(Math.ceil(grandTotal) + "");
         // set formated values
@@ -206,7 +214,7 @@ public class CartHandler {
         if (AppSharedPref.isReturnCart(context)) {
             returnSymbol = "-";
         }
-        cartData.getTotals().setFormatedSubTotal(returnSymbol + Helper.currencyFormater(Double.parseDouble(cartData.getTotals().getSubTotal()), context));
+        cartData.getTotals().setFormatedSubTotal(returnSymbol + Helper.currencyFormater(Helper.currencyConverter(Double.parseDouble(cartData.getTotals().getSubTotal()), context), context));
         cartData.getTotals().setFormatedTax(Helper.currencyFormater(Double.parseDouble(cartData.getTotals().getTax()), context));
         cartData.getTotals().setFormatedGrandTotal(returnSymbol + Helper.currencyFormater(Double.parseDouble(df.format(grandTotal)), context));
         cartData.getTotals().setFormatedRoundTotal(returnSymbol + Helper.currencyFormater((Math.ceil(grandTotal)), context));

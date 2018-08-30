@@ -57,7 +57,6 @@ public class HoldFragment extends Fragment {
         setHoldCartData();
     }
 
-
     void setHoldCartData() {
         DataBaseController.getInstanse().getHoldCart(getActivity(), new DataBaseCallBack() {
             @Override
