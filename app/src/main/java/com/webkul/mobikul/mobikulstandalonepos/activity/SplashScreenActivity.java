@@ -140,13 +140,15 @@ public class SplashScreenActivity extends AppCompatActivity {
     }
 
     private boolean checkDataBase() {
+        Log.d(TAG, "checkDataBase: Enter");
         SQLiteDatabase checkDB = null;
         try {
             checkDB = SQLiteDatabase.openDatabase(DB_PATH + DB_NAME, null,
                     SQLiteDatabase.OPEN_READWRITE);
             checkDB.close();
+            Log.d(TAG, "checkDataBase: loaded");
         } catch (SQLiteException e) {
-            Log.d(TAG, "checkDataBase: SQLiteException" + e);
+            Log.d(TAG, "checkDataBase: SQLiteException---" + e);
             e.printStackTrace();
             Helper.setDefaultDataBase(this);
             AppSharedPref.setSignedUp(this, true);

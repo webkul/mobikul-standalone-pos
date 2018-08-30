@@ -255,12 +255,6 @@ public class Helper {
             myOutput.flush();
             myOutput.close();
             myInput.close();
-
-            ContextWrapper cw = new ContextWrapper(context);
-            File ImageDirectory = cw.getDir("imageDir", Context.MODE_PRIVATE);
-            //copy the product images
-            imageImport(context.getAssets().open(DB_NAME_IMAGES), ImageDirectory);
-            Log.d(TAG, "setDefaultDataBase: there");
         } catch (IOException e) {
             e.printStackTrace();
         }

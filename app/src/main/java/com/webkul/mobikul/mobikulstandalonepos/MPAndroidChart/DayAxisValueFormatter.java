@@ -1,4 +1,4 @@
-package com.webkul.mobikul.mobikulstandalonepos;
+package com.webkul.mobikul.mobikulstandalonepos.MPAndroidChart;
 
 import android.util.Log;
 

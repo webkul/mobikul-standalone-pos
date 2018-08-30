@@ -1,4 +1,4 @@
-package com.webkul.mobikul.mobikulstandalonepos;
+package com.webkul.mobikul.mobikulstandalonepos.MPAndroidChart;
 
 import android.content.Context;
 import android.widget.TextView;
@@ -8,6 +8,7 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.utils.MPPointF;
+import com.webkul.mobikul.mobikulstandalonepos.R;
 
 import java.text.DecimalFormat;
 
