@@ -144,6 +144,7 @@ body {
 
 @primaryColor: #FF7852;
 @alterColor: #000000;
+@darkColor:#591F0A;
 @font-regular: 400;
 @font-medium: 500;
 @font-SemiBold: 600;
@@ -258,6 +259,9 @@ b {
     &.prime-clr {
         background-color: @primaryColor;
     }
+    &.dark-clr {
+        background-color: @darkColor;
+    }
     &:hover {
         opacity: 0.9;
         box-shadow: 0 2px 24px 0 rgba(0,0,0,.1), 0 10px 24px 0 rgba(0,0,0,.18);
@@ -266,6 +270,7 @@ b {
         border: none;
     }
 }
+.doc-icon,
 .p-store-icon,
 .github-icon {
     &::before {
@@ -275,6 +280,12 @@ b {
         display: inline-block;
         margin: -3px 7px 0px -5px;
         vertical-align: middle;
+    }
+}
+.doc-icon {
+    margin-right: 10px;
+    &::before {
+        .bg-pos(-111px, -38px);
     }
 }
 .p-store-icon {
@@ -303,6 +314,15 @@ header {
         display: inline-block;
         font-size: 24px;
         color: #414141;
+        &::before {
+            content: '';
+            background-image: url(../images/logo.svg);
+            display: inline-block;
+            vertical-align: middle;
+            height: 40px;
+            width: 40px;
+            margin-bottom: -5px;
+        }
     }
     ul {
         // float: right;
@@ -314,7 +334,6 @@ header {
     }
     .doc {
         margin-right: 10px;
-        font-size: 18px;
     }
     .sub-head {
         float: right;
@@ -386,7 +405,7 @@ header {
         }
         &::before {
             content: '';
-            background-color: #591F0A;
+            background-color: @darkColor;
             width: 50px;
             height: 50px;
             display: inline-block;
@@ -726,10 +745,15 @@ header {
 }
 
 .social-share {
-    margin-top: 13px;
+    margin-top: 16px;
     margin-right: 10px;
     margin-bottom: -16px;
     display: inline-block;
+}
+footer {
+    a {
+        color: @primaryColor;
+    }
 }
 
 // media Style
@@ -741,6 +765,28 @@ header {
     }
 }
 @media (max-width:960px) {
+    header {
+        text-align: center;
+        position: relative;
+        ul {
+            display: block;
+            li:last-child {
+                margin-bottom: 10px;
+            }
+        }
+        h3 {
+            margin-bottom: 0;
+        }
+        .sub-head {
+            float: none;
+        }
+        .social-share {
+            margin-top: 10px;
+        }
+        .pos-button {
+            margin-top: 5px;
+        }
+    }
     .mk-pos-banner {
         .banner {
             text-align: center;
@@ -796,25 +842,15 @@ header {
     }
 }
 @media (max-width:590px) {
-    header {
-        text-align: center;
-        position: relative;
-        ul {
-            display: block;
-            li {
-                margin-bottom: 10px;
-            }
-        }
-        h3 {
-            margin-bottom: 0;
-        }
-        .sub-head {
-            float: none;
-        }
-    }
 }
 
 @media (max-width:425px) {
+    header {
+        .pos-button {
+            font-size: 12px;
+            min-width: 130px;
+        }
+    }
     h1 {
         font-size: 35px;
     }

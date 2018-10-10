@@ -231,6 +231,9 @@ b {
 .pos-button.prime-clr {
   background-color: #FF7852;
 }
+.pos-button.dark-clr {
+  background-color: #591F0A;
+}
 .pos-button:hover {
   opacity: 0.9;
   box-shadow: 0 2px 24px 0 rgba(0, 0, 0, 0.1), 0 10px 24px 0 rgba(0, 0, 0, 0.18);
@@ -238,6 +241,7 @@ b {
   text-decoration: none;
   border: none;
 }
+.doc-icon::before,
 .p-store-icon::before,
 .github-icon::before {
   content: '';
@@ -247,6 +251,12 @@ b {
   display: inline-block;
   margin: -3px 7px 0px -5px;
   vertical-align: middle;
+}
+.doc-icon {
+  margin-right: 10px;
+}
+.doc-icon::before {
+  background-position: -111px -38px;
 }
 .p-store-icon {
   margin-right: 10px;
@@ -274,6 +284,15 @@ header h3 {
   font-size: 24px;
   color: #414141;
 }
+header h3::before {
+  content: '';
+  background-image: url(../images/logo.svg);
+  display: inline-block;
+  vertical-align: middle;
+  height: 40px;
+  width: 40px;
+  margin-bottom: -5px;
+}
 header ul {
   display: inline-block;
   vertical-align: top;
@@ -283,7 +302,6 @@ header a {
 }
 header .doc {
   margin-right: 10px;
-  font-size: 18px;
 }
 header .sub-head {
   float: right;
@@ -631,10 +649,13 @@ header .sub-head {
   height: 37px;
 }
 .social-share {
-  margin-top: 13px;
+  margin-top: 16px;
   margin-right: 10px;
   margin-bottom: -16px;
   display: inline-block;
+}
+footer a {
+  color: #FF7852;
 }
 @media (max-width: 1023px) {
   .mk-pos-only::before,
@@ -643,6 +664,28 @@ header .sub-head {
   }
 }
 @media (max-width: 960px) {
+  header {
+    text-align: center;
+    position: relative;
+  }
+  header ul {
+    display: block;
+  }
+  header ul li:last-child {
+    margin-bottom: 10px;
+  }
+  header h3 {
+    margin-bottom: 0;
+  }
+  header .sub-head {
+    float: none;
+  }
+  header .social-share {
+    margin-top: 10px;
+  }
+  header .pos-button {
+    margin-top: 5px;
+  }
   .mk-pos-banner .banner {
     text-align: center;
   }
@@ -685,25 +728,11 @@ header .sub-head {
     right: unset;
   }
 }
-@media (max-width: 590px) {
-  header {
-    text-align: center;
-    position: relative;
-  }
-  header ul {
-    display: block;
-  }
-  header ul li {
-    margin-bottom: 10px;
-  }
-  header h3 {
-    margin-bottom: 0;
-  }
-  header .sub-head {
-    float: none;
-  }
-}
 @media (max-width: 425px) {
+  header .pos-button {
+    font-size: 12px;
+    min-width: 130px;
+  }
   h1 {
     font-size: 35px;
   }
