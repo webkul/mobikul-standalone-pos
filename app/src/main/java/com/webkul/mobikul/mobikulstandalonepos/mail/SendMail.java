@@ -51,7 +51,7 @@ public class SendMail extends AsyncTask<Void, Integer, Boolean> {
     protected Boolean doInBackground(Void... voids) {
         Mail m = new Mail(ApplicationConstants.USERNAME_FOR_SMTP, ApplicationConstants.PASSWORD_FOR_SMTP);
 
-        String[] toArr = {/*"anchit.makkar849@webkul.com",*/ orderData.getCartData().getCustomer().getEmail()/*, "vedesh.kumar198@webkul.com", "ratnesh@webkul.com"*/};
+        String[] toArr = {orderData.getCartData().getCustomer().getEmail()};
         m.setTo(toArr);
         m.setFrom(ApplicationConstants.USERNAME_FOR_SMTP);
         m.setSubject("Mobikul POS - Order " + orderData.getOrderId());
