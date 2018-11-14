@@ -35,9 +35,9 @@ public interface ApplicationConstants {
     int PDF_ALIGNMENT_CENTER = 1;
     int PDF_ALIGNMENT_RIGHT = 2;
     // mail credentails
-    String HOST_FOR_MAIL = "zsmtp.hybridzimbra.com";
-    String USERNAME_FOR_SMTP = "test@webkul.com";
-    String PASSWORD_FOR_SMTP = "Twqwwuihpqllgiwzw@1";
+    String HOST_FOR_MAIL = "YOUR_HOST_FOR_MAIL";
+    String USERNAME_FOR_SMTP = "YOUR_SMTP_USER_NAME";
+    String PASSWORD_FOR_SMTP = "YOUR_SMTP_PASSWORD";
 
     //    error messages
     String ERROR_MSG = "Something went wrong";
