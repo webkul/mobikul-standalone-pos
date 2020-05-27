@@ -87,8 +87,9 @@ public class ManageOptionsFragment extends Fragment {
             @Override
             public void onSuccess(Object responseData, String msg) {
                 if (!responseData.toString().equalsIgnoreCase("[]")) {
-                    if (!(options.size() > 0))
-                        options.addAll((List<Options>) responseData);
+                    //if (!(options.size() > 0))
+                    options.clear();
+                    options.addAll((List<Options>) responseData);
                     manageOptionsAdapter = new ManageOptionsAdapter(getActivity(), options, product);
                     binding.manageOptionsRv.setAdapter(manageOptionsAdapter);
                 } else {

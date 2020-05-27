@@ -1,13 +1,20 @@
 package com.webkul.mobikul.mobikulstandalonepos.activity;
 
 import android.annotation.SuppressLint;
+import android.arch.lifecycle.MutableLiveData;
 import android.arch.persistence.room.Room;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -15,6 +22,7 @@ import android.widget.Toast;
 import com.webkul.mobikul.mobikulstandalonepos.R;
 import com.webkul.mobikul.mobikulstandalonepos.db.AppDatabase;
 import com.webkul.mobikul.mobikulstandalonepos.helper.AppSharedPref;
+import com.webkul.mobikul.mobikulstandalonepos.helper.Helper;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
@@ -28,23 +36,29 @@ import static com.webkul.mobikul.mobikulstandalonepos.db.AppDatabase.getAppDatab
 public abstract class BaseActivity extends AppCompatActivity {
     @SuppressWarnings("unused")
     public static final String TAG = "BaseActivity";
+    public static final int CAMERA_REQUEST = 125;
     public SweetAlertDialog mSweetAlertDialog;
     public FragmentManager mSupportFragmentManager;
-    public AppDatabase db;
+    public static AppDatabase db;
     public static Context context;
+    public MutableLiveData<Boolean> cameraPermissionResult = new MutableLiveData<>();
+    public MutableLiveData<String> cameraRequestResult = new MutableLiveData<>();
 
     @SuppressLint("CommitPrefEdits")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mSupportFragmentManager = getSupportFragmentManager();
-        db = getDb();
+        getDb();
         context = this;
         showBackButton(true);
     }
 
     public AppDatabase getDb() {
-        return getAppDatabase(this);
+        if (db == null || !db.isOpen()) {
+            db = getAppDatabase(this);
+        }
+        return db;
     }
 
     public static Context getContext() {
@@ -111,7 +125,29 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
     }
 
-//    @Override
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == CAMERA_REQUEST) {
+            cameraPermissionResult.setValue(grantResults[0] == PackageManager.PERMISSION_GRANTED);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == CAMERA_REQUEST) {
+            if (data != null && data.getExtras() != null) {
+                Bitmap photo = (Bitmap) data.getExtras().get("data");
+                Uri uri = Helper.saveToInternalStorage(BaseActivity.this, photo, ""+System.currentTimeMillis());
+                cameraRequestResult.setValue(uri.toString());
+            } else {
+                Log.d("Camera", "Data null");
+            }
+        }
+    }
+
+    //    @Override
 //    protected void onResume() {
 //        super.onResume();
 //        if (mItemBag != null) {

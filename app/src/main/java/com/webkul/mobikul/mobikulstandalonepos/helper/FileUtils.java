@@ -1,5 +1,8 @@
 package com.webkul.mobikul.mobikulstandalonepos.helper;
 
+import android.net.Uri;
+
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -14,11 +17,9 @@ public class FileUtils {
      * <br/>
      * <i> Note: <code>fromFile</code> and <code>toFile</code> will be closed by
      * this function.</i>
-     * 
-     * @param fromFile
-     *            - FileInputStream for the file to copy from.
-     * @param toFile
-     *            - FileInputStream for the file to copy to.
+     *
+     * @param fromFile - FileInputStream for the file to copy from.
+     * @param toFile   - FileInputStream for the file to copy to.
      */
     public static void copyFile(FileInputStream fromFile, FileOutputStream toFile) throws IOException {
         FileChannel fromChannel = null;
@@ -36,6 +37,21 @@ public class FileUtils {
                 if (toChannel != null) {
                     toChannel.close();
                 }
+            }
+        }
+    }
+
+    public static void deleteFile(String uriStr) {
+        Uri uri = Uri.parse(uriStr);
+        if (uri.getPath() == null) {
+            return;
+        }
+        File file = new File(uri.getPath());
+        if (file.exists()) {
+            if (file.delete()) {
+                System.out.println("file Deleted :" + uri.getPath());
+            } else {
+                System.out.println("file not Deleted :" + uri.getPath());
             }
         }
     }

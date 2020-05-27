@@ -94,7 +94,7 @@ dependencies {
     implementation 'org.jsoup:jsoup:1.10.2'
 
     //see database
-    debugCompile 'com.amitshekhar.android:debug-db:1.0.3'
+    debugImplementation 'com.amitshekhar.android:debug-db:1.0.3'
 
     //java mail apis
     implementation 'com.sun.mail:android-mail:1.6.0'

@@ -1,11 +1,21 @@
 package com.webkul.mobikul.mobikulstandalonepos.handlers;
 
+import android.Manifest;
+import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.app.TimePickerDialog;
+import android.arch.lifecycle.Observer;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -15,11 +25,15 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.google.android.gms.vision.text.Line;
@@ -28,6 +42,8 @@ import com.google.gson.Gson;
 import com.webkul.mobikul.mobikulstandalonepos.R;
 import com.webkul.mobikul.mobikulstandalonepos.activity.BaseActivity;
 import com.webkul.mobikul.mobikulstandalonepos.activity.CartActivity;
+import com.webkul.mobikul.mobikulstandalonepos.activity.ProductActivity;
+import com.webkul.mobikul.mobikulstandalonepos.constants.OptionConstants;
 import com.webkul.mobikul.mobikulstandalonepos.customviews.CustomDialogClass;
 import com.webkul.mobikul.mobikulstandalonepos.databinding.CustomOptionsBinding;
 import com.webkul.mobikul.mobikulstandalonepos.db.DataBaseController;
@@ -38,6 +54,8 @@ import com.webkul.mobikul.mobikulstandalonepos.db.entity.Options;
 import com.webkul.mobikul.mobikulstandalonepos.db.entity.Product;
 import com.webkul.mobikul.mobikulstandalonepos.fragment.HomeFragment;
 import com.webkul.mobikul.mobikulstandalonepos.helper.AppSharedPref;
+import com.webkul.mobikul.mobikulstandalonepos.helper.FileUtils;
+import com.webkul.mobikul.mobikulstandalonepos.helper.FormatUtils;
 import com.webkul.mobikul.mobikulstandalonepos.helper.Helper;
 import com.webkul.mobikul.mobikulstandalonepos.helper.ToastHelper;
 import com.webkul.mobikul.mobikulstandalonepos.model.CartModel;
@@ -46,6 +64,7 @@ import com.webkul.mobikul.mobikulstandalonepos.model.CashDrawerItems;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -199,6 +218,10 @@ public class HomeFragmentHandler {
         private Context context;
         private Product product;
         private CartModel cartData;
+        String tempDate;
+        private final String UPLOAD = "Upload";
+        private final String DELETE = "Delete";
+
 
         public CustomOptionsDialogClass(Context context, Product product, CartModel cartData) {
             super(context);
@@ -221,7 +244,7 @@ public class HomeFragmentHandler {
                     Log.d("Option - ", options.isSelected() + "");
                     switch (options.getType()) {
                         case "Select":
-                        case "Radio":
+                        case OptionConstants.RADIO:
                             RadioGroup rg = new RadioGroup(context);
                             for (OptionValues optionValues : options.getOptionValues()) {
                                 if (optionValues.isSelected()) {
@@ -251,7 +274,7 @@ public class HomeFragmentHandler {
                             });
                             ((LinearLayout) findViewById(R.id.options)).addView(rg);
                             break;
-                        case "Checkbox":
+                        case OptionConstants.CHECKBOX:
                             for (OptionValues optionValues : options.getOptionValues()) {
                                 if (optionValues.isSelected()) {
 
@@ -280,8 +303,159 @@ public class HomeFragmentHandler {
                                 }
                             }
                             break;
-                        case "Text":
-                        case "TextArea":
+                        case OptionConstants.FILE:
+                            LinearLayout linearLayout = new LinearLayout(context);
+                            linearLayout.setOrientation(LinearLayout.VERTICAL);
+                            final ImageView imageView = new ImageView(linearLayout.getContext());
+                            imageView.setLayoutParams(new LinearLayout.LayoutParams(250, 250));
+                            imageView.setPadding(0, 10, 10, 10);
+                            imageView.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_cloud_upload_grey_24dp));
+                            linearLayout.addView(imageView);
+                            final Button action = new Button(context);
+                            action.setText(UPLOAD);
+                            action.setBackgroundColor(ContextCompat.getColor(context, R.color.backgroundColor));
+                            action.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+                            action.setTextColor(ContextCompat.getColor(context, R.color.textColor));
+                            action.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                            linearLayout.addView(action);
+                            action.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    if (action.getText().equals(UPLOAD)) {
+                                        ((BaseActivity) context).cameraPermissionResult.observe(((BaseActivity) context), new Observer<Boolean>() {
+                                            @Override
+                                            public void onChanged(@Nullable Boolean aBoolean) {
+                                                if (aBoolean != null && aBoolean) {
+                                                    Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                                                    ((BaseActivity) context).startActivityForResult(cameraIntent, BaseActivity.CAMERA_REQUEST);
+                                                    ((BaseActivity) context).cameraRequestResult.observe(((BaseActivity) context), new Observer<String>() {
+                                                        @Override
+                                                        public void onChanged(@Nullable String uri) {
+                                                            if (uri != null && !uri.isEmpty()) {
+                                                                OptionValues optionValues = options.getOptionValues().isEmpty() ?
+                                                                        new OptionValues() : options.getOptionValues().get(0);
+                                                                optionValues.setAddToCart(true);
+                                                                optionValues.setOptionValueName(uri);
+                                                                optionValues.setSelected(true);
+                                                                imageView.setImageURI(Uri.parse(uri));
+                                                                action.setText(DELETE);
+                                                            }
+                                                            ((BaseActivity) context).cameraRequestResult.removeObservers(((BaseActivity) context));
+                                                        }
+                                                    });
+                                                }
+                                                ((BaseActivity) context).cameraPermissionResult.removeObservers(((BaseActivity) context));
+                                            }
+                                        });
+                                        if (ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA)
+                                                != PackageManager.PERMISSION_GRANTED) {
+                                            ActivityCompat.requestPermissions((BaseActivity) context, new String[]{Manifest.permission.CAMERA}, BaseActivity.CAMERA_REQUEST);
+                                        } else {
+                                            ((BaseActivity) context).cameraPermissionResult.setValue(true);
+                                        }
+                                    } else if (action.getText().equals(DELETE)) {
+                                        action.setText(UPLOAD);
+                                        imageView.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_cloud_upload_grey_24dp));
+                                        OptionValues optionValues = options.getOptionValues().get(0);
+                                        optionValues.setAddToCart(true);
+                                        FileUtils.deleteFile(optionValues.getOptionValueName());
+                                        optionValues.setOptionValueName("");
+                                        optionValues.setSelected(true);
+                                    }
+                                }
+                            });
+                            ((LinearLayout) findViewById(R.id.options)).addView(linearLayout);
+                            break;
+                        case OptionConstants.DATE:
+                        case OptionConstants.TIME:
+                        case OptionConstants.DATE_AND_TIME:
+                            final Button dateTime = new Button(context);
+                            String btnText = "Select " + options.getType();
+                            dateTime.setText(btnText);
+                            dateTime.setBackgroundColor(ContextCompat.getColor(context, R.color.backgroundColor));
+                            dateTime.setAllCaps(true);
+                            dateTime.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+                            dateTime.setTextColor(ContextCompat.getColor(context, R.color.textColor));
+                            dateTime.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                            dateTime.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    tempDate = null;
+                                    final DatePickerDialog.OnDateSetListener myDateListener = new
+                                            DatePickerDialog.OnDateSetListener() {
+                                                @Override
+                                                public void onDateSet(DatePicker arg0,
+                                                                      int arg1, int arg2, int arg3) {
+
+                                                    // arg1 = year
+                                                    // arg2 = month
+                                                    // arg3 = day
+                                                    String month = FormatUtils.INSTANCE.addLeadingZeroes(arg2, 2);
+                                                    String day = FormatUtils.INSTANCE.addLeadingZeroes(arg3, 2);
+                                                    String date = arg1 + "-" + month + "-" + day;
+                                                    if (!options.getType().equals(OptionConstants.DATE)) {
+                                                        tempDate = date;
+                                                    } else {
+                                                        dateTime.setText(date);
+                                                        OptionValues optionValues = options.getOptionValues().get(0);
+                                                        optionValues.setAddToCart(true);
+                                                        optionValues.setOptionValueName(date);
+                                                        optionValues.setSelected(true);
+                                                    }
+                                                }
+                                            };
+                                    final TimePickerDialog.OnTimeSetListener myTimeListener = new TimePickerDialog.OnTimeSetListener() {
+                                        @Override
+                                        public void onTimeSet(TimePicker timePicker, int hr, int mn) {
+                                            String time = FormatUtils.INSTANCE.formatTimeToTwelveHours(hr, mn);
+                                            if (!options.getType().equals(OptionConstants.TIME)) {
+                                                time = tempDate + " " + time;
+                                            }
+                                            OptionValues optionValues = options.getOptionValues().get(0);
+                                            optionValues.setAddToCart(true);
+                                            optionValues.setOptionValueName(time);
+                                            optionValues.setSelected(true);
+                                            dateTime.setText(time);
+                                        }
+                                    };
+                                    final Calendar calendar = Calendar.getInstance();
+                                    if (options.getType().equals(OptionConstants.TIME)) {
+                                        TimePickerDialog dialog = new TimePickerDialog(context, myTimeListener,
+                                                calendar.get(Calendar.HOUR_OF_DAY),
+                                                calendar.get(Calendar.MINUTE),
+                                                false
+                                        );
+                                        dialog.show();
+                                    } else {
+                                        final DatePickerDialog dialog = new DatePickerDialog(context, myDateListener,
+                                                calendar.get(Calendar.YEAR),
+                                                calendar.get(Calendar.MONTH),
+                                                calendar.get(Calendar.DAY_OF_MONTH)
+                                        );
+                                        dialog.show();
+                                        if (options.getType().equals(OptionConstants.DATE_AND_TIME)) {
+                                            dialog.setOnDismissListener(new OnDismissListener() {
+                                                @Override
+                                                public void onDismiss(DialogInterface dialogInterface) {
+                                                    if (tempDate != null) {
+                                                        TimePickerDialog dialog = new TimePickerDialog(context, myTimeListener,
+                                                                calendar.get(Calendar.HOUR_OF_DAY),
+                                                                calendar.get(Calendar.MINUTE),
+                                                                false
+                                                        );
+                                                        dialog.show();
+                                                    }
+                                                }
+                                            });
+                                        }
+
+                                    }
+                                }
+                            });
+                            ((LinearLayout) findViewById(R.id.options)).addView(dateTime);
+                            break;
+                        case OptionConstants.TEXT:
+                        case OptionConstants.TEXTAREA:
                             EditText text = new EditText(context);
                             text.setLayoutParams(new LinearLayout.LayoutParams(300, LinearLayout.LayoutParams.WRAP_CONTENT));
                             text.addTextChangedListener(new TextWatcher() {

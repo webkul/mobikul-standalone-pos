@@ -262,9 +262,10 @@
         <item>Checkbox</item>
         <item>Text</item>
         <item>TextArea</item>
-        <!--<item>Date</item>-->
-        <!--<item>Time</item>-->
-        <!--<item>Date &amp; Time</item>-->
+        <item>File</item>
+        <item>Date</item>
+        <item>Time</item>
+        <item>Date &amp; Time</item>
     </string-array>
 
     <string-array name="tax_type">
@@ -330,6 +331,7 @@
     <string name="low">Low</string>
     <string name="discount_can_t_be_empty">Discount can\'t be empty!</string>
     <string name="enter_fixed_discount">Enter fixed discount</string>
+    <string name="enter_price">Enter Price</string>
 
 
 </resources>
