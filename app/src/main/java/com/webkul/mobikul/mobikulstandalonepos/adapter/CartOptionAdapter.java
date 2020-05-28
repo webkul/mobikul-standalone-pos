@@ -54,6 +54,7 @@ class CartOptionAdapter extends RecyclerView.Adapter<CartOptionAdapter.ViewHolde
                 boolean isImageOption = false;
                 if(options.get(position).getType().equalsIgnoreCase(OptionConstants.FILE)) {
                     Uri uri = Uri.parse(optionValues.getOptionValueName());
+                    //Verifying correct file format and checking existence of the file
                     if (uri.getPath() != null && (uri.toString().endsWith(".jpg") || uri.toString().endsWith(".png") || uri.toString().endsWith(".jpeg"))) {
                         File file = new File(uri.getPath());
                         if (file.exists()) {
@@ -68,6 +69,7 @@ class CartOptionAdapter extends RecyclerView.Adapter<CartOptionAdapter.ViewHolde
                 }
                 TextView tv = new TextView(context);
                 if (!options.get(position).getType().equalsIgnoreCase(OptionConstants.TEXT) && !optionValues.getOptionValuePrice().trim().isEmpty() && Double.parseDouble(optionValues.getOptionValuePrice()) != 0.0) {
+                    //Not adding value name if option is of Image
                     tv.setText(String.format("%s (%s)", isImageOption ? "" : optionValues.getOptionValueName(), Helper.currencyFormater(Helper.currencyConverter(Double.parseDouble(optionValues.getOptionValuePrice()), context), context)));
                 } else {
                     tv.setText(optionValues.getOptionValueName());

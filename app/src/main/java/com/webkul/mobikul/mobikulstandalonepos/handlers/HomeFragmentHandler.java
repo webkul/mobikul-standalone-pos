@@ -308,11 +308,13 @@ public class HomeFragmentHandler {
                         case OptionConstants.FILE:
                             LinearLayout linearLayout = new LinearLayout(context);
                             linearLayout.setOrientation(LinearLayout.VERTICAL);
+                            // ImageView to show the image file
                             final ImageView imageView = new ImageView(linearLayout.getContext());
                             imageView.setLayoutParams(new LinearLayout.LayoutParams(250, 250));
                             imageView.setPadding(0, 10, 10, 10);
                             imageView.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_cloud_upload_grey_24dp));
                             linearLayout.addView(imageView);
+                            // Button to serve purpose of Upload and Delete actions
                             final Button action = new Button(context);
                             action.setText(UPLOAD);
                             action.setBackgroundColor(ContextCompat.getColor(context, R.color.backgroundColor));
@@ -326,8 +328,8 @@ public class HomeFragmentHandler {
                                     if (action.getText().equals(UPLOAD)) {
                                         ((BaseActivity) context).storagePermissionResult.observe(((BaseActivity) context), new Observer<Boolean>() {
                                             @Override
-                                            public void onChanged(@Nullable Boolean aBoolean) {
-                                                if (aBoolean != null && aBoolean) {
+                                            public void onChanged(@Nullable Boolean permissionsGranted) {
+                                                if (permissionsGranted != null && permissionsGranted) {
                                                     Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
                                                     ((BaseActivity) context).startActivityForResult(gallery, BaseActivity.IMAGE_REQUEST);
                                                     //Setting value null to clear previous result
@@ -337,20 +339,21 @@ public class HomeFragmentHandler {
                                                         public void onChanged(@Nullable String result) {
                                                             if (result != null) {
                                                                 if (!result.isEmpty()) {
-                                                                    OptionValues optionValues = options.getOptionValues().isEmpty() ?
+                                                                    OptionValues fileValue = options.getOptionValues().isEmpty() ?
                                                                             new OptionValues() : options.getOptionValues().get(0);
-                                                                    optionValues.setAddToCart(true);
-                                                                    optionValues.setOptionValueName(result);
-                                                                    optionValues.setSelected(true);
+                                                                    fileValue.setAddToCart(true);
+                                                                    fileValue.setOptionValueName(result);
+                                                                    fileValue.setSelected(true);
                                                                     Glide.with(context).load(Uri.parse(result)).asBitmap().into(imageView);
                                                                     action.setText(DELETE);
                                                                 }
-                                                                //Manually removing observers as they are not bindind with any ViewModel
+                                                                //Manually removing observer as it is not bind with any ViewModel
                                                                 ((BaseActivity) context).galleryImageRequestResult.removeObservers(((BaseActivity) context));
                                                             }
                                                         }
                                                     });
                                                 }
+                                                //Manually removing observer as it is not bind with any ViewModel
                                                 ((BaseActivity) context).storagePermissionResult.removeObservers(((BaseActivity) context));
                                             }
                                         });
@@ -366,6 +369,7 @@ public class HomeFragmentHandler {
                                         imageView.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_cloud_upload_grey_24dp));
                                         OptionValues optionValues = options.getOptionValues().get(0);
                                         optionValues.setAddToCart(false);
+                                        //Deleting File from internal storage also and marking it as unselected
                                         FileUtils.deleteFile(optionValues.getOptionValueName());
                                         optionValues.setOptionValueName("");
                                         optionValues.setSelected(false);
@@ -374,8 +378,8 @@ public class HomeFragmentHandler {
                             });
                             ((LinearLayout) findViewById(R.id.options)).addView(linearLayout);
                             break;
-                        case OptionConstants.DATE:
-                        case OptionConstants.TIME:
+                        case OptionConstants.DATE: // Falling through to Date & Time case
+                        case OptionConstants.TIME: // Falling through to Date & Time case
                         case OptionConstants.DATE_AND_TIME:
                             final Button dateTime = new Button(context);
                             String btnText = "Select " + options.getType();
@@ -388,70 +392,71 @@ public class HomeFragmentHandler {
                             dateTime.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
+                                    //Setting tempDate null by default to clear previous values on each click
                                     tempDate = null;
                                     final DatePickerDialog.OnDateSetListener myDateListener = new
                                             DatePickerDialog.OnDateSetListener() {
                                                 @Override
                                                 public void onDateSet(DatePicker arg0,
-                                                                      int arg1, int arg2, int arg3) {
-
-                                                    // arg1 = year
-                                                    // arg2 = month
-                                                    // arg3 = day
-                                                    String month = FormatUtils.INSTANCE.addLeadingZeroes(arg2, 2);
-                                                    String day = FormatUtils.INSTANCE.addLeadingZeroes(arg3, 2);
-                                                    String date = arg1 + "-" + month + "-" + day;
+                                                                      int year, int month, int day) {
+                                                    // Formatting Month and Day for Leading Zeroes
+                                                    // 2 is the minimum length for string with zeroes
+                                                    // Adding 1 to month because month index starts from 0
+                                                    String monthVal = FormatUtils.INSTANCE.addLeadingZeroes(month + 1, 2);
+                                                    String dayVal = FormatUtils.INSTANCE.addLeadingZeroes(day, 2);
+                                                    String date = year + "-" + monthVal + "-" + dayVal;
                                                     if (!options.getType().equals(OptionConstants.DATE)) {
+                                                        // Storing Date temporarily for setting it when Time is set in case of DATE & TIME option
                                                         tempDate = date;
                                                     } else {
                                                         dateTime.setText(date);
-                                                        OptionValues optionValues = options.getOptionValues().get(0);
-                                                        optionValues.setAddToCart(true);
-                                                        optionValues.setOptionValueName(date);
-                                                        optionValues.setSelected(true);
+                                                        OptionValues dateValue = options.getOptionValues().get(0);
+                                                        dateValue.setAddToCart(true);
+                                                        dateValue.setOptionValueName(date);
+                                                        dateValue.setSelected(true);
                                                     }
                                                 }
                                             };
                                     final TimePickerDialog.OnTimeSetListener myTimeListener = new TimePickerDialog.OnTimeSetListener() {
                                         @Override
                                         public void onTimeSet(TimePicker timePicker, int hr, int mn) {
+                                            //Parsing Time for 12 Hours format
                                             String time = FormatUtils.INSTANCE.formatTimeToTwelveHours(hr, mn);
                                             if (!options.getType().equals(OptionConstants.TIME)) {
+                                                // Merging stored date with Time in case of DATE & TIME option
                                                 time = tempDate + " " + time;
                                             }
-                                            OptionValues optionValues = options.getOptionValues().get(0);
-                                            optionValues.setAddToCart(true);
-                                            optionValues.setOptionValueName(time);
-                                            optionValues.setSelected(true);
+                                            OptionValues timeValue = options.getOptionValues().get(0);
+                                            timeValue.setAddToCart(true);
+                                            timeValue.setOptionValueName(time);
+                                            timeValue.setSelected(true);
                                             dateTime.setText(time);
                                         }
                                     };
                                     final Calendar calendar = Calendar.getInstance();
+                                    final TimePickerDialog tDialog = new TimePickerDialog(context, myTimeListener,
+                                            // To show current time selected by default
+                                            calendar.get(Calendar.HOUR_OF_DAY),
+                                            calendar.get(Calendar.MINUTE),
+                                            false
+                                    );
                                     if (options.getType().equals(OptionConstants.TIME)) {
-                                        TimePickerDialog dialog = new TimePickerDialog(context, myTimeListener,
-                                                calendar.get(Calendar.HOUR_OF_DAY),
-                                                calendar.get(Calendar.MINUTE),
-                                                false
-                                        );
-                                        dialog.show();
+                                        tDialog.show();
                                     } else {
-                                        final DatePickerDialog dialog = new DatePickerDialog(context, myDateListener,
+                                        final DatePickerDialog dDialog = new DatePickerDialog(context, myDateListener,
+                                                // To show current date selected by default
                                                 calendar.get(Calendar.YEAR),
                                                 calendar.get(Calendar.MONTH),
                                                 calendar.get(Calendar.DAY_OF_MONTH)
                                         );
-                                        dialog.show();
+                                        dDialog.show();
                                         if (options.getType().equals(OptionConstants.DATE_AND_TIME)) {
-                                            dialog.setOnDismissListener(new OnDismissListener() {
+                                            dDialog.setOnDismissListener(new OnDismissListener() {
                                                 @Override
                                                 public void onDismiss(DialogInterface dialogInterface) {
                                                     if (tempDate != null) {
-                                                        TimePickerDialog dialog = new TimePickerDialog(context, myTimeListener,
-                                                                calendar.get(Calendar.HOUR_OF_DAY),
-                                                                calendar.get(Calendar.MINUTE),
-                                                                false
-                                                        );
-                                                        dialog.show();
+                                                        //Launching TimePickerDialog when tempDate is set on dismiss of DatePickerDialog in case of DATE & TIME
+                                                        tDialog.show();
                                                     }
                                                 }
                                             });

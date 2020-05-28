@@ -364,12 +364,14 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
             case 1:
                 HomeFragment homeFragment = (HomeFragment) mSupportFragmentManager.findFragmentByTag(HomeFragment.class.getSimpleName());
                 homeFragment.onActivityResult(requestCode, resultCode, data);
                 break;
+            default:
+                // For calling BaseActivity onActivityResult method
+                super.onActivityResult(requestCode, resultCode, data);
         }
     }
 }

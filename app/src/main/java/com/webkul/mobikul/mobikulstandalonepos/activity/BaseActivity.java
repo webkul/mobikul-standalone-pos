@@ -58,6 +58,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     public AppDatabase getDb() {
+        //Changed code to avoid creating new Db instance for each query
         if (db == null || !db.isOpen()) {
             db = getAppDatabase(this);
         }
@@ -128,6 +129,10 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
     }
 
+    /*
+    * This method can be used from anywhere in the whole app to avoid duplicity of code.
+    * One can observe storagePermissionResult for user response after requesting permission.
+    * */
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -137,6 +142,10 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
     }
 
+    /*
+     * This method handles the boiler code for getting image data and converting into uri.
+     * One can observe galleryImageRequestResult for uri of requested image.
+     * */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -144,6 +153,7 @@ public abstract class BaseActivity extends AppCompatActivity {
             if (data != null && data.getData() != null) {
                 Uri uri = data.getData();
                 try {
+                    //Conversion of content uri to internal file uri for avoiding security exception when loading image in cart
                     Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
                     galleryImageRequestResult.setValue(Helper.saveToInternalStorage(BaseActivity.this, bitmap, "" + System.currentTimeMillis()).toString());
                 } catch (IOException e) {
@@ -152,6 +162,7 @@ public abstract class BaseActivity extends AppCompatActivity {
                 }
             } else {
                 Log.d("Gallery Intent", "Cancelled");
+                //Setting it empty string to remove observer without any action
                 galleryImageRequestResult.setValue("");
             }
         }

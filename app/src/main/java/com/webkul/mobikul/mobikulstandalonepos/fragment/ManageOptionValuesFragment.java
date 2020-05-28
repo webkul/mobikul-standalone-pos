@@ -25,7 +25,7 @@ public class ManageOptionValuesFragment extends Fragment {
     private static final String ARG_PARAM2 = "param2";
 
     // TODO: Rename and change types of parameters
-    public Options options;
+    private Options options;
     private String mParam2;
     private FragmentManageOptionValuesBinding binding;
     private SweetAlertDialog sweetAlert;
