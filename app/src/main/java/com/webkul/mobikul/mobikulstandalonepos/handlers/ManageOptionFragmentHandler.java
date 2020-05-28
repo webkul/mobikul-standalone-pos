@@ -55,9 +55,22 @@ public class ManageOptionFragmentHandler {
             optionHashmap = new HashMap<>();
     }
 
-    public void saveOptionToProduct(Product product, boolean isEdit) {
-        List<Options> optionsList = new ArrayList<>();
-        optionsList.addAll(product.getOptions());
+    public void saveOptionToProduct(Product product, Options option, boolean isEdit) {
+        List<Options> optionsList = new ArrayList<>(product.getOptions());
+        // We must replace the new option if it is already found in product
+        // If not then we will add the option to the product
+        boolean add = true;
+        for (int i = 0; i < optionsList.size(); i++) {
+            Options options1 = optionsList.get(i);
+            if (options1.getOptionId() == option.getOptionId()) {
+                add = false;
+                optionsList.set(i, option);
+                break;
+            }
+        }
+        if (add) {
+            product.getOptions().add(option);
+        }
         for (Options options : optionsList) {
             for (OptionValues optionValues : options.getOptionValues()) {
                 if (optionValues.isSelected()) {
@@ -78,8 +91,20 @@ public class ManageOptionFragmentHandler {
     }
 
     public void onOptionsSelect(final Options options, final Product product) {
-        if (options.getType().equals(OptionConstants.FILE) || options.getType().equals(OptionConstants.DATE_AND_TIME)
-                || options.getType().equals(OptionConstants.DATE) || options.getType().equals(OptionConstants.TIME)) {
+        if (options.getType().equals(OptionConstants.RADIO) || options.getType().equals(OptionConstants.CHECKBOX)) {
+            FragmentManager fragmentManager = ((AppCompatActivity) context).getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left);
+            Fragment fragment;
+            fragment = ((BaseActivity) context).mSupportFragmentManager.findFragmentByTag(ManageOptionValuesFragment.class.getSimpleName());
+            if (fragment == null)
+                fragment = new ManageOptionValuesFragment();
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("options", options);
+            fragment.setArguments(bundle);
+            fragmentTransaction.add(((ProductActivity) context).binding.productFl.getId(), fragment, fragment.getClass().getSimpleName());
+            fragmentTransaction.addToBackStack(fragment.getClass().getSimpleName()).commit();
+        } else {
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
             Fragment fragment = ((BaseActivity) context).mSupportFragmentManager.findFragmentByTag(ManageOptionsFragment.class.getSimpleName());
             View mview = fragment.getLayoutInflater().inflate(R.layout.input_price_dialog, null);
@@ -107,48 +132,34 @@ public class ManageOptionFragmentHandler {
                         mPrice = Float.parseFloat(price.getText().toString());
                     } catch (NumberFormatException e) {
                         e.printStackTrace();
-                        price.setError("Enter correct value");
+                        price.setError(context.getString(R.string.enter_correct_value));
                         return;
                     }
                     List<Options> optionsList = new ArrayList<>(product.getOptions());
+                    Options newOptions = options;
+                    boolean add = true;
+                    // We have to check for option existance in the product and add or replace accordingly
                     for (Options options1 : optionsList) {
                         if (options1.getOptionId() == options.getOptionId()) {
-                            options.setSelected(true);
-                            options.getOptionValues().clear();
-                            OptionValues optionValues = new OptionValues();
-                            optionValues.setOptionValuePrice(Float.toString(mPrice));
-                            options.getOptionValues().add(optionValues);
+                            newOptions = options1;
+                            add = false;
                             break;
                         }
                     }
+                    newOptions.setSelected(true);
+                    newOptions.getOptionValues().clear();
+                    OptionValues optionValues = new OptionValues();
+                    optionValues.setOptionValuePrice(Float.toString(mPrice));
+                    optionValues.setSelected(true);
+                    newOptions.getOptionValues().add(optionValues);
+                    if (add) {
+                        optionsList.add(newOptions);
+                    }
                     product.setOptions(optionsList);
-                    Log.d("Options", new Gson().toJson(product.getOptions()) + "");
                     dialog.dismiss();
                 }
             });
             dialog.show();
-        } else if (!options.getType().equalsIgnoreCase("text") && !options.getType().equalsIgnoreCase("textarea")) {
-            FragmentManager fragmentManager = ((AppCompatActivity) context).getSupportFragmentManager();
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left);
-            Fragment fragment;
-            fragment = ((BaseActivity) context).mSupportFragmentManager.findFragmentByTag(ManageOptionValuesFragment.class.getSimpleName());
-            if (fragment == null)
-                fragment = new ManageOptionValuesFragment();
-            Bundle bundle = new Bundle();
-            bundle.putSerializable("options", options);
-            fragment.setArguments(bundle);
-            fragmentTransaction.add(((ProductActivity) context).binding.productFl.getId(), fragment, fragment.getClass().getSimpleName());
-            fragmentTransaction.addToBackStack(fragment.getClass().getSimpleName()).commit();
-        } else {
-            List<Options> optionsList = new ArrayList<>();
-            optionsList.addAll(product.getOptions());
-            for (Options options1 : optionsList) {
-                if (options1.getOptionId() == options.getOptionId())
-                    options.setSelected(true);
-            }
-            product.setOptions(optionsList);
-            Log.d("Options", new Gson().toJson(product.getOptions()) + "");
         }
     }
 }

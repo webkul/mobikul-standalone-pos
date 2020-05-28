@@ -32,6 +32,10 @@
             type="com.webkul.mobikul.mobikulstandalonepos.db.entity.Product" />
 
         <variable
+            name="option"
+            type="com.webkul.mobikul.mobikulstandalonepos.db.entity.Options" />
+
+        <variable
             name="edit"
             type="boolean" />
 
@@ -115,7 +119,7 @@
                         android:layout_height="wrap_content"
                         android:layout_toRightOf="@+id/delete_product"
                         android:background="?attr/selectableItemBackgroundBorderless"
-                        android:onClick="@{()-> manageOptionFragmentHandler.saveOptionToProduct(data, edit)}"
+                        android:onClick="@{()-> manageOptionFragmentHandler.saveOptionToProduct(data, option, edit)}"
                         android:padding="@dimen/spacing_generic"
                         android:visibility="gone"
                         app:srcCompat="@drawable/ic_submit_fill" />

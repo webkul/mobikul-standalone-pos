@@ -332,6 +332,7 @@
     <string name="discount_can_t_be_empty">Discount can\'t be empty!</string>
     <string name="enter_fixed_discount">Enter fixed discount</string>
     <string name="enter_price">Enter Price</string>
+    <string name="enter_correct_value">Enter correct value</string>
 
 
 </resources>

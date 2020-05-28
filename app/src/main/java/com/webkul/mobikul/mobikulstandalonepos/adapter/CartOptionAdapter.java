@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.webkul.mobikul.mobikulstandalonepos.R;
 import com.webkul.mobikul.mobikulstandalonepos.constants.OptionConstants;
 import com.webkul.mobikul.mobikulstandalonepos.databinding.ProductOptionsLayoutBinding;
@@ -58,17 +59,19 @@ class CartOptionAdapter extends RecyclerView.Adapter<CartOptionAdapter.ViewHolde
                         if (file.exists()) {
                             ImageView imageView = new ImageView(context);
                             imageView.setLayoutParams(new LinearLayout.LayoutParams(250, 250));
-                            imageView.setImageURI(uri);
+                            //For Better image Loading performance into view
+                            Glide.with(context).load(uri).asBitmap().into(imageView);
                             holder.binding.optionValueLl.addView(imageView);
                             isImageOption = true;
                         }
                     }
                 }
                 TextView tv = new TextView(context);
-                if (!options.get(position).getType().equalsIgnoreCase(OptionConstants.TEXT) && !optionValues.getOptionValuePrice().equalsIgnoreCase("")) {
+                if (!options.get(position).getType().equalsIgnoreCase(OptionConstants.TEXT) && !optionValues.getOptionValuePrice().trim().isEmpty() && Double.parseDouble(optionValues.getOptionValuePrice()) != 0.0) {
                     tv.setText(String.format("%s (%s)", isImageOption ? "" : optionValues.getOptionValueName(), Helper.currencyFormater(Helper.currencyConverter(Double.parseDouble(optionValues.getOptionValuePrice()), context), context)));
-                } else
+                } else {
                     tv.setText(optionValues.getOptionValueName());
+                }
                 tv.setGravity(Gravity.CENTER);
                 tv.setTextColor(ContextCompat.getColor(context, R.color.colorAccent));
                 holder.binding.optionValueLl.addView(tv);

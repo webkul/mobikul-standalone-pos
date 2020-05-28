@@ -1,14 +1,15 @@
 package com.webkul.mobikul.mobikulstandalonepos.activity;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.arch.lifecycle.MutableLiveData;
-import android.arch.persistence.room.Room;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
@@ -17,12 +18,13 @@ import android.support.v7.app.AppCompatDelegate;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.webkul.mobikul.mobikulstandalonepos.R;
 import com.webkul.mobikul.mobikulstandalonepos.db.AppDatabase;
 import com.webkul.mobikul.mobikulstandalonepos.helper.AppSharedPref;
 import com.webkul.mobikul.mobikulstandalonepos.helper.Helper;
+
+import java.io.IOException;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
@@ -36,13 +38,14 @@ import static com.webkul.mobikul.mobikulstandalonepos.db.AppDatabase.getAppDatab
 public abstract class BaseActivity extends AppCompatActivity {
     @SuppressWarnings("unused")
     public static final String TAG = "BaseActivity";
-    public static final int CAMERA_REQUEST = 125;
+    public static final int IMAGE_REQUEST = 125;
+    public static final int READ_STORAGE_PERMISSION_REQUEST = 126;
     public SweetAlertDialog mSweetAlertDialog;
     public FragmentManager mSupportFragmentManager;
     public static AppDatabase db;
     public static Context context;
-    public MutableLiveData<Boolean> cameraPermissionResult = new MutableLiveData<>();
-    public MutableLiveData<String> cameraRequestResult = new MutableLiveData<>();
+    public MutableLiveData<Boolean> storagePermissionResult = new MutableLiveData<>();
+    public MutableLiveData<String> galleryImageRequestResult = new MutableLiveData<>();
 
     @SuppressLint("CommitPrefEdits")
     @Override
@@ -128,21 +131,28 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == CAMERA_REQUEST) {
-            cameraPermissionResult.setValue(grantResults[0] == PackageManager.PERMISSION_GRANTED);
+        if (requestCode == READ_STORAGE_PERMISSION_REQUEST) {
+            storagePermissionResult.setValue(((grantResults.length > 0 &&
+                    grantResults[0] == PackageManager.PERMISSION_GRANTED)));
         }
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == CAMERA_REQUEST) {
-            if (data != null && data.getExtras() != null) {
-                Bitmap photo = (Bitmap) data.getExtras().get("data");
-                Uri uri = Helper.saveToInternalStorage(BaseActivity.this, photo, ""+System.currentTimeMillis());
-                cameraRequestResult.setValue(uri.toString());
+        if (requestCode == IMAGE_REQUEST && resultCode == Activity.RESULT_OK) {
+            if (data != null && data.getData() != null) {
+                Uri uri = data.getData();
+                try {
+                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
+                    galleryImageRequestResult.setValue(Helper.saveToInternalStorage(BaseActivity.this, bitmap, "" + System.currentTimeMillis()).toString());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    galleryImageRequestResult.setValue("");
+                }
             } else {
-                Log.d("Camera", "Data null");
+                Log.d("Gallery Intent", "Cancelled");
+                galleryImageRequestResult.setValue("");
             }
         }
     }

@@ -25,7 +25,7 @@ public class ManageOptionValuesFragment extends Fragment {
     private static final String ARG_PARAM2 = "param2";
 
     // TODO: Rename and change types of parameters
-    private Options options;
+    public Options options;
     private String mParam2;
     private FragmentManageOptionValuesBinding binding;
     private SweetAlertDialog sweetAlert;
@@ -54,7 +54,7 @@ public class ManageOptionValuesFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         if (options.getOptionValues().size() > 0) {
-            ManageOptionValuesAdapter manageOptionValuesAdapter = new ManageOptionValuesAdapter(getActivity(), options.getOptionValues());
+            ManageOptionValuesAdapter manageOptionValuesAdapter = new ManageOptionValuesAdapter(getActivity(), options);
             binding.manageOptionValuesRv.setAdapter(manageOptionValuesAdapter);
         } else {
             sweetAlert = new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE);
@@ -72,6 +72,7 @@ public class ManageOptionValuesFragment extends Fragment {
             sweetAlert.setCancelable(false);
         }
         ((ProductActivity) getActivity()).binding.saveSelectedOptios.setVisibility(View.VISIBLE);
+        ((ProductActivity) getActivity()).binding.setOption(options);
     }
 
     @Override

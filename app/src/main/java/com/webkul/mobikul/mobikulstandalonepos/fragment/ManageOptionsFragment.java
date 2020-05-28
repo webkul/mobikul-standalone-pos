@@ -87,10 +87,18 @@ public class ManageOptionsFragment extends Fragment {
             @Override
             public void onSuccess(Object responseData, String msg) {
                 if (!responseData.toString().equalsIgnoreCase("[]")) {
-                    //if (!(options.size() > 0))
-                    options.clear();
-                    options.addAll((List<Options>) responseData);
-                    manageOptionsAdapter = new ManageOptionsAdapter(getActivity(), options, product);
+                    //Marking already added option in product as selected
+                    List<Options> mOptions = new ArrayList<>((List<Options>) responseData);
+                    for (Options option:options) {
+                        if(option.isSelected()) {
+                            for (Options mOption:mOptions) {
+                                if(option.getOptionId() == mOption.getOptionId()) {
+                                    mOption.setSelected(true);
+                                }
+                            }
+                        }
+                    }
+                    manageOptionsAdapter = new ManageOptionsAdapter(getActivity(), mOptions, product);
                     binding.manageOptionsRv.setAdapter(manageOptionsAdapter);
                 } else {
                     sweetAlert = new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE);

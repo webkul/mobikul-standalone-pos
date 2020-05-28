@@ -9,9 +9,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -29,6 +29,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
@@ -36,6 +37,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.vision.text.Line;
 import com.google.firebase.crash.FirebaseCrash;
 import com.google.gson.Gson;
@@ -322,45 +324,51 @@ public class HomeFragmentHandler {
                                 @Override
                                 public void onClick(View view) {
                                     if (action.getText().equals(UPLOAD)) {
-                                        ((BaseActivity) context).cameraPermissionResult.observe(((BaseActivity) context), new Observer<Boolean>() {
+                                        ((BaseActivity) context).storagePermissionResult.observe(((BaseActivity) context), new Observer<Boolean>() {
                                             @Override
                                             public void onChanged(@Nullable Boolean aBoolean) {
                                                 if (aBoolean != null && aBoolean) {
-                                                    Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                                                    ((BaseActivity) context).startActivityForResult(cameraIntent, BaseActivity.CAMERA_REQUEST);
-                                                    ((BaseActivity) context).cameraRequestResult.observe(((BaseActivity) context), new Observer<String>() {
+                                                    Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+                                                    ((BaseActivity) context).startActivityForResult(gallery, BaseActivity.IMAGE_REQUEST);
+                                                    //Setting value null to clear previous result
+                                                    ((BaseActivity) context).galleryImageRequestResult.setValue(null);
+                                                    ((BaseActivity) context).galleryImageRequestResult.observe(((BaseActivity) context), new Observer<String>() {
                                                         @Override
-                                                        public void onChanged(@Nullable String uri) {
-                                                            if (uri != null && !uri.isEmpty()) {
-                                                                OptionValues optionValues = options.getOptionValues().isEmpty() ?
-                                                                        new OptionValues() : options.getOptionValues().get(0);
-                                                                optionValues.setAddToCart(true);
-                                                                optionValues.setOptionValueName(uri);
-                                                                optionValues.setSelected(true);
-                                                                imageView.setImageURI(Uri.parse(uri));
-                                                                action.setText(DELETE);
+                                                        public void onChanged(@Nullable String result) {
+                                                            if (result != null) {
+                                                                if (!result.isEmpty()) {
+                                                                    OptionValues optionValues = options.getOptionValues().isEmpty() ?
+                                                                            new OptionValues() : options.getOptionValues().get(0);
+                                                                    optionValues.setAddToCart(true);
+                                                                    optionValues.setOptionValueName(result);
+                                                                    optionValues.setSelected(true);
+                                                                    Glide.with(context).load(Uri.parse(result)).asBitmap().into(imageView);
+                                                                    action.setText(DELETE);
+                                                                }
+                                                                //Manually removing observers as they are not bindind with any ViewModel
+                                                                ((BaseActivity) context).galleryImageRequestResult.removeObservers(((BaseActivity) context));
                                                             }
-                                                            ((BaseActivity) context).cameraRequestResult.removeObservers(((BaseActivity) context));
                                                         }
                                                     });
                                                 }
-                                                ((BaseActivity) context).cameraPermissionResult.removeObservers(((BaseActivity) context));
+                                                ((BaseActivity) context).storagePermissionResult.removeObservers(((BaseActivity) context));
                                             }
                                         });
-                                        if (ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA)
+                                        if (ContextCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE)
                                                 != PackageManager.PERMISSION_GRANTED) {
-                                            ActivityCompat.requestPermissions((BaseActivity) context, new String[]{Manifest.permission.CAMERA}, BaseActivity.CAMERA_REQUEST);
+                                            ActivityCompat.requestPermissions((BaseActivity) context, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, BaseActivity.READ_STORAGE_PERMISSION_REQUEST);
                                         } else {
-                                            ((BaseActivity) context).cameraPermissionResult.setValue(true);
+                                            //Setting Permission true when we already have permission
+                                            ((BaseActivity) context).storagePermissionResult.setValue(true);
                                         }
                                     } else if (action.getText().equals(DELETE)) {
                                         action.setText(UPLOAD);
                                         imageView.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_cloud_upload_grey_24dp));
                                         OptionValues optionValues = options.getOptionValues().get(0);
-                                        optionValues.setAddToCart(true);
+                                        optionValues.setAddToCart(false);
                                         FileUtils.deleteFile(optionValues.getOptionValueName());
                                         optionValues.setOptionValueName("");
-                                        optionValues.setSelected(true);
+                                        optionValues.setSelected(false);
                                     }
                                 }
                             });

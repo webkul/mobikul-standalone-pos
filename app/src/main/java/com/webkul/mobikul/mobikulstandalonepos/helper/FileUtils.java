@@ -1,6 +1,7 @@
 package com.webkul.mobikul.mobikulstandalonepos.helper;
 
 import android.net.Uri;
+import android.util.Log;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -49,9 +50,9 @@ public class FileUtils {
         File file = new File(uri.getPath());
         if (file.exists()) {
             if (file.delete()) {
-                System.out.println("file Deleted :" + uri.getPath());
+                Log.d("file Deleted", uri.getPath());
             } else {
-                System.out.println("file not Deleted :" + uri.getPath());
+                Log.d("file not Deleted", uri.getPath());
             }
         }
     }

@@ -23,9 +23,9 @@ class ManageOptionValuesAdapter extends RecyclerView.Adapter<ManageOptionValuesA
     private Context context;
     private List<OptionValues> optionValues;
 
-    public ManageOptionValuesAdapter(Context context, List<OptionValues> optionValues) {
+    public ManageOptionValuesAdapter(Context context, Options options) {
         this.context = context;
-        this.optionValues = optionValues;
+        this.optionValues = options.getOptionValues();
     }
 
     @Override
