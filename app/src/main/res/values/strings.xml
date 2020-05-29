@@ -256,25 +256,11 @@
     <string name="add_option">Add Option</string>
     <string name="edit_option">Edit Option</string>
 
-    <string-array name="type">
-        <!--<item>Select</item>-->
-        <item>Radio</item>
-        <item>Checkbox</item>
-        <item>Text</item>
-        <item>TextArea</item>
-        <!--<item>Date</item>-->
-        <!--<item>Time</item>-->
-        <!--<item>Date &amp; Time</item>-->
-    </string-array>
+    <string name="title_activity_cash_drawer">Cash Drawer</string>
 
-    <string-array name="tax_type">
-        <item>Percentage (%)</item>
-        <item>Fix Amount</item>
-    </string-array>
+    <string name="amt_returned">Amt. Returned </string>
 
     <!--cash drawer string-->
-    <string name="title_activity_cash_drawer">Cash Drawer</string>
-    <string name="amt_returned">Amt. Returned </string>
     <string name="net_revenue">Net Revenue - </string>
     <string name="net_revenue_">Net Revenue - %s</string>
     <string name="amt_collected">Amt. Collected</string>
@@ -283,20 +269,20 @@
     <string name="save_barcode">Save barcode</string>
     <string name="left"><![CDATA[<<]]></string>
     <string name="right"><![CDATA[>>]]></string>
-
-    <!--tax string-->
     <string name="title_activity_tax">Taxes</string>
     <string name="add_new_tax_rate">Add New Tax Rate</string>
+
+    <!--tax string-->
     <string name="tax_name">Tax Name</string>
     <string name="enable_tax_rate">Enable Tax Rate</string>
     <string name="add_tax_title">Add Tax Rates</string>
     <string name="edit_tax_title">Edit Tax Rate</string>
     <string name="tax_rate">Tax Rate</string>
     <string name="remove">Remove</string>
-
-    <!--low stock product-->
     <string name="low_stocks">Low Stock Products</string>
     <string name="low_stock_products">Low stock products</string>
+
+    <!--low stock product-->
     <string name="title_activity_other">Others</string>
     <string name="generate_invoice">Generate Invoice</string>
     <string name="view_invoice">View Invoice</string>
@@ -308,14 +294,38 @@
     <string name="address_line">Address Line</string>
     <string name="city">City</string>
     <string name="title_activity_currency">Select Currency</string>
-
-    <!--currency-->
     <string name="pick_currency">Pick Currency</string>
     <string name="default_currency">EUR</string>
+
+    <!--currency-->
     <string name="selected_currencies">Selected Currencies</string>
+    <string name="title_activity_sales_report">Sales and Reporting</string>
+    <string name="return_items">Return Items</string>
 
+    <string name="low">Low</string>
+
+    <string name="discount_can_t_be_empty">Discount can\'t be empty!</string>
+    <string name="enter_fixed_discount">Enter fixed discount</string>
+    <string-array name="type">
+        <!--<item>Select</item>-->
+        <item>Radio</item>
+        <item>Checkbox</item>
+        <item>Text</item>
+        <item>TextArea</item>
+
+        <item>File</item>
+        <item>Date</item>
+        <item>Time</item>
+        <item>Date &amp; Time</item>
+        <!--<item>Date</item>-->
+        <!--<item>Time</item>-->
+        <!--<item>Date &amp; Time</item>-->
+    </string-array>
+    <string-array name="tax_type">
+        <item>Percentage (%)</item>
+        <item>Fix Amount</item>
+    </string-array>
     <string-array name="empty_array"></string-array>
-
     <string-array name="selectedCurrencies">
         <item>IDR</item>
         <item>USD</item>
@@ -325,11 +335,6 @@
         <item>CAD</item>
         <item>INR</item>
     </string-array>
-    <string name="title_activity_sales_report">Sales and Reporting</string>
-    <string name="return_items">Return Items</string>
-    <string name="low">Low</string>
-    <string name="discount_can_t_be_empty">Discount can\'t be empty!</string>
-    <string name="enter_fixed_discount">Enter fixed discount</string>
 
 
 </resources>

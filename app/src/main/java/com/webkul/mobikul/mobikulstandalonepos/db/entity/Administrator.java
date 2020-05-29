@@ -6,10 +6,9 @@ import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
-import android.util.Log;
-import android.util.Patterns;
 
 import com.webkul.mobikul.mobikulstandalonepos.BR;
+
 
 @Entity(tableName = "Administrator")
 public class Administrator extends BaseObservable {
