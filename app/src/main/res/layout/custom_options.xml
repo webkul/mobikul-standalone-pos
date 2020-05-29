@@ -36,16 +36,26 @@
             android:textStyle="normal"
             android:visibility="gone" />
 
-        <LinearLayout
-            android:id="@+id/options"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="start"
-            android:layout_marginLeft="@dimen/spacing_normal"
-            android:layout_margin="@dimen/spacing_generic"
-            android:orientation="vertical">
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="400dp">
 
-        </LinearLayout>
+            <LinearLayout
+                android:id="@+id/options"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:layout_marginLeft="@dimen/spacing_normal"
+                android:layout_margin="@dimen/spacing_generic"
+                android:orientation="vertical">
+
+            </LinearLayout>
+
+        </ScrollView>
+
+
 
         <LinearLayout
             android:layout_width="match_parent"

@@ -89,6 +89,7 @@
             android:layout_height="match_parent"
             android:layout_above="@+id/cart_view"
             android:layout_marginTop="@dimen/spacing_generic"
+            android:layout_marginBottom="3dp"
             app:page="@{BundleConstants.EmptyLayoutType.PRODUCT}"
             app:visibility="@{visibility}" />
 

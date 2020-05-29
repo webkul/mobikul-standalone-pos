@@ -1,13 +1,14 @@
 package com.webkul.mobikul.mobikulstandalonepos.activity;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.arch.lifecycle.MutableLiveData;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.databinding.DataBindingUtil;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -38,6 +39,7 @@ import com.webkul.mobikul.mobikulstandalonepos.helper.AppSharedPref;
 import com.webkul.mobikul.mobikulstandalonepos.helper.Helper;
 import com.webkul.mobikul.mobikulstandalonepos.helper.ToastHelper;
 import com.webkul.mobikul.mobikulstandalonepos.interfaces.DataBaseCallBack;
+import com.webkul.mobikul.mobikulstandalonepos.utils.FileUtils;
 
 import java.io.File;
 import java.lang.reflect.Field;
@@ -65,6 +67,10 @@ public class MainActivity extends BaseActivity {
     long networkTS = 0;
     private long storedTime;
     private SweetAlertDialog sweetAlert;
+
+    public MutableLiveData<String> uploadFile = new MutableLiveData<>();
+    public MutableLiveData<Boolean> readStorage = new MutableLiveData<>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -370,6 +376,26 @@ public class MainActivity extends BaseActivity {
                 HomeFragment homeFragment = (HomeFragment) mSupportFragmentManager.findFragmentByTag(HomeFragment.class.getSimpleName());
                 homeFragment.onActivityResult(requestCode, resultCode, data);
                 break;
+
+            case 20:
+
+                if(resultCode == Activity.RESULT_OK){
+
+                    Uri uri = data.getData();
+                    String path = FileUtils.getPath(this,uri);
+                    Log.e("Path",path);
+                    uploadFile.setValue(path);
+                }
+                break;
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (requestCode == 888) {
+            readStorage.setValue(((grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)));
         }
     }
 }

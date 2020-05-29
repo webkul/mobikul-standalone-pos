@@ -1,38 +1,42 @@
 package com.webkul.mobikul.mobikulstandalonepos.handlers;
 
+import android.Manifest;
+import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.app.TimePickerDialog;
+import android.arch.lifecycle.Observer;
 import android.content.Context;
 import android.content.Intent;
-import android.databinding.DataBindingUtil;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
-import com.google.android.gms.vision.text.Line;
-import com.google.firebase.crash.FirebaseCrash;
 import com.google.gson.Gson;
 import com.webkul.mobikul.mobikulstandalonepos.R;
 import com.webkul.mobikul.mobikulstandalonepos.activity.BaseActivity;
 import com.webkul.mobikul.mobikulstandalonepos.activity.CartActivity;
-import com.webkul.mobikul.mobikulstandalonepos.customviews.CustomDialogClass;
-import com.webkul.mobikul.mobikulstandalonepos.databinding.CustomOptionsBinding;
-import com.webkul.mobikul.mobikulstandalonepos.db.DataBaseController;
-import com.webkul.mobikul.mobikulstandalonepos.db.entity.CashDrawerModel;
-import com.webkul.mobikul.mobikulstandalonepos.db.entity.Currency;
+import com.webkul.mobikul.mobikulstandalonepos.activity.MainActivity;
 import com.webkul.mobikul.mobikulstandalonepos.db.entity.OptionValues;
 import com.webkul.mobikul.mobikulstandalonepos.db.entity.Options;
 import com.webkul.mobikul.mobikulstandalonepos.db.entity.Product;
@@ -41,16 +45,14 @@ import com.webkul.mobikul.mobikulstandalonepos.helper.AppSharedPref;
 import com.webkul.mobikul.mobikulstandalonepos.helper.Helper;
 import com.webkul.mobikul.mobikulstandalonepos.helper.ToastHelper;
 import com.webkul.mobikul.mobikulstandalonepos.model.CartModel;
-import com.webkul.mobikul.mobikulstandalonepos.model.CashDrawerItems;
 
+import java.sql.Time;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Calendar;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import static android.content.ContentValues.TAG;
 
@@ -200,6 +202,8 @@ public class HomeFragmentHandler {
         private Product product;
         private CartModel cartData;
 
+
+
         public CustomOptionsDialogClass(Context context, Product product, CartModel cartData) {
             super(context);
             this.context = context;
@@ -213,6 +217,7 @@ public class HomeFragmentHandler {
             setCanceledOnTouchOutside(false);
             requestWindowFeature(Window.FEATURE_NO_TITLE);
             setContentView(R.layout.custom_options);
+
             for (final Options options : product.getOptions()) {
                 if (options.isSelected()) {
                     TextView label = new TextView(context);
@@ -306,6 +311,286 @@ public class HomeFragmentHandler {
                             });
                             ((LinearLayout) findViewById(R.id.options)).addView(text);
                             break;
+
+                        case "File":
+
+                            final OptionValues optionValues = options.getOptionValues().get(0);
+
+                            final LinearLayout buttonParent = new LinearLayout(context);
+
+                            buttonParent.setLayoutParams(new
+                                    LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                                    LinearLayout.LayoutParams.WRAP_CONTENT));
+
+                            buttonParent.setOrientation(LinearLayout.HORIZONTAL);
+
+
+                            if(optionValues.isSelected()){
+
+                                final TextView tvOptionValue = new TextView(context);
+                                final ImageView removeFile = new ImageView(context);
+                                final Button buttonUpload = new Button(context);
+
+                                if(optionValues.getFileName().isEmpty()){
+
+                                    buttonUpload.setLayoutParams(new LinearLayout.LayoutParams(300,
+                                            LinearLayout.LayoutParams.WRAP_CONTENT));
+
+                                    LinearLayout.LayoutParams  parameter
+                                            =  (LinearLayout.LayoutParams) buttonUpload.getLayoutParams();
+                                    parameter.setMargins(10, 10, 10, 10); // left, top, right, bottom
+
+                                    buttonUpload.setLayoutParams(parameter);
+
+                                    buttonUpload.setText("Upload");
+
+                                    buttonParent.addView(buttonUpload);
+
+                                    optionValues.setAddToCart(false);
+                                    optionValues.setOptionValueName("");
+
+                                    buttonUpload.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+
+                                            ((MainActivity)context).readStorage.observe(((MainActivity)context), new Observer<Boolean>() {
+                                                @Override
+                                                public void onChanged(@Nullable Boolean aBoolean) {
+
+                                                    if(aBoolean != null && aBoolean) {
+
+                                                        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                                                        intent.setType("*/*");
+                                                        ((MainActivity)context).startActivityForResult(intent, 20);
+
+                                                        ((MainActivity) context).uploadFile.setValue(null);
+                                                        ((MainActivity) context).uploadFile.observe(((MainActivity) context), new Observer<String>() {
+                                                            @Override
+                                                            public void onChanged(@Nullable String s) {
+
+                                                                if (s != null) {
+
+                                                                    if (!s.isEmpty()) {
+                                                                        initUpload(buttonParent, tvOptionValue, removeFile, options, buttonUpload, s);
+                                                                    }
+                                                                    ((MainActivity) context).uploadFile.removeObservers(((MainActivity) context));
+                                                                }
+                                                            }
+                                                        });
+
+                                                        ((MainActivity) context).readStorage.setValue(null);
+                                                        ((MainActivity) context).readStorage.removeObservers(((MainActivity) context));
+
+                                                    }
+                                                }
+                                            });
+
+                                            if (ContextCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE)
+                                                    == PackageManager.PERMISSION_DENIED){
+                                                ActivityCompat.requestPermissions((MainActivity) context, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 888);
+
+                                            } else {
+                                                ((MainActivity) context).readStorage.setValue(true);
+                                            }
+
+                                        }
+                                    });
+
+
+                                    ((LinearLayout) findViewById(R.id.options)).addView(buttonParent);
+
+                                } else {
+
+                                    buttonParent.removeAllViews();
+
+                                    LinearLayout.LayoutParams  parameter
+                                            =  new LinearLayout.LayoutParams(300, LinearLayout.LayoutParams.WRAP_CONTENT);
+                                    parameter.setMargins(10, 10, 10, 10); // left, top, right, bottom
+                                    tvOptionValue.setLayoutParams(parameter);
+
+
+                                    tvOptionValue.setText(optionValues.getFileName());
+
+                                    removeFile.setImageResource(R.drawable.ic_close_round);
+                                    removeFile.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                                            LinearLayout.LayoutParams.WRAP_CONTENT));
+
+                                    buttonParent.addView(tvOptionValue);
+                                    buttonParent.addView(removeFile);
+
+                                    removeFile.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+
+                                            OptionValues optionValues = new OptionValues();
+                                            optionValues.setAddToCart(false);
+                                            optionValues.setOptionValueName("");
+                                            optionValues.setFileName("");
+                                            optionValues.setFileType("");
+                                            optionValues.setFileUri("");
+                                            optionValues.setSelected(true);
+                                            List<OptionValues> optionValuesList = new ArrayList<>();
+                                            optionValuesList.add(optionValues);
+                                            options.setOptionValues(optionValuesList);
+
+                                            buttonParent.removeAllViews();
+                                            buttonUpload.setLayoutParams(new LinearLayout.LayoutParams(300,
+                                                    LinearLayout.LayoutParams.WRAP_CONTENT));
+                                            buttonUpload.setText("Upload");
+                                            LinearLayout.LayoutParams  parameter
+                                                    =  (LinearLayout.LayoutParams) buttonUpload.getLayoutParams();
+                                            parameter.setMargins(10, 10, 10, 10); // left, top, right, bottom
+                                            buttonUpload.setLayoutParams(parameter);
+
+                                            buttonParent.addView(buttonUpload);
+
+                                        }
+                                    });
+
+                                    ((LinearLayout) findViewById(R.id.options)).addView(buttonParent);
+
+                                }
+                            }
+                            break;
+
+                        case "Date":
+
+                            final EditText etDate = new EditText(context);
+                            etDate.setFocusable(false);
+                            etDate.setClickable(true);
+
+                            OptionValues optionDate = options.getOptionValues().get(0);
+                            if(optionDate.isAddToCart()){
+                                etDate.setText(optionDate.getOptionValueName()+"");
+                            }
+
+                            etDate.setLayoutParams(new LinearLayout.LayoutParams(300,
+                                    LinearLayout.LayoutParams.WRAP_CONTENT));
+                            etDate.addTextChangedListener(new TextWatcher() {
+                                @Override
+                                public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                                    OptionValues optionValues = new OptionValues();
+                                    optionValues.setAddToCart(true);
+                                    optionValues.setOptionValueName(s + "");
+                                    optionValues.setSelected(true);
+                                    List<OptionValues> optionValuesList = new ArrayList<>();
+                                    optionValuesList.add(optionValues);
+                                    options.setOptionValues(optionValuesList);
+                                }
+
+                                @Override
+                                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                                }
+
+                                @Override
+                                public void afterTextChanged(Editable s) {
+                                }
+                            });
+
+                            etDate.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+
+                                    initDatePicker(etDate);
+                                }
+                            });
+
+
+                            ((LinearLayout) findViewById(R.id.options)).addView(etDate);
+
+                            break;
+
+                        case "Time":
+                            final EditText etTime = new EditText(context);
+                            etTime.setFocusable(false);
+                            etTime.setClickable(true);
+
+                            OptionValues optionTime = options.getOptionValues().get(0);
+                            if(optionTime.isAddToCart()){
+                                etTime.setText(optionTime.getOptionValueName()+"");
+                            }
+
+                            etTime.setLayoutParams(new LinearLayout.LayoutParams(300, LinearLayout.LayoutParams.WRAP_CONTENT));
+                            etTime.addTextChangedListener(new TextWatcher() {
+                                @Override
+                                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                                    OptionValues optionValues = new OptionValues();
+                                    optionValues.setAddToCart(true);
+                                    optionValues.setOptionValueName(s + "");
+                                    optionValues.setSelected(true);
+                                    List<OptionValues> optionValuesList = new ArrayList<>();
+                                    optionValuesList.add(optionValues);
+                                    options.setOptionValues(optionValuesList);
+                                }
+
+                                @Override
+                                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                                }
+
+                                @Override
+                                public void afterTextChanged(Editable s) {
+                                }
+                            });
+
+                            etTime.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+
+                                    initTimePicker(etTime);
+
+                                }
+                            });
+
+                            ((LinearLayout) findViewById(R.id.options)).addView(etTime);
+                            break;
+
+                        case "Date & Time":
+
+                            final EditText etDateTime = new EditText(context);
+
+                            etDateTime.setFocusable(false);
+                            etDateTime.setClickable(true);
+
+                            OptionValues optionDateTime = options.getOptionValues().get(0);
+                            if(optionDateTime.isAddToCart()){
+                                etDateTime.setText(optionDateTime.getOptionValueName()+"");
+                            }
+
+
+                            etDateTime.setLayoutParams(new LinearLayout.LayoutParams(300, LinearLayout.LayoutParams.WRAP_CONTENT));
+                            etDateTime.addTextChangedListener(new TextWatcher() {
+                                @Override
+                                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                                    OptionValues optionValues = new OptionValues();
+                                    optionValues.setAddToCart(true);
+                                    optionValues.setOptionValueName(s + "");
+                                    optionValues.setSelected(true);
+                                    List<OptionValues> optionValuesList = new ArrayList<>();
+                                    optionValuesList.add(optionValues);
+                                    options.setOptionValues(optionValuesList);
+                                }
+
+                                @Override
+                                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                                }
+
+                                @Override
+                                public void afterTextChanged(Editable s) {
+                                }
+                            });
+
+                            etDateTime.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    initDateTimePicker(etDateTime);
+                                }
+                            });
+
+                            ((LinearLayout) findViewById(R.id.options)).addView(etDateTime);
+                            break;
+
+
                     }
                 }
             }
@@ -334,6 +619,7 @@ public class HomeFragmentHandler {
             }
         }
     }
+
 
     boolean isOptionsShow(Product product) {
         for (int i = 0; i < product.getOptions().size(); i++) {
@@ -365,5 +651,177 @@ public class HomeFragmentHandler {
             return true;
         else
             return false;
+    }
+
+
+    private void initTimePicker(final EditText etTime){
+
+        final Calendar c = Calendar.getInstance();
+        int mHour = c.get(Calendar.HOUR_OF_DAY);
+        int mMinute = c.get(Calendar.MINUTE);
+
+        TimePickerDialog timePickerDialog = new TimePickerDialog(context,
+                new TimePickerDialog.OnTimeSetListener() {
+
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay,
+                                          int minute) {
+
+                        Time time = new Time(hourOfDay,minute,0);
+                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("h:mm a");
+                        String s = simpleDateFormat.format(time);
+                        etTime.setText(s);
+
+                    }
+
+                }, mHour, mMinute, false);
+
+        timePickerDialog.show();
+    }
+
+    private void initDatePicker(final EditText etDate) {
+
+        final Calendar c = Calendar.getInstance();
+        int mYear = c.get(Calendar.YEAR);
+        int mMonth = c.get(Calendar.MONTH);
+        int mDay = c.get(Calendar.DAY_OF_MONTH);
+
+        DatePickerDialog datePickerDialog = new DatePickerDialog(context,
+                new DatePickerDialog.OnDateSetListener() {
+
+                    @Override
+                    public void onDateSet(DatePicker view, int year,
+                                          int monthOfYear, int dayOfMonth) {
+
+                        c.set(year, monthOfYear, dayOfMonth);
+                        CharSequence output = DateFormat.format("dd/MM/yyyy", c);
+
+
+                        etDate.setText(output);
+
+                    }
+                }, mYear, mMonth, mDay);
+
+
+        datePickerDialog.show();
+
+    }
+
+    private void initDateTimePicker(final EditText etDateTime){
+
+        final Calendar c = Calendar.getInstance();
+        int mYear = c.get(Calendar.YEAR);
+        int mMonth = c.get(Calendar.MONTH);
+        int mDay = c.get(Calendar.DAY_OF_MONTH);
+
+        final int mHour = c.get(Calendar.HOUR_OF_DAY);
+        final int mMinute = c.get(Calendar.MINUTE);
+
+        DatePickerDialog datePickerDialog = new DatePickerDialog(context,
+                new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year,
+                                          int monthOfYear, int dayOfMonth) {
+                        c.set(year, monthOfYear, dayOfMonth);
+
+                        final CharSequence date = DateFormat.format("dd/MM/yyyy", c);
+
+
+                        TimePickerDialog timePickerDialog = new TimePickerDialog(context,
+                                new TimePickerDialog.OnTimeSetListener() {
+
+                                    @Override
+                                    public void onTimeSet(TimePicker view, int hourOfDay,
+                                                          int minute) {
+
+                                        Time time = new Time(hourOfDay,minute,0);
+
+                                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("h:mm a");
+                                        String t = simpleDateFormat.format(time);
+
+                                        etDateTime.setText(date+" "+t);
+
+                                    }
+                                }, mHour, mMinute, false);
+
+                        timePickerDialog.show();
+                    }
+                }, mYear, mMonth, mDay);
+
+        datePickerDialog.show();
+    }
+
+    private void initUpload(final LinearLayout buttonParent,
+                            final TextView tvOptionValue, final ImageView removeFile, final Options options,
+                            final Button buttonUpload, String filePath ) {
+
+        buttonParent.removeAllViews();
+
+        String fileName = "";
+        String fileType = "";
+
+        try {
+            fileName = filePath.substring(filePath.lastIndexOf("/")+1);
+        }catch (Exception e){ }
+
+        try{
+            fileType = filePath.substring(filePath.lastIndexOf("."));
+        }catch (Exception e){ }
+
+
+        LinearLayout.LayoutParams  parameter
+                =  new LinearLayout.LayoutParams(300, LinearLayout.LayoutParams.WRAP_CONTENT);
+        parameter.setMargins(10, 10, 10, 10); // left, top, right, bottom
+        tvOptionValue.setLayoutParams(parameter);
+
+
+        tvOptionValue.setText(fileName);
+
+        removeFile.setImageResource(R.drawable.ic_close_round);
+        removeFile.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT));
+
+        buttonParent.addView(tvOptionValue);
+        buttonParent.addView(removeFile);
+
+        OptionValues optionValues = new OptionValues();
+        optionValues.setAddToCart(true);
+        optionValues.setOptionValueName(fileName);
+        optionValues.setFileName(fileName);
+        optionValues.setFileType(fileType);
+        optionValues.setFileUri(filePath);
+        optionValues.setSelected(true);
+        List<OptionValues> optionValuesList = new ArrayList<>();
+        optionValuesList.add(optionValues);
+        options.setOptionValues(optionValuesList);
+
+
+        removeFile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                OptionValues optionValues = new OptionValues();
+                optionValues.setAddToCart(false);
+                optionValues.setOptionValueName("");
+                optionValues.setFileName("");
+                optionValues.setFileType("");
+                optionValues.setFileUri("");
+                optionValues.setSelected(true);
+                List<OptionValues> optionValuesList = new ArrayList<>();
+                optionValuesList.add(optionValues);
+                options.setOptionValues(optionValuesList);
+
+                buttonParent.removeAllViews();
+                buttonUpload.setLayoutParams(new LinearLayout.LayoutParams(300,
+                        LinearLayout.LayoutParams.WRAP_CONTENT));
+                buttonUpload.setText("Upload");
+                LinearLayout.LayoutParams parameter
+                        = (LinearLayout.LayoutParams) buttonUpload.getLayoutParams();
+                parameter.setMargins(10, 10, 10, 10); // left, top, right, bottom
+                buttonUpload.setLayoutParams(parameter);
+                buttonParent.addView(buttonUpload);
+            }
+        });
+
     }
 }

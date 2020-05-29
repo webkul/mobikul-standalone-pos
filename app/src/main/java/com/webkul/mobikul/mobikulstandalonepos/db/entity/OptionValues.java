@@ -27,6 +27,17 @@ public class OptionValues extends BaseObservable implements Serializable {
     private String optionValueName;
     @ColumnInfo(name = "option_value_price")
     private String optionValuePrice;
+
+
+    @ColumnInfo(name = "file_name")
+    private String fileName;
+
+    @ColumnInfo(name = "file_type")
+    private String fileType;
+
+    @ColumnInfo(name = "file_uri")
+    private String fileUri;
+
 //    @ColumnInfo(name = "formatted_option_value_price")
 //    private String formattedOptionValuePrice;
     @ColumnInfo(name = "option_value_sort_order")
@@ -100,6 +111,42 @@ public class OptionValues extends BaseObservable implements Serializable {
 
     public void setAddToCart(boolean addToCart) {
         isAddToCart = addToCart;
+    }
+
+    @Bindable
+    public String getFileName() {
+        if (fileName == null)
+            return "";
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+        notifyPropertyChanged(BR.fileName);
+    }
+
+    @Bindable
+    public String getFileType() {
+        if (fileType == null)
+            return "";
+        return fileType;
+    }
+
+    public void setFileType(String fileType) {
+        this.fileType = fileType;
+        notifyPropertyChanged(BR.fileName);
+    }
+
+    @Bindable
+    public String getFileUri() {
+        if (fileUri == null)
+            return "";
+        return fileUri;
+    }
+
+    public void setFileUri(String fileUri) {
+        this.fileUri = fileUri;
+        notifyPropertyChanged(BR.fileName);
     }
 
 //    public String getFormattedOptionValuePrice() {
