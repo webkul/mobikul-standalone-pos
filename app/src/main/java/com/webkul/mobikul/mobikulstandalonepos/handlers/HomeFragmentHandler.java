@@ -1,38 +1,15 @@
 package com.webkul.mobikul.mobikulstandalonepos.handlers;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.databinding.DataBindingUtil;
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.vision.text.Line;
-import com.google.firebase.crash.FirebaseCrash;
 import com.google.gson.Gson;
 import com.webkul.mobikul.mobikulstandalonepos.R;
 import com.webkul.mobikul.mobikulstandalonepos.activity.BaseActivity;
 import com.webkul.mobikul.mobikulstandalonepos.activity.CartActivity;
-import com.webkul.mobikul.mobikulstandalonepos.customviews.CustomDialogClass;
-import com.webkul.mobikul.mobikulstandalonepos.databinding.CustomOptionsBinding;
-import com.webkul.mobikul.mobikulstandalonepos.db.DataBaseController;
-import com.webkul.mobikul.mobikulstandalonepos.db.entity.CashDrawerModel;
-import com.webkul.mobikul.mobikulstandalonepos.db.entity.Currency;
 import com.webkul.mobikul.mobikulstandalonepos.db.entity.OptionValues;
 import com.webkul.mobikul.mobikulstandalonepos.db.entity.Options;
 import com.webkul.mobikul.mobikulstandalonepos.db.entity.Product;
@@ -41,16 +18,9 @@ import com.webkul.mobikul.mobikulstandalonepos.helper.AppSharedPref;
 import com.webkul.mobikul.mobikulstandalonepos.helper.Helper;
 import com.webkul.mobikul.mobikulstandalonepos.helper.ToastHelper;
 import com.webkul.mobikul.mobikulstandalonepos.model.CartModel;
-import com.webkul.mobikul.mobikulstandalonepos.model.CashDrawerItems;
 
 import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
 
 import static android.content.ContentValues.TAG;
 
@@ -67,12 +37,27 @@ public class HomeFragmentHandler {
     private double grandTotal;
     DecimalFormat df;
     HashMap<String, OptionValues> optionValuesHashMap;
+    private HomeFragmentInteraction homeFragmentInteraction;
+    //private CustomOptionsDialogClass customOptionsDialogClass;
 
     public HomeFragmentHandler(Context context) {
         this.context = context;
         currencySymbol = context.getResources().getString(R.string.currency_symbol);
         df = new DecimalFormat("####0.00");
         optionValuesHashMap = new HashMap<>();
+        homeFragmentInteraction = (HomeFragmentInteraction) context;
+    }
+
+    public interface HomeFragmentInteraction {
+        void showProductDialog(Product product, CartModel cartData);
+    }
+
+    boolean isOptionsShow(Product product) {
+        for (int i = 0; i < product.getOptions().size(); i++) {
+            if (product.getOptions().get(i).isSelected())
+                return true;
+        }
+        return false;
     }
 
     public void onClickProduct(Product product) {
@@ -81,14 +66,16 @@ public class HomeFragmentHandler {
             CartModel cartData = Helper.fromStringToCartModel(AppSharedPref.getCartData(context));
             if (cartData == null) {
                 cartData = new CartModel();
+                AppSharedPref.setCartData(context, Helper.fromCartModelToString(cartData));//saving to preference if we lost it after reaching on dialog
             }
             subTotal = Double.parseDouble(cartData.getTotals().getSubTotal());
             counter = Integer.parseInt(cartData.getTotals().getQty());
             Log.d(TAG, "onClickProduct: " + product.getCartQty());
             if (product.isStock() && (Integer.parseInt(product.getQuantity()) > Integer.parseInt(product.getCartQty()))) {
                 if (isOptionsShow(product)) {
-                    CustomOptionsDialogClass customOptionsDialogClass = new CustomOptionsDialogClass(context, product, cartData);
-                    customOptionsDialogClass.show();
+                    homeFragmentInteraction.showProductDialog(product, cartData);
+                    /*CustomOptionsDialogClass customOptionsDialogClass = new CustomOptionsDialogClass(context, product, cartData);
+                    customOptionsDialogClass.show();*/
                 } else
                     addToCart(product, cartData);
             } else {
@@ -99,7 +86,7 @@ public class HomeFragmentHandler {
         }
     }
 
-    void addToCart(Product product, CartModel cartData) {
+    public void addToCart(Product product, CartModel cartData) {
         double price;
         double basePrice;
         if (product.getSpecialPrice().isEmpty()) {
@@ -191,7 +178,15 @@ public class HomeFragmentHandler {
         context.startActivity(i);
     }
 
-    public class CustomOptionsDialogClass extends Dialog implements
+    /* Commenting below nested class and instead of this making separate CustomOptionsDialogClass
+    * - To avoid error
+    * - To separate view from handler
+    * - To avoid issue
+    * - code become larger for nested class*/
+
+
+
+   /* public class CustomOptionsDialogClass extends Dialog implements
             android.view.View.OnClickListener {
 
         public Dialog d;
@@ -365,5 +360,5 @@ public class HomeFragmentHandler {
             return true;
         else
             return false;
-    }
+    }*/
 }

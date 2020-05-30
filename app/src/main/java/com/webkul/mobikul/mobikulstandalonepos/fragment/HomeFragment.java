@@ -2,7 +2,6 @@ package com.webkul.mobikul.mobikulstandalonepos.fragment;
 
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
-import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -29,8 +28,6 @@ import com.webkul.mobikul.mobikulstandalonepos.adapter.HomePageProductAdapter;
 import com.webkul.mobikul.mobikulstandalonepos.barcode.BarcodeCaptureActivity;
 import com.webkul.mobikul.mobikulstandalonepos.databinding.FragmentHomeBinding;
 import com.webkul.mobikul.mobikulstandalonepos.db.DataBaseController;
-import com.webkul.mobikul.mobikulstandalonepos.db.entity.OptionValues;
-import com.webkul.mobikul.mobikulstandalonepos.db.entity.Options;
 import com.webkul.mobikul.mobikulstandalonepos.db.entity.Product;
 import com.webkul.mobikul.mobikulstandalonepos.handlers.HomeFragmentHandler;
 import com.webkul.mobikul.mobikulstandalonepos.helper.AppSharedPref;
@@ -56,6 +53,7 @@ public class HomeFragment extends Fragment {
     private String ARG_PARAM1 = "category_id";
     private String cId;
     private int BARCODE_READER_REQUEST_CODE = 1;
+    private int SELECT_FILE = 2;
 
     public static HomeFragment newInstance(/*String param1, String param2*/) {
         HomeFragment fragment = new HomeFragment();
@@ -269,5 +267,9 @@ public class HomeFragment extends Fragment {
                 Log.e(TAG, String.format(getString(R.string.barcode_error_format),
                         CommonStatusCodes.getStatusCodeString(resultCode)));
         }
+    }
+
+    public void addProductToCart(Product product, CartModel cartData) {
+        binding.getHandler().addToCart(product, cartData);
     }
 }
