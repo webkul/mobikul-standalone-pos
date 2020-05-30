@@ -5,9 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.databinding.DataBindingUtil;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -26,6 +23,7 @@ import android.widget.Toast;
 import com.webkul.mobikul.mobikulstandalonepos.R;
 import com.webkul.mobikul.mobikulstandalonepos.adapter.DrawerAdapter;
 import com.webkul.mobikul.mobikulstandalonepos.customviews.CustomDialogClass;
+import com.webkul.mobikul.mobikulstandalonepos.customviews.CustomOptionsDialogClass;
 import com.webkul.mobikul.mobikulstandalonepos.databinding.ActivityMainBinding;
 import com.webkul.mobikul.mobikulstandalonepos.db.DataBaseController;
 import com.webkul.mobikul.mobikulstandalonepos.db.entity.Category;
@@ -34,10 +32,12 @@ import com.webkul.mobikul.mobikulstandalonepos.fragment.HoldFragment;
 import com.webkul.mobikul.mobikulstandalonepos.fragment.HomeFragment;
 import com.webkul.mobikul.mobikulstandalonepos.fragment.MoreFragment;
 import com.webkul.mobikul.mobikulstandalonepos.fragment.OrdersFragment;
+import com.webkul.mobikul.mobikulstandalonepos.handlers.HomeFragmentHandler;
 import com.webkul.mobikul.mobikulstandalonepos.helper.AppSharedPref;
 import com.webkul.mobikul.mobikulstandalonepos.helper.Helper;
 import com.webkul.mobikul.mobikulstandalonepos.helper.ToastHelper;
 import com.webkul.mobikul.mobikulstandalonepos.interfaces.DataBaseCallBack;
+import com.webkul.mobikul.mobikulstandalonepos.model.CartModel;
 
 import java.io.File;
 import java.lang.reflect.Field;
@@ -53,7 +53,7 @@ import static com.webkul.mobikul.mobikulstandalonepos.helper.Helper.DB_PATH;
  * Created by aman.gupta on 27/12/17. @Webkul Software Private limited
  */
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity implements HomeFragmentHandler.HomeFragmentInteraction, CustomOptionsDialogClass.CustomOptionsDialogClassInteraction {
 
     public ActivityMainBinding mMainBinding;
     private ActionBarDrawerToggle mDrawerToggle;
@@ -65,6 +65,8 @@ public class MainActivity extends BaseActivity {
     long networkTS = 0;
     private long storedTime;
     private SweetAlertDialog sweetAlert;
+    private int SELECT_FILE = 2;
+    CustomOptionsDialogClass customOptionsDialogClass;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -131,6 +133,7 @@ public class MainActivity extends BaseActivity {
         GetNetworkTime getNetworkTime = new GetNetworkTime(this);
         getNetworkTime.execute();
     }
+
 
     class GetNetworkTime extends AsyncTask<Void, Void,
             Long> {
@@ -370,6 +373,21 @@ public class MainActivity extends BaseActivity {
                 HomeFragment homeFragment = (HomeFragment) mSupportFragmentManager.findFragmentByTag(HomeFragment.class.getSimpleName());
                 homeFragment.onActivityResult(requestCode, resultCode, data);
                 break;
+            case 3:
+                customOptionsDialogClass.onActivityResult(requestCode, resultCode, data);
         }
+    }
+
+    @Override
+    public void showProductDialog(Product product, CartModel cartData) {
+        customOptionsDialogClass = new CustomOptionsDialogClass();
+        customOptionsDialogClass.setData(product,cartData);
+        customOptionsDialogClass.show(getSupportFragmentManager(), "customOption");
+    }
+
+    @Override
+    public void addProductToCart(Product product, CartModel cartData) {
+        HomeFragment homeFragment = (HomeFragment) mSupportFragmentManager.findFragmentByTag(HomeFragment.class.getSimpleName());
+        homeFragment.addProductToCart(product, cartData);
     }
 }
