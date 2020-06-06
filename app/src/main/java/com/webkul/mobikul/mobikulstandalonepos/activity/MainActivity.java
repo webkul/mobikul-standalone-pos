@@ -5,15 +5,20 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.databinding.DataBindingUtil;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.internal.BottomNavigationItemView;
 import android.support.design.internal.BottomNavigationMenuView;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -21,6 +26,8 @@ import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.webkul.mobikul.mobikulstandalonepos.R;
@@ -30,6 +37,7 @@ import com.webkul.mobikul.mobikulstandalonepos.databinding.ActivityMainBinding;
 import com.webkul.mobikul.mobikulstandalonepos.db.DataBaseController;
 import com.webkul.mobikul.mobikulstandalonepos.db.entity.Category;
 import com.webkul.mobikul.mobikulstandalonepos.db.entity.Product;
+import com.webkul.mobikul.mobikulstandalonepos.fragment.AddProductFragment;
 import com.webkul.mobikul.mobikulstandalonepos.fragment.HoldFragment;
 import com.webkul.mobikul.mobikulstandalonepos.fragment.HomeFragment;
 import com.webkul.mobikul.mobikulstandalonepos.fragment.MoreFragment;
@@ -40,8 +48,12 @@ import com.webkul.mobikul.mobikulstandalonepos.helper.ToastHelper;
 import com.webkul.mobikul.mobikulstandalonepos.interfaces.DataBaseCallBack;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
@@ -65,6 +77,14 @@ public class MainActivity extends BaseActivity {
     long networkTS = 0;
     private long storedTime;
     private SweetAlertDialog sweetAlert;
+
+    public ImageView fileImage;
+    public Button btnUpload;
+    public String fileName;
+    public final int FILE_REQUEST_CAMERA = 100;
+    public final int FILE_REQUEST_GALLERY = 101;
+    public boolean isFileUploaded = false;
+    Bitmap photo = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -363,13 +383,49 @@ public class MainActivity extends BaseActivity {
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, final Intent data) {
         // TODO Auto-generated method stub
         switch (requestCode) {
             case 1:
                 HomeFragment homeFragment = (HomeFragment) mSupportFragmentManager.findFragmentByTag(HomeFragment.class.getSimpleName());
                 homeFragment.onActivityResult(requestCode, resultCode, data);
                 break;
+            case FILE_REQUEST_CAMERA:
+                if (resultCode == RESULT_OK) {
+                    Calendar calendar = Calendar.getInstance();
+                    if (data != null && data.getExtras() != null) {
+                        Bitmap photo = (Bitmap) data.getExtras().get("data");
+                        fileImage.setImageBitmap(photo);
+                        btnUpload.setText("Remove");
+                        isFileUploaded = true;
+                        fileName = "img_" + calendar.getTimeInMillis();
+                        Helper.saveToInternalStorage(MainActivity.this, photo, fileName);
+                    }
+                } else {
+                    isFileUploaded = false;
+                }
+                break;
+            case FILE_REQUEST_GALLERY:
+                if (resultCode == RESULT_OK) {
+                    Calendar calendar = Calendar.getInstance();
+                    fileImage.setImageURI(data.getData());
+                    btnUpload.setText("Remove");
+                    fileName = "img_" + calendar.getTimeInMillis();
+                    AsyncTask.execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                photo = MediaStore.Images.Media.getBitmap(MainActivity.this.getContentResolver(), data.getData());
+                                Helper.saveToInternalStorage(MainActivity.this, photo, fileName);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+                    isFileUploaded = true;
+                } else {
+                    isFileUploaded = false;
+                }
         }
     }
 }

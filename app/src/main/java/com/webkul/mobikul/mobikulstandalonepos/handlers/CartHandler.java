@@ -103,7 +103,8 @@ public class CartHandler {
                 .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                     @Override
                     public void onClick(SweetAlertDialog sDialog) {
-                        sDialog.dismissWithAnimation();
+//                        sDialog.dismissWithAnimation();
+                        sDialog.dismiss();
                         AppSharedPref.deleteCartData(context);
                         ((CartActivity) context).recreate();
                     }
