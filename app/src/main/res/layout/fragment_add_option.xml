@@ -1,0 +1,104 @@
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="data"
+            type="com.webkul.mobikul.mobikulstandalonepos.db.entity.Options" />
+
+        <variable
+            name="handler"
+            type="com.webkul.mobikul.mobikulstandalonepos.handlers.OptionHandler" />
+    </data>
+
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/backgroundColor"
+        android:clickable="false"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:context="com.webkul.mobikul.mobikulstandalonepos.fragment.AddCategoryFragment">
+
+        <android.support.v4.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/spacing_generic"
+                android:background="@android:color/white"
+                android:clickable="false"
+                android:orientation="vertical"
+                android:padding="@dimen/spacing_generic">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/option"
+                    android:textColor="@color/textColor"
+                    android:textSize="@dimen/text_size_large" />
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/category_name_tnl"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:error="@{data.optionNameError}"
+                    app:errorEnabled="@{data.displayError}">
+
+                    <EditText
+                        android:id="@+id/option_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="30dp"
+                        android:hint="@string/option_name"
+                        android:inputType="text"
+                        android:singleLine="true"
+                        android:text="@={data.optionName}"
+                        android:textColorHint="@color/gray" />
+                </android.support.design.widget.TextInputLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_tiny"
+                    android:text="@string/type"
+                    android:textSize="@dimen/text_size_medium" />
+
+                <android.support.v7.widget.AppCompatSpinner
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:entries="@array/type"
+                    app:selectedValue="@={data.type}" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_generic"
+                    android:text="@string/option_values"
+                    android:textSize="@dimen/text_size_medium"
+                    android:visibility="@{!data.type.equalsIgnoreCase(`text`) &amp;&amp; !data.type.equalsIgnoreCase(`TextArea`) ? View.VISIBLE : View.GONE}" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/option_values_rv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
+            </LinearLayout>
+        </android.support.v4.widget.NestedScrollView>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="@dimen/fab_margin"
+            android:onClick="@{()->handler.addOptionValue()}"
+            android:visibility="@{!data.type.equalsIgnoreCase(`text`) &amp;&amp; !data.type.equalsIgnoreCase(`TextArea`) ? View.VISIBLE : View.GONE}"
+            app:srcCompat="@drawable/ic_add" />
+    </FrameLayout>
+</layout>

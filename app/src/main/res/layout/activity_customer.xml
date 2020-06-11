@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <import type="com.webkul.mobikul.mobikulstandalonepos.constants.BundleConstants" />
+
+        <variable
+            name="visibility"
+            type="boolean" />
+
+        <variable
+            name="edit"
+            type="boolean" />
+
+        <variable
+            name="data"
+            type="com.webkul.mobikul.mobikulstandalonepos.db.entity.Customer" />
+
+        <variable
+            name="handler"
+            type="com.webkul.mobikul.mobikulstandalonepos.handlers.CustomerHandler" />
+
+        <variable
+            name="handler2"
+            type="com.webkul.mobikul.mobikulstandalonepos.handlers.AddCustomerFragmentHandler" />
+    </data>
+
+    <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/backgroundColor"
+        tools:context="com.webkul.mobikul.mobikulstandalonepos.activity.CustomerActivity">
+
+        <android.support.design.widget.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/AppTheme.AppBarOverlay">
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="?attr/colorPrimary"
+                app:popupTheme="@style/AppTheme.PopupOverlay">
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginEnd="@dimen/spacing_generic"
+                    android:layout_marginLeft="@dimen/spacing_generic"
+                    android:layout_marginRight="@dimen/spacing_generic"
+                    android:layout_marginStart="@dimen/spacing_generic">
+
+                    <ImageView
+                        android:id="@+id/add_customer"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:onClick="@{()-> handler.openAddCustomerFragment(data)}"
+                        android:padding="@dimen/spacing_generic"
+                        app:srcCompat="@drawable/ic_icon_add_fill" />
+
+                    <ImageView
+                        android:id="@+id/delete_customer"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:onClick="@{()-> handler2.deleteCustomer(data)}"
+                        android:padding="@dimen/spacing_generic"
+                        android:visibility="gone"
+                        app:srcCompat="@drawable/ic_icon_order_delete" />
+
+                    <ImageView
+                        android:id="@+id/save_customer"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@id/delete_customer"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:onClick="@{()-> handler2.saveCustomer(data, edit)}"
+                        android:padding="@dimen/spacing_generic"
+                        android:visibility="gone"
+                        app:srcCompat="@drawable/ic_submit_fill" />
+
+                </RelativeLayout>
+            </android.support.v7.widget.Toolbar>
+
+        </android.support.design.widget.AppBarLayout>
+
+        <FrameLayout
+            android:id="@+id/customer_fl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_generic"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <include
+                android:id="@+id/empty_view"
+                layout="@layout/empty_layout"
+                app:page="@{BundleConstants.EmptyLayoutType.CUSTOMER}"
+                app:visibility="@{visibility}" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/customer_rv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/white"
+                android:visibility="@{visibility ? View.VISIBLE : View.GONE}"
+                app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
+        </FrameLayout>
+    </android.support.design.widget.CoordinatorLayout>
+</layout>

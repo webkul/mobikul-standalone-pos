@@ -5,18 +5,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.databinding.DataBindingUtil;
-import android.graphics.Bitmap;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.internal.BottomNavigationItemView;
 import android.support.design.internal.BottomNavigationMenuView;
 import android.support.design.widget.BottomNavigationView;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -33,12 +30,10 @@ import com.webkul.mobikul.mobikulstandalonepos.databinding.ActivityMainBinding;
 import com.webkul.mobikul.mobikulstandalonepos.db.DataBaseController;
 import com.webkul.mobikul.mobikulstandalonepos.db.entity.Category;
 import com.webkul.mobikul.mobikulstandalonepos.db.entity.Product;
-import com.webkul.mobikul.mobikulstandalonepos.fragment.AddProductFragment;
 import com.webkul.mobikul.mobikulstandalonepos.fragment.HoldFragment;
 import com.webkul.mobikul.mobikulstandalonepos.fragment.HomeFragment;
 import com.webkul.mobikul.mobikulstandalonepos.fragment.MoreFragment;
 import com.webkul.mobikul.mobikulstandalonepos.fragment.OrdersFragment;
-import com.webkul.mobikul.mobikulstandalonepos.handlers.SharedPreference_main;
 import com.webkul.mobikul.mobikulstandalonepos.helper.AppSharedPref;
 import com.webkul.mobikul.mobikulstandalonepos.helper.Helper;
 import com.webkul.mobikul.mobikulstandalonepos.helper.ToastHelper;
@@ -59,7 +54,7 @@ import static com.webkul.mobikul.mobikulstandalonepos.helper.Helper.DB_PATH;
  */
 
 public class MainActivity extends BaseActivity {
-    public final int CAMERA_REQUEST = 100;
+
     public ActivityMainBinding mMainBinding;
     private ActionBarDrawerToggle mDrawerToggle;
     public List<Product> products;
@@ -70,12 +65,10 @@ public class MainActivity extends BaseActivity {
     long networkTS = 0;
     private long storedTime;
     private SweetAlertDialog sweetAlert;
-    SharedPreference_main sharedPreference_main;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        sharedPreference_main=SharedPreference_main.getInstance(this);
         mMainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         initDrawerToggle();
         initBottomNavView();
@@ -378,24 +371,5 @@ public class MainActivity extends BaseActivity {
                 homeFragment.onActivityResult(requestCode, resultCode, data);
                 break;
         }
-        if (requestCode == CAMERA_REQUEST) {
-            if (data != null && data.getExtras() != null) {
-                Bitmap photo = (Bitmap) data.getExtras().get("data");
-                Uri uri = Helper.saveToInternalStoragee(MainActivity.this, photo);
-                sharedPreference_main.setcamera(uri.toString());
-//                Fragment fragment = mSupportFragmentManager.findFragmentByTag(HomeFragment.class.getSimpleName());
-//
-//                //((HomeFragment) fragment).binding.getData().setImage(uri.toString());
-//                 {
-//
-//                 //   notifyAll();
-//                }
-            }
-            else
-            {
-                Toast.makeText(this, "CAmera", Toast.LENGTH_SHORT).show();
-            }
-        }
     }
-
 }

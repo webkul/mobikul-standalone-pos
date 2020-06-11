@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#FFFFFF</color>
+    <color name="colorPrimaryDark">#ff5f33</color>
+    <color name="colorAccent">#FF7852</color>
+    <color name="gray">#626262</color>
+    <color name="white">#FFFFFF</color>
+    <!-- Home Page related colors-->
+    <color name="backgroundColor">#e1e1e1</color>
+    <color name="actionBarItemColor">@color/colorAccent</color>
+    <color name="bottomNavBarItemColor">@color/colorAccent</color>
+
+    <!--some view's colors-->
+    <color name="buttonBackgroundColor">@color/colorAccent</color>
+    <color name="buttonBackgroundColorDark">#e63200</color>
+    <color name="toastTextColor">@color/colorAccent</color>
+
+    <!--text colors-->
+    <color name="textColor">#DB000000</color>
+    <color name="secondaryTextColor">#80000000</color>
+    <color name="textColorLight">#80626262</color>
+    <color name="textColorGreen">#10c203</color>
+    <color name="darkColorGreen">#0d9902</color>
+    <color name="textColorRed">#f94f4f</color>
+    <!--stock colors-->
+    <color name="inStockColor">#70000000</color>
+    <color name="outOfStockColor">#FF6E6E</color>
+    <color name="divider_color">#3F000000</color>
+
+
+</resources>

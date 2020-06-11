@@ -1,0 +1,136 @@
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="total"
+            type="com.webkul.mobikul.mobikulstandalonepos.model.TotalModel" />
+
+        <variable
+            name="data"
+            type="com.webkul.mobikul.mobikulstandalonepos.model.CashModel" />
+
+        <variable
+            name="handler"
+            type="com.webkul.mobikul.mobikulstandalonepos.handlers.CheckoutHandler" />
+
+        <variable
+            name="hasReturn"
+            type="boolean" />
+
+    </data>
+
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/backgroundColor"
+        android:clickable="true"
+        tools:context="com.webkul.mobikul.mobikulstandalonepos.fragment.CashFragment">
+
+        <!-- TODO: Update blank fragment layout -->
+
+        <android.support.v4.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_generic"
+                    android:background="@color/white">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="@dimen/spacing_normal">
+
+                        <android.support.design.widget.TextInputLayout
+                            android:id="@+id/cash_collected_til"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:error="@{data.collectedCashError}"
+                            app:errorEnabled="@{data.displayError}">
+
+                            <EditText
+                                android:id="@+id/cash_collected"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="numberDecimal"
+                                android:singleLine="true"
+                                android:text="@={data.collectedCash}"
+                                android:textColorHint="@color/gray" />
+                        </android.support.design.widget.TextInputLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="20dp"
+                            android:text="@{String.format(@string/change_due_, data.changeDue)}"
+                            android:textColor="@color/colorAccent"
+                            android:textSize="@dimen/text_size_tiny"
+                            android:textStyle="bold"
+                            android:visibility="@{data.changeDueVisibility ? View.VISIBLE: View.GONE}"
+                            tools:text="@string/change_due_" />
+                    </LinearLayout>
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_generic"
+                    android:background="@color/white"
+                    android:elevation="5dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="@dimen/spacing_normal">
+
+                        <android.support.design.widget.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+                            <!--app:error="@{data.customerNameError}"-->
+                            <!--app:errorEnabled="@{data.displayError}">-->
+
+                            <EditText
+                                android:id="@+id/note"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_centerHorizontal="true"
+                                android:layout_marginTop="30dp"
+                                android:hint="@string/add_custom_order_notes"
+                                android:inputType="text"
+                                android:singleLine="true"
+                                android:text="@={data.note}"
+                                android:textColorHint="@color/gray" />
+                        </android.support.design.widget.TextInputLayout>
+                    </LinearLayout>
+                </android.support.v7.widget.CardView>
+            </LinearLayout>
+        </android.support.v4.widget.NestedScrollView>
+
+        <Button
+            android:id="@+id/proceed"
+            style="@style/DefaultButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="bottom"
+            android:layout_margin="@dimen/spacing_generic"
+            android:drawableEnd="@drawable/ic_done_light_wrapper"
+            android:drawableRight="@drawable/ic_done_light_wrapper"
+            android:onClick="@{()->handler.orderPlaced(data, total)}"
+            android:text="@string/done"
+            android:textSize="@dimen/text_size_medium"
+            android:textStyle="bold" />
+    </FrameLayout>
+</layout>

@@ -1,0 +1,33 @@
+<resources>
+
+    <!--text sizes-->
+    <dimen name="text_size_large">24sp</dimen>
+    <dimen name="text_size_medium">22sp</dimen>
+    <dimen name="text_size_small">20sp</dimen>
+    <dimen name="text_size_tiny">18sp</dimen>
+
+    <!--normal app padding and margins-->
+    <dimen name="spacing_infinity">96dp</dimen>
+    <dimen name="spacing_max_plus">70dp</dimen>
+    <dimen name="spacing_max">96dp</dimen>
+    <dimen name="spacing_huge">64dp</dimen>
+    <dimen name="spacing_large">48dp</dimen>
+    <dimen name="spacing_normal">32dp</dimen>
+    <dimen name="spacing_small">24dp</dimen>
+    <dimen name="spacing_generic">16dp</dimen>
+    <dimen name="spacing_tiny">8dp</dimen>
+    <dimen name="spacing_zero">0dp</dimen>
+
+    <!-- Home Activity related dimens -->
+    <dimen name="nav_drawer_start_width">450dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+
+    <dimen name="product_image_dimens">120dp</dimen>
+
+    <dimen name="text_view_heading_width">300dp</dimen>
+    <dimen name="text_view_subheading_width">500dp</dimen>
+
+    <dimen name="drawer_item_height">75dp</dimen>
+
+
+</resources>

@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="data"
+            type="com.webkul.mobikul.mobikulstandalonepos.db.entity.CashDrawerModel" />
+
+        <variable
+            name="handler"
+            type="com.webkul.mobikul.mobikulstandalonepos.handlers.CashDrawerHandler" />
+
+    </data>
+
+    <LinearLayout xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:onClick="@{()-> handler.onClickCashData(data)}"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/spacing_generic"
+        android:paddingLeft="@dimen/spacing_normal"
+        android:paddingStart="@dimen/spacing_normal"
+        android:paddingTop="@dimen/spacing_normal">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/spacing_normal"
+            android:layout_marginRight="@dimen/spacing_normal">
+
+            <TextView
+                android:id="@+id/date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="@{data.date}"
+                android:textSize="@dimen/text_size_medium"
+                android:textStyle="bold"
+                tools:text="25 October, 2017" />
+
+            <TextView
+                android:id="@+id/amt_collected"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:text="@{'+'+data.formattedInAmount}"
+                android:textColor="@color/textColorGreen"
+                android:textSize="@dimen/text_size_small"
+                tools:text="+$450.00" />
+
+            <TextView
+                android:id="@+id/title_amt_collected"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@id/amt_collected"
+                android:text="@{@string/amt_collected + ' '}"
+                android:textColor="@color/secondaryTextColor"
+                android:textSize="@dimen/text_size_small"
+                tools:text="Amt. Collected " />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/spacing_normal"
+            android:layout_marginRight="@dimen/spacing_normal"
+            android:layout_marginTop="@dimen/spacing_tiny">
+
+            <TextView
+                android:id="@+id/title_net_revenue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="@string/net_revenue"
+                android:textColor="@color/secondaryTextColor"
+                android:textSize="@dimen/text_size_small"
+                tools:text="Net Revenue" />
+
+            <TextView
+                android:id="@+id/net_revenue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@id/title_net_revenue"
+                android:text="@{' '+data.formattedNetRevenue}"
+                android:textColor="@color/colorAccent"
+                android:textSize="@dimen/text_size_small"
+                tools:text=" - $400.00" />
+
+            <TextView
+                android:id="@+id/amt_retured"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:text="@{'-'+data.formattedOutAmount}"
+                android:textColor="@color/textColorRed"
+                android:textSize="@dimen/text_size_small"
+                tools:text="$50.00" />
+
+            <TextView
+                android:id="@+id/title_amt_retured"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@id/amt_retured"
+                android:text="@{@string/amt_returned + ' '}"
+                android:textColor="@color/secondaryTextColor"
+                android:textSize="@dimen/text_size_small"
+                tools:text="Amt. Returned" />
+
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="@dimen/spacing_normal"
+            android:background="@color/divider_color" />
+    </LinearLayout>
+</layout>

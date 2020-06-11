@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorAccent"
+    tools:context="com.webkul.mobikul.mobikulstandalonepos.activity.WalkthroughActivity">
+
+    <RelativeLayout
+        android:id="@+id/parent_rl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true">
+
+        <com.mobikul.customswipeableviewpager.MobikulAutoScrollableView
+            android:id="@+id/viewpager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <Button
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:gravity="top"
+            android:background="@android:color/transparent"
+            android:foreground="@android:color/transparent"
+            android:onClick="clickLeft"
+            android:text="@string/left"
+            android:textColor="@color/colorAccent"
+            android:textSize="@dimen/text_size_medium" />
+
+        <Button
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
+            android:background="@android:color/transparent"
+            android:foreground="@android:color/transparent"
+            android:onClick="clickRight"
+            android:layout_marginBottom="@dimen/spacing_max_plus"
+            android:text="@string/right"
+            android:gravity="top"
+            android:textColor="@color/colorAccent"
+            android:textSize="@dimen/text_size_medium" />
+
+    </RelativeLayout>
+
+</android.support.design.widget.CoordinatorLayout>

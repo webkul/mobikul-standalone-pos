@@ -1,0 +1,94 @@
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="data"
+            type="com.webkul.mobikul.mobikulstandalonepos.db.entity.Category" />
+    </data>
+
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/backgroundColor"
+        android:clickable="false"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:context="com.webkul.mobikul.mobikulstandalonepos.fragment.AddCategoryFragment">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/spacing_generic"
+            android:background="@android:color/white"
+            android:clickable="false"
+            android:orientation="vertical"
+            android:padding="@dimen/spacing_generic">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/category_information"
+                android:textColor="@color/textColor"
+                android:textSize="@dimen/text_size_large" />
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/category_name_tnl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:error="@{data.categoryNameError}"
+                app:errorEnabled="@{data.displayError}">
+
+                <EditText
+                    android:id="@+id/category_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="30dp"
+                    android:hint="@string/category_name"
+                    android:inputType="text"
+                    android:singleLine="true"
+                    android:text="@={data.categoryName}"
+                    android:textColorHint="@color/gray" />
+            </android.support.design.widget.TextInputLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:orientation="horizontal">
+
+                <Switch
+                    android:id="@+id/enable_category"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="@={data.active}" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/enable_category"
+                    android:textSize="@dimen/text_size_medium" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Switch
+                    android:id="@+id/include_in_drawer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="@={data.includeInDrawerMenu}" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/include_in_drawer_menu"
+                    android:textSize="@dimen/text_size_medium" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </FrameLayout>
+</layout>

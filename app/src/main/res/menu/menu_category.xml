@@ -1,0 +1,20 @@
+<!-- -Menu used in Mobikul-->
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".activity.HomeActivity">
+
+    <item
+        android:id="@+id/add_category"
+        android:icon="@drawable/ic_icon_add_fill"
+        android:title="@string/add"
+        app:showAsAction="always" />
+
+    <!--<item-->
+        <!--android:id="@+id/submit"-->
+        <!--android:icon="@drawable/ic_submit_fill"-->
+        <!--android:title="@string/add"-->
+        <!--android:visible="false"-->
+        <!--app:showAsAction="always" />-->
+
+</menu>

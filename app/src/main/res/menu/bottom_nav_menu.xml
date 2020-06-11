@@ -1,0 +1,26 @@
+<!-- -Menu used in Mobikul-->
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".activity.HomeActivity">
+
+    <item
+        android:id="@+id/bottom_nav_item_home"
+        android:icon="@drawable/ic_vector_home"
+        android:title="@string/btm_nav_item_title_home" />
+
+    <item
+        android:id="@+id/bottom_nav_item_orders"
+        android:icon="@drawable/ic_vector_orders"
+        android:title="@string/btm_nav_item_title_orders" />
+
+    <item
+        android:id="@+id/bottom_nav_item_hold"
+        android:icon="@drawable/ic_vector_hold"
+        android:title="@string/btm_nav_item_title_hold" />
+
+    <item
+        android:id="@+id/bottom_nav_item_more"
+        android:icon="@drawable/ic_vector_more"
+        android:title="@string/btm_nav_item_title_more" />
+
+</menu>

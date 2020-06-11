@@ -1,0 +1,526 @@
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="data"
+            type="com.webkul.mobikul.mobikulstandalonepos.db.entity.Product" />
+
+        <variable
+            name="edit"
+            type="boolean" />
+
+        <variable
+            name="handler"
+            type="com.webkul.mobikul.mobikulstandalonepos.handlers.AddProductFragmentHandler" />
+    </data>
+
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/backgroundColor"
+        android:clickable="true"
+        tools:context="com.webkul.mobikul.mobikulstandalonepos.fragment.AddProductFragment">
+
+        <android.support.v4.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/backgroundColor"
+                android:clickable="false"
+                android:orientation="vertical">
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_generic">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@android:color/white"
+                        android:clickable="false"
+                        android:orientation="vertical"
+                        android:padding="@dimen/spacing_normal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/product_image"
+                            android:textColor="@color/textColor"
+                            android:textSize="@dimen/text_size_large" />
+
+                        <ImageView
+                            android:layout_width="@dimen/product_image_dimens"
+                            android:layout_height="@dimen/product_image_dimens"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="@dimen/spacing_generic"
+                            android:onClick="@{()->handler.addNEditProfile()}"
+                            app:imageUrl="@{data.image}"
+                            app:srcCompat="@drawable/ic_product_placeholder_wrapper" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/spacing_generic"
+                            android:drawableLeft="@drawable/ic_info_wrapper"
+                            android:drawablePadding="@dimen/spacing_generic"
+                            android:drawableStart="@drawable/ic_info_wrapper"
+                            android:gravity="center"
+                            android:text="@string/single_tap_to_remove_image"
+                            android:textColor="@color/secondaryTextColor"
+                            android:textSize="@dimen/text_size_small" />
+
+                    </LinearLayout>
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_generic">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@android:color/white"
+                        android:clickable="false"
+                        android:orientation="vertical"
+                        android:padding="@dimen/spacing_normal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/general_information"
+                            android:textColor="@color/textColor"
+                            android:textSize="@dimen/text_size_large" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:clickable="true"
+                            android:orientation="horizontal">
+
+                            <Switch
+                                android:id="@+id/enable_category"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:checked="@={data.enabled}" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/enable_product"
+                                android:textSize="@dimen/text_size_medium" />
+                        </LinearLayout>
+
+                        <android.support.design.widget.TextInputLayout
+                            android:id="@+id/sku_til"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:error="@{data.skuError}"
+                            app:errorEnabled="@{data.displayError}">
+
+                            <EditText
+                                android:id="@+id/sku"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_centerHorizontal="true"
+                                android:layout_marginTop="30dp"
+                                android:hint="@string/sku"
+                                android:inputType="text"
+                                android:singleLine="true"
+                                android:text="@={data.sku}"
+                                android:textColorHint="@color/gray" />
+                        </android.support.design.widget.TextInputLayout>
+
+                        <android.support.design.widget.TextInputLayout
+                            android:id="@+id/email_til"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:error="@{data.productNameError}"
+                            app:errorEnabled="@{data.displayError}">
+
+                            <EditText
+                                android:id="@+id/product_name"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_centerHorizontal="true"
+                                android:layout_marginTop="30dp"
+                                android:hint="@string/product_name"
+                                android:inputType="text"
+                                android:singleLine="true"
+                                android:text="@={data.productName}"
+                                android:textColorHint="@color/gray" />
+                        </android.support.design.widget.TextInputLayout>
+
+                        <android.support.design.widget.TextInputLayout
+                            android:id="@+id/price_til"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:error="@{data.priceError}"
+                            app:errorEnabled="@{data.displayError}">
+
+                            <EditText
+                                android:id="@+id/price"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_centerHorizontal="true"
+                                android:layout_marginTop="30dp"
+                                android:hint="@string/price"
+                                android:inputType="numberDecimal"
+                                android:singleLine="true"
+                                android:text="@={data.price}"
+                                android:textColorHint="@color/gray" />
+                        </android.support.design.widget.TextInputLayout>
+
+                        <android.support.design.widget.TextInputLayout
+                            android:id="@+id/special_price_til"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <EditText
+                                android:id="@+id/special_price_name"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_centerHorizontal="true"
+                                android:layout_marginTop="30dp"
+                                android:hint="@string/special_price"
+                                android:inputType="numberDecimal"
+                                android:singleLine="true"
+                                android:text="@={data.specialPrice}"
+                                android:textColorHint="@color/gray" />
+                        </android.support.design.widget.TextInputLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:clickable="true"
+                            android:orientation="horizontal">
+
+                            <Switch
+                                android:id="@+id/enable_tax"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:checked="@={data.taxableGoodsApplied}" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/yes_taxable_goods"
+                                android:textSize="@dimen/text_size_medium" />
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/tax_heading"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/text_tax"
+                            android:textSize="@dimen/text_size_medium" />
+
+                        <Spinner
+                            android:id="@+id/tax_spinner"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_generic">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="@dimen/spacing_generic">
+
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentTop="true"
+                            android:text="@string/barcode"
+                            android:textColor="@color/textColor"
+                            android:textSize="@dimen/text_size_large" />
+
+                        <ImageView
+                            android:id="@+id/barCode"
+                            android:layout_width="match_parent"
+                            android:layout_height="120dp"
+                            app:srcCompat="@drawable/ic_barcode_placeholder" />
+
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/spacing_tiny"
+                            android:drawableLeft="@drawable/ic_download_wrappar"
+                            android:drawablePadding="@dimen/spacing_tiny"
+                            android:drawableStart="@drawable/ic_download_wrappar"
+                            android:gravity="center"
+                            android:onClick="@{()->handler.saveImage(data)}"
+                            android:text="@string/save_barcode"
+                            android:textColor="@color/colorAccent"
+                            android:textSize="@dimen/text_size_small"
+                            android:textStyle="bold" />
+
+                        <!--<TextView-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_centerVertical="true"-->
+                        <!--android:onClick="@{()->handler.generateBarcode(data)}"-->
+                        <!--android:text="@string/generate_barcode"-->
+                        <!--android:textColor="@color/colorAccent"-->
+                        <!--android:visibility="@{edit ? View.GONE : View.VISIBLE}" />-->
+
+                    </LinearLayout>
+
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_generic">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@android:color/white"
+                        android:clickable="false"
+                        android:orientation="vertical"
+                        android:padding="@dimen/spacing_normal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/inventory"
+                            android:textColor="@color/textColor"
+                            android:textSize="@dimen/text_size_large" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:clickable="true"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/track_inventory"
+                                android:textSize="@dimen/text_size_medium" />
+
+                            <Switch
+                                android:id="@+id/track_inventory"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="end"
+                                android:checked="@={data.trackInventory}" />
+                        </LinearLayout>
+
+
+                        <android.support.design.widget.TextInputLayout
+                            android:id="@+id/quantity_til"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:error="@{data.quantityError}"
+                            app:errorEnabled="@{data.displayError}">
+
+                            <EditText
+                                android:id="@+id/quantity"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_centerHorizontal="true"
+                                android:layout_marginTop="30dp"
+                                android:hint="@string/quantity"
+                                android:inputType="text|number"
+                                android:singleLine="true"
+                                android:text="@={data.quantity}"
+                                android:textColorHint="@color/gray" />
+                        </android.support.design.widget.TextInputLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:clickable="true"
+                            android:orientation="horizontal">
+
+                            <Switch
+                                android:id="@+id/in_stock"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:checked="@={data.stock}" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/in_stock"
+                                android:textSize="@dimen/text_size_medium" />
+                        </LinearLayout>
+
+                        <android.support.design.widget.TextInputLayout
+                            android:id="@+id/weight_til"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:error="@{data.weightError}"
+                            app:errorEnabled="@{data.displayError}">
+
+                            <EditText
+                                android:id="@+id/weight"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_centerHorizontal="true"
+                                android:layout_marginTop="30dp"
+                                android:hint="@string/weight"
+                                android:inputType="text|number"
+                                android:singleLine="true"
+                                android:text="@={data.weight}"
+                                android:textColorHint="@color/gray" />
+                        </android.support.design.widget.TextInputLayout>
+                    </LinearLayout>
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_generic">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/heading_options"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/spacing_normal"
+                            android:text="Options"
+                            android:textColor="@color/textColor"
+                            android:textSize="@dimen/text_size_large"
+                            tools:text="Selected Options" />
+
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/option_rv"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@android:color/white"
+                            app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
+
+                    </LinearLayout>
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/spacing_generic"
+                    android:layout_marginTop="@dimen/spacing_generic"
+                    android:onClick="@{()->handler.selectOptions(data, edit)}">
+
+                    <RelativeLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+                        xmlns:tools="http://schemas.android.com/tools"
+                        android:layout_width="wrap_content"
+                        android:layout_height="55dp">
+
+                        <TextView
+                            android:id="@+id/label_options"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_margin="@dimen/spacing_normal"
+                            android:text="@string/choose_options"
+                            android:textColor="@color/textColor"
+                            android:textSize="@dimen/text_size_small"
+                            tools:text="@string/choose_option" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginEnd="@dimen/spacing_normal"
+                            android:layout_marginRight="@dimen/spacing_normal"
+                            app:srcCompat="@drawable/ic_arrow_right" />
+
+                    </RelativeLayout>
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing_generic">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/heading"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/spacing_normal"
+                            android:text="@string/categories"
+                            android:textColor="@color/textColor"
+                            android:textSize="@dimen/text_size_large"
+                            tools:text="Selected Categories" />
+
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/category_rv"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@android:color/white"
+                            app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
+
+                    </LinearLayout>
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/spacing_generic"
+                    android:layout_marginTop="@dimen/spacing_generic"
+                    android:onClick="@{()->handler.selectCategories(data, edit)}">
+
+                    <RelativeLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+                        xmlns:tools="http://schemas.android.com/tools"
+                        android:layout_width="wrap_content"
+                        android:layout_height="55dp">
+
+                        <TextView
+                            android:id="@+id/label"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_margin="@dimen/spacing_normal"
+                            android:text="@string/choose_categories"
+                            android:textColor="@color/textColor"
+                            android:textSize="@dimen/text_size_small"
+                            tools:text="@string/choose_categories" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginEnd="@dimen/spacing_normal"
+                            android:layout_marginRight="@dimen/spacing_normal"
+                            app:srcCompat="@drawable/ic_arrow_right" />
+
+                    </RelativeLayout>
+                </android.support.v7.widget.CardView>
+
+            </LinearLayout>
+            <!-- TODO: Update blank fragment layout -->
+        </android.support.v4.widget.NestedScrollView>
+    </FrameLayout>
+</layout>

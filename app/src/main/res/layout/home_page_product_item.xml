@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="data"
+            type="com.webkul.mobikul.mobikulstandalonepos.db.entity.Product" />
+
+        <variable
+            name="handler"
+            type="com.webkul.mobikul.mobikulstandalonepos.handlers.HomeFragmentHandler" />
+    </data>
+
+    <RelativeLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/spacing_generic"
+        android:layout_marginStart="@dimen/spacing_generic"
+        android:onClick="@{()-> handler.onClickProduct(data)}">
+
+        <LinearLayout
+            android:id="@+id/product_image"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginBottom="@dimen/spacing_generic"
+            android:layout_marginEnd="@dimen/spacing_normal"
+            android:layout_marginLeft="@dimen/spacing_normal"
+            android:layout_marginRight="@dimen/spacing_normal"
+            android:layout_marginStart="@dimen/spacing_normal"
+            android:layout_marginTop="@dimen/spacing_generic">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:imageUrl="@{data.image}" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_generic"
+            android:layout_toEndOf="@+id/product_image"
+            android:text="@{data.productName}"
+            android:textColor="@{data.enabled ? @color/textColor : @color/textColorLight}"
+            android:textSize="@dimen/text_size_medium"
+            android:textStyle="bold"
+            tools:text="More Options" />
+
+        <TextView
+            android:id="@+id/stock"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/label"
+            android:layout_marginTop="@dimen/spacing_tiny"
+            android:layout_toEndOf="@+id/product_image"
+            android:text="@{data.stock &amp;&amp; !data.quantity.equalsIgnoreCase(`0`)  ? String.format(@string/in_stock_with_qty, data.quantity): @string/out_of_stock}"
+            android:textColor="@{data.stock &amp;&amp; !data.quantity.equalsIgnoreCase(`0`) ? @color/inStockColor : @color/outOfStockColor}"
+            android:textSize="@dimen/text_size_small" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
+            android:background="#3F000000" />
+
+        <TextView
+            android:id="@+id/low_tag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_margin="@dimen/spacing_normal"
+            android:background="@color/colorAccent"
+            android:paddingBottom="@dimen/spacing_tiny"
+            android:paddingLeft="@dimen/spacing_generic"
+            android:paddingRight="@dimen/spacing_generic"
+            android:paddingTop="@dimen/spacing_tiny"
+            android:text="@string/low"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_small" />
+    </RelativeLayout>
+
+</layout>

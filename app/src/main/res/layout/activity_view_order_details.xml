@@ -1,0 +1,469 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <variable
+            name="data"
+            type="com.webkul.mobikul.mobikulstandalonepos.db.entity.OrderEntity" />
+
+        <variable
+            name="view"
+            type="android.view.View" />
+
+        <variable
+            name="handler"
+            type="com.webkul.mobikul.mobikulstandalonepos.handlers.OrderFragmentHandler" />
+    </data>
+
+    <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="com.webkul.mobikul.mobikulstandalonepos.activity.ViewOrderDetails">
+
+        <android.support.design.widget.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/AppTheme.AppBarOverlay">
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="?attr/colorPrimary"
+                app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+        </android.support.design.widget.AppBarLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/backgroundColor"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <android.support.v4.widget.NestedScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/spacing_generic"
+                    android:orientation="vertical">
+
+                    <android.support.v7.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:padding="@dimen/spacing_normal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/customer_information"
+                                android:textSize="@dimen/text_size_large" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@{data.cartData.customer.firstName + ' ' +data.cartData.customer.lastName}"
+                                android:textColor="@color/secondaryTextColor"
+                                android:textSize="@dimen/text_size_medium"
+                                tools:text="Mike Heming" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@{data.cartData.customer.email}"
+                                android:textColor="@color/secondaryTextColor"
+                                android:textSize="@dimen/text_size_medium"
+                                tools:text="mike.heming@mymail.com" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@{data.cartData.customer.contactNumber}"
+                                android:textColor="@color/secondaryTextColor"
+                                android:textSize="@dimen/text_size_medium"
+                                tools:text="+14 8745874512" />
+
+
+                        </LinearLayout>
+                    </android.support.v7.widget.CardView>
+
+                    <android.support.v7.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/spacing_generic"
+                        android:background="@color/white">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:padding="@dimen/spacing_normal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Shipping Address"
+                                android:textSize="@dimen/text_size_large" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@{data.cartData.customer.addressLine}"
+                                android:textColor="@color/secondaryTextColor"
+                                android:textSize="@dimen/text_size_medium"
+                                tools:text="310-B, Shipra Suncity, 201301" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@{data.cartData.customer.city+`, ` +data.cartData.customer.postalCode}"
+                                android:textColor="@color/secondaryTextColor"
+                                android:textSize="@dimen/text_size_medium"
+                                tools:text="Ghaziabad, 201301" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@{data.cartData.customer.state+`, `+ data.cartData.customer.country}"
+                                android:textColor="@color/secondaryTextColor"
+                                android:textSize="@dimen/text_size_medium"
+                                tools:text="UP, India" />
+
+                        </LinearLayout>
+                    </android.support.v7.widget.CardView>
+
+                    <android.support.v7.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/spacing_generic"
+                        android:background="@color/white">
+
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/product_rv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@android:color/white"
+                            app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
+                    </android.support.v7.widget.CardView>
+
+                    <android.support.v7.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/spacing_generic"
+                        android:background="@color/white">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/spacing_generic"
+                            android:background="@color/white"
+                            android:orientation="vertical"
+                            android:padding="@dimen/spacing_normal">
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/sub_total"
+                                    android:textSize="@dimen/text_size_small" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_alignParentRight="true"
+                                    android:text="@{data.cartData.totals.formatedSubTotal}"
+                                    android:textSize="@dimen/text_size_small"
+                                    tools:text="$759" />
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/spacing_tiny">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/tax"
+                                    android:textSize="@dimen/text_size_small"
+                                    tools:text="Tax (10%):" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_alignParentRight="true"
+                                    android:text="@{data.cartData.totals.formatedTax}"
+                                    android:textSize="@dimen/text_size_small"
+                                    tools:text="$75.90" />
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/spacing_tiny">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/discount"
+                                    android:textSize="@dimen/text_size_small" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_alignParentRight="true"
+                                    android:text="@{data.cartData.totals.formatedDiscount}"
+                                    android:textSize="@dimen/text_size_small"
+                                    tools:text="- $84.00" />
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/spacing_tiny">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/grand_total"
+                                    android:textSize="@dimen/text_size_small"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_alignParentRight="true"
+                                    android:text="@{data.cartData.totals.formatedGrandTotal}"
+                                    android:textSize="@dimen/text_size_small"
+                                    android:textStyle="bold"
+                                    tools:text="$750.90" />
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/spacing_tiny">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/round_total"
+                                    android:textColor="@color/colorAccent"
+                                    android:textSize="@dimen/text_size_small"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_alignParentRight="true"
+                                    android:text="@{data.cartData.totals.formatedRoundTotal}"
+                                    android:textColor="@color/colorAccent"
+                                    android:textSize="@dimen/text_size_small"
+                                    android:textStyle="bold"
+                                    tools:text="$751.00" />
+                            </RelativeLayout>
+                        </LinearLayout>
+                    </android.support.v7.widget.CardView>
+
+                    <android.support.v7.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/spacing_generic"
+                        android:background="@color/white">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@color/white"
+                            android:orientation="vertical">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:padding="@dimen/spacing_normal">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/payment_information"
+                                    android:textSize="@dimen/text_size_large" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Mode of Payment"
+                                    android:textColor="@color/secondaryTextColor"
+                                    android:textSize="@dimen/text_size_medium" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Cash"
+                                    android:textColor="@color/colorAccent"
+                                    android:textSize="@dimen/text_size_medium" />
+                            </LinearLayout>
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:layout_alignParentBottom="true"
+                                android:background="@color/divider_color" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:padding="@dimen/spacing_normal">
+
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/spacing_tiny">
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="@{data.isReturn ? @string/cash_refunded_ : @string/cash_collected_}"
+                                        android:textSize="@dimen/text_size_small"
+                                        tools:text="Cash Collected" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentEnd="true"
+                                        android:layout_alignParentRight="true"
+                                        android:text="@{data.cashData.formattedCollectedCash}"
+                                        android:textSize="@dimen/text_size_small"
+                                        tools:text="$75.90" />
+                                </RelativeLayout>
+
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/spacing_tiny">
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="@string/order_total_"
+                                        android:textSize="@dimen/text_size_small"
+                                        tools:text="OrderEntity Total" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentEnd="true"
+                                        android:layout_alignParentRight="true"
+                                        android:text="@{data.cashData.formatedTotal}"
+                                        android:textSize="@dimen/text_size_small"
+                                        tools:text="$75.90" />
+                                </RelativeLayout>
+
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/spacing_tiny">
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="@string/change_due"
+                                        android:textColor="@color/colorAccent"
+                                        android:textSize="@dimen/text_size_small"
+                                        android:textStyle="bold"
+                                        tools:text="Change Due" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentEnd="true"
+                                        android:layout_alignParentRight="true"
+                                        android:text="@{data.cashData.formattedChangeDue}"
+                                        android:textColor="@color/colorAccent"
+                                        android:textSize="@dimen/text_size_small"
+                                        android:textStyle="bold"
+                                        tools:text="$75.90" />
+                                </RelativeLayout>
+
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                    </android.support.v7.widget.CardView>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="@dimen/spacing_normal"
+                        android:layout_marginTop="@dimen/spacing_generic"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/return_items"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentStart="true"
+                            android:layout_marginLeft="@dimen/spacing_generic"
+                            android:layout_marginRight="@dimen/spacing_generic"
+                            android:background="@{data.refundedOrderId.isEmpty() ? @drawable/selector_rect_rounded_corner_accent_bg_accent_stroke: @drawable/selector_rect_rounded_corner_green_bg_green_stroke}"
+                            android:onClick="@{()->handler.returnItems(data, data.refundedOrderId)}"
+                            android:padding="@dimen/spacing_generic"
+                            android:text="@{data.refundedOrderId.isEmpty() ? @string/return_items : `Order Returned`}"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/text_size_small"
+                            android:visibility="@{!data.isReturn ? view.VISIBLE : view.GONE}" />
+
+                        <TextView
+                            android:id="@+id/send_invoice"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginLeft="@dimen/spacing_generic"
+                            android:layout_marginRight="@dimen/spacing_generic"
+                            android:background="@drawable/selector_rect_rounded_corner_accent_bg_accent_stroke"
+                            android:onClick="@{()->handler.sendInvoice(data)}"
+                            android:padding="@dimen/spacing_generic"
+                            android:text="@string/send_invoice"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/text_size_small" />
+
+                        <TextView
+                            android:id="@+id/generate_invoice"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_toLeftOf="@+id/send_invoice"
+                            android:background="@drawable/selector_rect_rounded_corner_accent_bg_accent_stroke"
+                            android:onClick="@{()->handler.generateInvoice(data)}"
+                            android:padding="@dimen/spacing_generic"
+                            android:text="@string/view_invoice"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/text_size_small" />
+
+                    </RelativeLayout>
+
+                </LinearLayout>
+            </android.support.v4.widget.NestedScrollView>
+        </FrameLayout>
+    </android.support.design.widget.CoordinatorLayout>
+</layout>

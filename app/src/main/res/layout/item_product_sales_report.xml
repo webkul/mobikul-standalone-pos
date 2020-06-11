@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="data"
+            type="com.webkul.mobikul.mobikulstandalonepos.model.SalesProductReportModel" />
+
+    </data>
+
+    <LinearLayout xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/spacing_generic"
+        android:paddingLeft="@dimen/spacing_normal"
+        android:paddingStart="@dimen/spacing_normal"
+        android:paddingTop="@dimen/spacing_normal">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/spacing_normal"
+            android:layout_marginRight="@dimen/spacing_normal">
+
+            <TextView
+                android:id="@+id/product_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{data.productName}"
+                android:textSize="@dimen/text_size_medium"
+                android:textStyle="bold"
+                tools:text="Product" />
+
+            <TextView
+                android:id="@+id/date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/product_name"
+                android:text="@{data.date}"
+                android:textSize="@dimen/text_size_medium"
+                tools:text="25 October, 2017" />
+
+            <TextView
+                android:id="@+id/item_sold_qty"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:text="@{` - `+data.soldQty}"
+                android:textSize="@dimen/text_size_small"
+                tools:text=" - 12" />
+
+            <TextView
+                android:id="@+id/title_amt_collected"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@id/item_sold_qty"
+                android:text="Sold Qty"
+                android:textColor="@color/secondaryTextColor"
+                android:textSize="@dimen/text_size_small"
+                tools:text="Sold Qty" />
+
+            <TextView
+                android:id="@+id/sold_item_total_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/title_amt_collected"
+                android:text="@{` - `+data.formattedPrice}"
+                android:textSize="@dimen/text_size_small"
+                tools:text=" - $1500.00" />
+
+            <TextView
+                android:id="@+id/title_sold_item_total_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/title_amt_collected"
+                android:layout_toLeftOf="@id/sold_item_total_price"
+                android:text="Sold Item Total"
+                android:textColor="@color/secondaryTextColor"
+                android:textSize="@dimen/text_size_small"
+                tools:text="Sold Item Total" />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="@dimen/spacing_normal"
+            android:background="@color/divider_color" />
+    </LinearLayout>
+</layout>

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <variable
+            name="data"
+            type="com.webkul.mobikul.mobikulstandalonepos.db.entity.Options" />
+
+        <variable
+            name="edit"
+            type="boolean" />
+
+        <import type="com.webkul.mobikul.mobikulstandalonepos.constants.BundleConstants" />
+
+        <variable
+            name="visibility"
+            type="boolean" />
+
+        <variable
+            name="handler"
+            type="com.webkul.mobikul.mobikulstandalonepos.handlers.OptionHandler" />
+    </data>
+
+    <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="com.webkul.mobikul.mobikulstandalonepos.activity.OptionsActivity">
+
+        <android.support.design.widget.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/AppTheme.AppBarOverlay">
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="?attr/colorPrimary"
+                app:popupTheme="@style/AppTheme.PopupOverlay">
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginEnd="@dimen/spacing_generic"
+                    android:layout_marginLeft="@dimen/spacing_generic"
+                    android:layout_marginRight="@dimen/spacing_generic"
+                    android:layout_marginStart="@dimen/spacing_generic">
+
+                    <ImageView
+                        android:id="@+id/add_option"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:onClick="@{()-> handler.addOption(data)}"
+                        android:padding="@dimen/spacing_generic"
+                        app:srcCompat="@drawable/ic_icon_add_fill" />
+
+                    <ImageView
+                        android:id="@+id/delete_option"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:onClick="@{()-> handler.deleteOption(data)}"
+                        android:padding="@dimen/spacing_generic"
+                        android:visibility="gone"
+                        app:srcCompat="@drawable/ic_icon_order_delete" />
+
+                    <ImageView
+                        android:id="@+id/save_option"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@+id/delete_option"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:onClick="@{()-> handler.saveOption(data, edit)}"
+                        android:padding="@dimen/spacing_generic"
+                        android:visibility="gone"
+                        app:srcCompat="@drawable/ic_submit_fill" />
+                </RelativeLayout>
+            </android.support.v7.widget.Toolbar>
+        </android.support.design.widget.AppBarLayout>
+
+        <FrameLayout
+            android:id="@+id/option_fl"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/backgroundColor"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/spacing_generic"
+                android:background="@color/white"
+                android:orientation="vertical">
+
+                <include
+                    android:id="@+id/empty_view"
+                    layout="@layout/empty_layout"
+                    app:page="@{BundleConstants.EmptyLayoutType.OPTIONS}"
+                    app:visibility="@{visibility}" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/option_rv"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
+            </LinearLayout>
+        </FrameLayout>
+    </android.support.design.widget.CoordinatorLayout>
+</layout>

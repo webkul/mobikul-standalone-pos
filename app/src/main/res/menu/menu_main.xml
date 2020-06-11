@@ -1,0 +1,22 @@
+<!-- -Menu used in Mobikul-->
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".activity.HomeActivity">
+
+    <item
+        android:id="@+id/menu_item_search"
+        android:icon="@drawable/ic_vector_menu_search"
+        android:textColorHint="@color/colorAccent"
+        android:title="@string/search"
+        app:actionViewClass="android.support.v7.widget.SearchView"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/menu_item_scan_barcode"
+        android:icon="@drawable/ic_vector_menu_scan_barcode"
+        android:title="@string/scan_barcode"
+        android:visible="true"
+        app:showAsAction="always" />
+
+</menu>

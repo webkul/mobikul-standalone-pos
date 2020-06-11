@@ -270,5 +270,4 @@ public class HomeFragment extends Fragment {
                         CommonStatusCodes.getStatusCodeString(resultCode)));
         }
     }
-
 }

@@ -69,7 +69,7 @@ public class ManageOptionFragmentHandler {
     }
 
     public void onOptionsSelect(Options options, Product product) {
-        if (!options.getType().equalsIgnoreCase("text") && !options.getType().equalsIgnoreCase("textarea") && !options.getType().equalsIgnoreCase("File") && !options.getType().equalsIgnoreCase("Date") && !options.getType().equalsIgnoreCase("Time") && !options.getType().equalsIgnoreCase("Date & Time")) {
+        if (!options.getType().equalsIgnoreCase("text") && !options.getType().equalsIgnoreCase("textarea")) {
             FragmentManager fragmentManager = ((AppCompatActivity) context).getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left);

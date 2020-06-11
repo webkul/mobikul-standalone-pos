@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="data"
+            type="com.webkul.mobikul.mobikulstandalonepos.db.entity.Currency" />
+
+        <variable
+            name="handler"
+            type="com.webkul.mobikul.mobikulstandalonepos.handlers.CurrencyHandler" />
+
+    </data>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="55dp"
+        android:background="@{data.selected ? @color/colorAccent : @color/white}"
+        android:onClick="@{()->handler.onSelectCurrency(data)}">
+
+        <!--<LinearLayout-->
+        <!--android:id="@+id/icons"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_margin="@dimen/spacing_generic"-->
+        <!--android:gravity="center">-->
+
+        <!--<ImageView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--app:imageResource="@{data.flag}" />-->
+        <!--</LinearLayout>-->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:orientation="vertical"
+            android:padding="@dimen/spacing_generic">
+
+            <TextView
+                android:id="@+id/currency_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{data.name}"
+                android:textColor="@color/textColor"
+                android:textSize="@dimen/text_size_medium"
+                tools:text="Indian Rupee(₹)" />
+
+            <TextView
+                android:id="@+id/currency_code"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{data.code}"
+                android:textColor="@color/secondaryTextColor"
+                android:textSize="@dimen/text_size_small"
+                tools:text="INR" />
+        </LinearLayout>
+
+
+        <TextView
+            android:id="@+id/currency_rate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_margin="@dimen/spacing_normal"
+            android:text="@{data.formatedRate}"
+            android:textColor="@{!data.selected ? @color/colorAccent : @color/white}"
+            android:textSize="@dimen/text_size_large"
+            tools:text="₹64.94" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
+            android:background="#3F000000" />
+    </RelativeLayout>
+</layout>

@@ -1,0 +1,63 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+
+        <item name="android:buttonStyle">@style/DefaultButtonStyle</item>
+        <item name="android:textViewStyle">@style/DefaultTextStyle</item>
+        <!--<item name="buttonStyle">@style/DefaultButtonStyle</item>-->
+        <item name="windowActionModeOverlay">true</item>
+        <item name="actionBarTheme">@style/AppTheme.AppBarOverlay</item>
+        <!--<item name="android:actionBarWidgetTheme">@style/MyActionBarWidgetTheme</item>-->
+        <!--<item name="actionBarWidgetTheme">@style/MyActionBarWidgetTheme</item>-->
+
+    </style>
+
+    <!--no actionbar-->
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar_splach">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="MyActionBarWidgetTheme" parent="AppTheme">
+        .....
+        .....
+        <item name="android:textColorHint">@color/colorAccent</item>
+    </style>
+
+    <!-- Default Button Style -->
+    <style name="DefaultButtonStyle" parent="@android:style/Widget.Button">
+        <item name="android:background">
+            @drawable/selector_rect_rounded_corner_accent_bg_accent_stroke
+        </item>
+        <item name="android:foreground">?attr/selectableItemBackground</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:padding">@dimen/spacing_normal</item>
+        <item name="android:textSize">@dimen/text_size_medium</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="DefaultTextStyle" parent="@android:style/Widget.TextView">
+        <item name="android:textColor">@color/textColor</item>
+    </style>
+
+    <style name="GalaxyZooThemeToolbarDarkOverflow" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <!-- Actionbar Style -->
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="android:textColorPrimary">@color/actionBarItemColor</item>
+        <item name="colorControlHighlight">@android:color/darker_gray</item>
+    </style>
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+</resources>

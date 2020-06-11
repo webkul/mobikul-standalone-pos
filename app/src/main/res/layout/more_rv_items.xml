@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="data"
+            type="com.webkul.mobikul.mobikulstandalonepos.model.MoreData" />
+
+        <variable
+            name="handler"
+            type="com.webkul.mobikul.mobikulstandalonepos.handlers.MoreFragmentHandler" />
+    </data>
+
+    <RelativeLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/rl"
+        android:layout_width="wrap_content"
+        android:layout_height="55dp"
+        android:clickable="@{data.enabled ? true : false}"
+        android:onClick="@{()-> handler.performAction(data)}">
+
+        <LinearLayout
+            android:id="@+id/icons"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_margin="@dimen/spacing_generic"
+            android:background="@drawable/circle"
+            android:gravity="center">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:imageResource="@{data.icon}" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="@dimen/spacing_generic"
+            android:layout_toRightOf="@id/icons"
+            android:enabled="@{data.enabled ? true : false}"
+            android:text="@{data.label}"
+            android:textColor="@{data.enabled ? @color/text_color : @color/textColorLight}"
+            android:textSize="@dimen/text_size_small"
+            tools:text="More Options" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
+            android:background="#3F000000" />
+    </RelativeLayout>
+
+</layout>

@@ -75,6 +75,7 @@ public class AddOptionFragment extends Fragment {
         binding.optionValuesRv.setAdapter(optionValuesAdapter);
     }
 
+
     @Override
     public void onDetach() {
         super.onDetach();

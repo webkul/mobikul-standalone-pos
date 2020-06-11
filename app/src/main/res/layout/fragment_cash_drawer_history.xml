@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="data"
+            type="com.webkul.mobikul.mobikulstandalonepos.db.entity.CashDrawerModel" />
+
+
+    </data>
+
+    <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/backgroundColor"
+        tools:context="com.webkul.mobikul.mobikulstandalonepos.activity.Checkout">
+
+        <FrameLayout
+            android:id="@+id/frame_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/backgroundColor"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <android.support.v4.widget.NestedScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/colorAccent"
+                        android:paddingLeft="@dimen/spacing_normal"
+                        android:paddingTop="@dimen/spacing_normal"
+                        android:text="@{data.date}"
+                        android:textColor="@color/white"
+                        android:textSize="26sp"
+                        android:textStyle="bold"
+                        tools:text="Tue - 25 April, 2017" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/colorAccent"
+                        android:paddingBottom="@dimen/spacing_normal"
+                        android:paddingLeft="@dimen/spacing_normal"
+                        android:text="@{String.format(@string/net_revenue_, data.formattedNetRevenue)}"
+                        android:textColor="@color/white"
+                        android:textSize="22sp"
+                        android:textStyle="bold"
+                        tools:text="Revenue - $400.00" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/spacing_generic"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="@dimen/spacing_generic"
+                            android:layout_weight="1"
+                            android:background="@color/colorAccent"
+                            android:orientation="vertical"
+                            android:paddingBottom="@dimen/spacing_normal"
+                            android:paddingLeft="@dimen/spacing_normal"
+                            android:paddingTop="@dimen/spacing_normal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Opening Balance "
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/text_size_large"
+                                android:textStyle="bold"
+                                tools:text="Opening Balance " />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@{' '+data.formattedOpeningBalance}"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/spacing_large"
+                                android:textStyle="bold"
+
+                                tools:text="$1000.00" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@color/colorAccent"
+                            android:orientation="vertical"
+                            android:paddingBottom="@dimen/spacing_normal"
+                            android:paddingLeft="@dimen/spacing_normal"
+                            android:paddingTop="@dimen/spacing_normal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Closing Balance"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/text_size_large"
+                                android:textStyle="bold"
+                                tools:text="Closing Balance" />
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="@{' '+data.formattedClosingBalance}"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/spacing_large"
+                                android:textStyle="bold"
+                                tools:text="$1400.00" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/cash_drawer_history_rv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/spacing_generic"
+                        android:layout_marginRight="@dimen/spacing_generic"
+                        app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
+                </LinearLayout>
+            </android.support.v4.widget.NestedScrollView>
+        </FrameLayout>
+    </android.support.design.widget.CoordinatorLayout>
+</layout>

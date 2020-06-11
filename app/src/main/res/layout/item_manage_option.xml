@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="data"
+            type="com.webkul.mobikul.mobikulstandalonepos.db.entity.Options" />
+
+        <variable
+            name="product"
+            type="com.webkul.mobikul.mobikulstandalonepos.db.entity.Product" />
+
+        <variable
+            name="handler"
+            type="com.webkul.mobikul.mobikulstandalonepos.handlers.ManageOptionFragmentHandler" />
+    </data>
+
+    <RelativeLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="wrap_content"
+        android:layout_height="55dp"
+        android:onClick="@{()->handler.onOptionsSelect(data, product)}">
+
+        <LinearLayout
+            android:id="@+id/icons"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_margin="@dimen/spacing_generic"
+            android:background="@drawable/circle"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <!--<ImageView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--app:imageResource="@{data.icon}" />-->
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_margin="@dimen/spacing_normal"
+            android:text="@{data.optionName}"
+            android:textColor="@color/textColor"
+            tools:text="More Options" />
+
+        <ImageView
+            android:id="@+id/selected_category"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/spacing_normal"
+            android:layout_marginRight="@dimen/spacing_normal"
+            android:visibility="@{data.isSelected ? View.VISIBLE : View.GONE}"
+            app:srcCompat="@drawable/ic_submit_fill" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
+            android:background="#3F000000" />
+    </RelativeLayout>
+
+</layout>
