@@ -38,6 +38,7 @@ public class AppSharedPref {
     private static final String IS_SIGNED_UP = "IS_SIGNED_UP";
     private static final String IS_RETURN_CART = "IS_RETURN_CART";
     private static final String RETURN_ORDER_ID = "RETURN_ORDER_ID";
+    private static final String cam = "came";
     private static final String IS_LOGGED_IN = "IS_LOGGED_in";
     private static final String IS_SHOW_WALKTHROUGH = "IS_SHOW_WALKTHROUGH";
     private static final String KEY_CART_DATA = "CART_DATA";
@@ -232,4 +233,12 @@ public class AppSharedPref {
     public static void setReturnOrderId(Context context, String orderId) {
         getSharedPreferenceEditor(context, APP_PREF).putString(RETURN_ORDER_ID, orderId).apply();
     }
+    public static String getcamera(Context context) {
+        return getSharedPreference(context, APP_PREF).getString(cam, "empty");
+    }
+
+    public static void setcamera(Context context, String orderId) {
+        getSharedPreferenceEditor(context, APP_PREF).putString(cam, orderId).apply();
+    }
+
 }

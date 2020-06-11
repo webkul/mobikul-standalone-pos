@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
-
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/dialog_ll"
@@ -44,7 +43,28 @@
             android:layout_marginLeft="@dimen/spacing_normal"
             android:layout_margin="@dimen/spacing_generic"
             android:orientation="vertical">
-
+            <Button
+                android:id="@+id/btn_upload"
+                android:visibility="gone"
+                style="@style/DefaultButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:clickable="true"
+                android:text="Upload"
+                android:textStyle="bold"
+                 />
+            <Button
+                android:id="@+id/btnremove"
+                android:visibility="gone"
+                style="@style/DefaultButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:clickable="true"
+                android:text="Remove"
+                android:textStyle="bold"
+                />
         </LinearLayout>
 
         <LinearLayout
