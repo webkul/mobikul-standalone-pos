@@ -100,7 +100,28 @@ public class Helper {
         double finalPrice = price * AppSharedPref.getSelectedCurrencyRate(context);
         return finalPrice;
     }
-
+    public static Uri saveToInternalStoragee(Context context, Bitmap bitmapImage) {
+        ContextWrapper cw = new ContextWrapper(context);
+        File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
+        File mypath = new File(directory,  ".jpg");
+        FileOutputStream fos = null;
+        try {
+            fos = new FileOutputStream(mypath);
+            bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, fos);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                assert fos != null;
+                fos.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        Uri path = Uri.fromFile(mypath);
+        Log.d(TAG, "saveToInternalStorage: " + path);
+        return path;
+    }
     public static Uri saveToInternalStorage(Context context, Bitmap bitmapImage, String id) {
         ContextWrapper cw = new ContextWrapper(context);
         File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);

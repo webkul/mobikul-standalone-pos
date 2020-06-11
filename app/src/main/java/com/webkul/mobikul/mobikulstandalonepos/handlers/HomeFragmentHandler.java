@@ -1,38 +1,39 @@
 package com.webkul.mobikul.mobikulstandalonepos.handlers;
 
+import android.Manifest;
+import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.databinding.DataBindingUtil;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
-import com.google.android.gms.vision.text.Line;
-import com.google.firebase.crash.FirebaseCrash;
 import com.google.gson.Gson;
 import com.webkul.mobikul.mobikulstandalonepos.R;
 import com.webkul.mobikul.mobikulstandalonepos.activity.BaseActivity;
 import com.webkul.mobikul.mobikulstandalonepos.activity.CartActivity;
-import com.webkul.mobikul.mobikulstandalonepos.customviews.CustomDialogClass;
-import com.webkul.mobikul.mobikulstandalonepos.databinding.CustomOptionsBinding;
-import com.webkul.mobikul.mobikulstandalonepos.db.DataBaseController;
-import com.webkul.mobikul.mobikulstandalonepos.db.entity.CashDrawerModel;
-import com.webkul.mobikul.mobikulstandalonepos.db.entity.Currency;
+import com.webkul.mobikul.mobikulstandalonepos.activity.MainActivity;
 import com.webkul.mobikul.mobikulstandalonepos.db.entity.OptionValues;
 import com.webkul.mobikul.mobikulstandalonepos.db.entity.Options;
 import com.webkul.mobikul.mobikulstandalonepos.db.entity.Product;
@@ -41,16 +42,12 @@ import com.webkul.mobikul.mobikulstandalonepos.helper.AppSharedPref;
 import com.webkul.mobikul.mobikulstandalonepos.helper.Helper;
 import com.webkul.mobikul.mobikulstandalonepos.helper.ToastHelper;
 import com.webkul.mobikul.mobikulstandalonepos.model.CartModel;
-import com.webkul.mobikul.mobikulstandalonepos.model.CashDrawerItems;
 
 import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Calendar;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import static android.content.ContentValues.TAG;
 
@@ -59,13 +56,15 @@ import static android.content.ContentValues.TAG;
  */
 
 public class HomeFragmentHandler {
-
     private Context context;
     double subTotal;
     int counter;
     String currencySymbol;
     private double grandTotal;
     DecimalFormat df;
+    String format;
+    String datee,time;
+
     HashMap<String, OptionValues> optionValuesHashMap;
 
     public HomeFragmentHandler(Context context) {
@@ -193,13 +192,14 @@ public class HomeFragmentHandler {
 
     public class CustomOptionsDialogClass extends Dialog implements
             android.view.View.OnClickListener {
-
+        CountDownTimer cTimer = null;
+        EditText file;
         public Dialog d;
-        public Button yes, no;
+        public Button yes, no,btn_upload,btnremove;
         private Context context;
         private Product product;
         private CartModel cartData;
-
+        SharedPreference_main sharedPreference_main;
         public CustomOptionsDialogClass(Context context, Product product, CartModel cartData) {
             super(context);
             this.context = context;
@@ -213,6 +213,9 @@ public class HomeFragmentHandler {
             setCanceledOnTouchOutside(false);
             requestWindowFeature(Window.FEATURE_NO_TITLE);
             setContentView(R.layout.custom_options);
+            sharedPreference_main=SharedPreference_main.getInstance(context);
+            btn_upload = findViewById(R.id.btn_upload);
+            btnremove = findViewById(R.id.btnremove);
             for (final Options options : product.getOptions()) {
                 if (options.isSelected()) {
                     TextView label = new TextView(context);
@@ -306,6 +309,206 @@ public class HomeFragmentHandler {
                             });
                             ((LinearLayout) findViewById(R.id.options)).addView(text);
                             break;
+                        case "File":
+                            file = new EditText(context);
+                            btn_upload.setVisibility(View.VISIBLE);
+                            file.setLayoutParams(new LinearLayout.LayoutParams(300, LinearLayout.LayoutParams.WRAP_CONTENT));
+                            file.setVisibility(View.GONE);
+                            sharedPreference_main.setcamera("");
+                            btn_upload.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    startTimer();
+                                    fileimage();
+                                    OptionValues optionValues = new OptionValues();
+                                    optionValues.setAddToCart(true);
+                                    optionValues.setOptionValueName(file+ "");
+                                    optionValues.setSelected(true);
+                                    List<OptionValues> optionValuesListt = new ArrayList<>();
+                                    optionValuesListt.add(optionValues);
+                                    options.setOptionValues(optionValuesListt);
+                                }
+                            });
+                            btnremove.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    sharedPreference_main.setcamera("");
+                                    file.setVisibility(View.GONE);
+                                    btnremove.setVisibility(View.GONE);
+                                    btn_upload.setVisibility(View.VISIBLE);
+                                    cancelTimer();
+                                }
+                            });
+
+                            ((LinearLayout) findViewById(R.id.options)).addView(file);
+                            break;
+                        case "Date":
+                            final EditText etdate = new EditText(context);
+                            etdate.setLayoutParams(new LinearLayout.LayoutParams(300, LinearLayout.LayoutParams.WRAP_CONTENT));
+                            etdate.setText("Select Date");
+                            DatePickerDialog.OnDateSetListener setListener;
+                           final Calendar calendar = Calendar.getInstance();
+                            final int year=calendar.get(Calendar.YEAR);
+                            final int month=calendar.get(Calendar.MONTH);
+                            final int day=calendar.get(Calendar.DAY_OF_MONTH);
+                            etdate.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    DatePickerDialog datePickerDialog = new DatePickerDialog(context, new DatePickerDialog.OnDateSetListener() {
+                                        @Override
+                                        public void onDateSet(DatePicker view, int year, int month, int day) {
+                                            month = month+1;
+                                            String datee = day+"/"+month+"/"+year;
+                                            etdate.setText(datee);
+                                            OptionValues optionValues = new OptionValues();
+                                    optionValues.setAddToCart(true);
+                                    optionValues.setOptionValueName(datee + "");
+                                    optionValues.setSelected(true);
+                                    List<OptionValues> optionValuesListt = new ArrayList<>();
+                                    optionValuesListt.add(optionValues);
+                                    options.setOptionValues(optionValuesListt);
+                                        }
+                                    },year,month,day);
+                                    datePickerDialog.show();
+                                }
+                            });
+                            ((LinearLayout) findViewById(R.id.options)).addView(etdate);
+                            break;
+                        case "Time":
+                            final EditText ettime = new EditText(context);
+                            ettime.setLayoutParams(new LinearLayout.LayoutParams(300, LinearLayout.LayoutParams.WRAP_CONTENT));
+                            ettime.setText("Select Time");
+                            ettime.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                  final Calendar calendar = Calendar.getInstance();
+                                   int CalendarHour = calendar.get(Calendar.HOUR_OF_DAY);
+                                   int CalendarMinute = calendar.get(Calendar.MINUTE);
+                                    TimePickerDialog  timepickerdialog = new TimePickerDialog(context,
+                                            new TimePickerDialog.OnTimeSetListener() {
+
+                                                @Override
+                                                public void onTimeSet(TimePicker view, int hourOfDay,
+                                                                      int minute) {
+
+                                                    if (hourOfDay == 0) {
+
+                                                        hourOfDay += 12;
+
+                                                        format = "AM";
+                                                    } else if (hourOfDay == 12) {
+
+                                                        format = "PM";
+
+                                                    } else if (hourOfDay > 12) {
+
+                                                        hourOfDay -= 12;
+
+                                                        format = "PM";
+
+                                                    } else {
+
+                                                        format = "AM";
+                                                    }
+
+                                                    ettime.setText(hourOfDay + " : " + minute + " " + format);
+                                                    OptionValues optionValues = new OptionValues();
+                                                    optionValues.setAddToCart(true);
+                                                    optionValues.setOptionValueName(hourOfDay + " : " + minute + " " + format + "");
+                                                    optionValues.setSelected(true);
+                                                    List<OptionValues> optionValuesListt = new ArrayList<>();
+                                                    optionValuesListt.add(optionValues);
+                                                    options.setOptionValues(optionValuesListt);
+                                                }
+                                            }, CalendarHour, CalendarMinute, false);
+                                    timepickerdialog.show();
+                                }
+                                });
+                            ((LinearLayout) findViewById(R.id.options)).addView(ettime);
+                            break;
+                        case "Date & Time":
+                            final EditText etdatee = new EditText(context);
+                            etdatee.setLayoutParams(new LinearLayout.LayoutParams(350, LinearLayout.LayoutParams.WRAP_CONTENT));
+                            final EditText ettimee = new EditText(context);
+                            ettimee.setLayoutParams(new LinearLayout.LayoutParams(350, LinearLayout.LayoutParams.WRAP_CONTENT));
+                            ettimee.setText("Select Time");
+                            etdatee.setText("Select Date");
+
+                            DatePickerDialog.OnDateSetListener setListenerr;
+                            final Calendar calendarr = Calendar.getInstance();
+                            final int yearr=calendarr.get(Calendar.YEAR);
+                            final int monthh=calendarr.get(Calendar.MONTH);
+                            final int dayy=calendarr.get(Calendar.DAY_OF_MONTH);
+                            ettimee.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    final Calendar calendar = Calendar.getInstance();
+                                    int CalendarHour = calendar.get(Calendar.HOUR_OF_DAY);
+                                    int CalendarMinute = calendar.get(Calendar.MINUTE);
+                                    TimePickerDialog  timepickerdialog = new TimePickerDialog(context,
+                                            new TimePickerDialog.OnTimeSetListener() {
+
+                                                @Override
+                                                public void onTimeSet(TimePicker view, int hourOfDay,
+                                                                      int minute) {
+
+                                                    if (hourOfDay == 0) {
+
+                                                        hourOfDay += 12;
+
+                                                        format = "AM";
+                                                    } else if (hourOfDay == 12) {
+
+                                                        format = "PM";
+
+                                                    } else if (hourOfDay > 12) {
+
+                                                        hourOfDay -= 12;
+
+                                                        format = "PM";
+
+                                                    } else {
+
+                                                        format = "AM";
+                                                    }
+                                                    time = hourOfDay + " : " + minute + " " + format;
+                                                    ettimee.setText(time);
+                                                    OptionValues optionValues = new OptionValues();
+                                                    optionValues.setAddToCart(true);
+                                                    optionValues.setOptionValueName(datee +"  "+time);
+                                                    optionValues.setSelected(true);
+                                                    List<OptionValues> optionValuesListt = new ArrayList<>();
+                                                    optionValuesListt.add(optionValues);
+                                                    options.setOptionValues(optionValuesListt);
+                                                }
+                                            }, CalendarHour, CalendarMinute, false);
+                                    timepickerdialog.show();
+                                }
+                            });
+                            etdatee.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    DatePickerDialog datePickerDialog = new DatePickerDialog(context, new DatePickerDialog.OnDateSetListener() {
+                                        @Override
+                                        public void onDateSet(DatePicker view, int year, int month, int day) {
+                                            month = month+1;
+                                            datee = day+"/"+month+"/"+year;
+                                            etdatee.setText(datee);
+                                            OptionValues optionValues = new OptionValues();
+                                            optionValues.setAddToCart(true);
+                                            optionValues.setOptionValueName(datee +"  "+ time);
+                                            optionValues.setSelected(true);
+                                            List<OptionValues> optionValuesListt = new ArrayList<>();
+                                            optionValuesListt.add(optionValues);
+                                            options.setOptionValues(optionValuesListt);
+                                        }
+                                    },yearr,monthh,dayy);
+                                    datePickerDialog.show();
+                                }
+                            });
+                            ((LinearLayout) findViewById(R.id.options)).addView(etdatee);
+                            ((LinearLayout) findViewById(R.id.options)).addView(ettimee);
+                            break;
                     }
                 }
             }
@@ -319,6 +522,7 @@ public class HomeFragmentHandler {
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.btn_yes:
+
                     if (isOptionsValidate(product)) {
                         addToCart(product, cartData);
                         findViewById(R.id.error_text).setVisibility(View.GONE);
@@ -332,6 +536,35 @@ public class HomeFragmentHandler {
                     dismiss();
                     break;
             }
+        }
+        void startTimer() {
+            String cam =  sharedPreference_main.getcamera();
+            if (cam.isEmpty()){
+
+            }
+            else
+            {
+                file.setVisibility(View.VISIBLE);
+                file.setText(cam);
+                btn_upload.setVisibility(View.GONE);
+                btnremove.setVisibility(View.VISIBLE);
+            }
+
+            cTimer = new CountDownTimer(1000, 1000) {
+                public void onTick(long millisUntilFinished) {
+                }
+                public void onFinish() {
+                    startTimer();
+                }
+            };
+            cTimer.start();
+        }
+
+
+        //cancel timer
+        void cancelTimer() {
+            if(cTimer!=null)
+                cTimer.cancel();
         }
     }
 
@@ -366,4 +599,16 @@ public class HomeFragmentHandler {
         else
             return false;
     }
+    public void fileimage() {
+        if (ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA)
+                == PackageManager.PERMISSION_DENIED)
+            ActivityCompat.requestPermissions((MainActivity) context, new String[]{Manifest.permission.CAMERA}, 666);
+        try {
+            Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+            ((MainActivity) context).startActivityForResult(cameraIntent, ((MainActivity) context).CAMERA_REQUEST);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }
